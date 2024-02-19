@@ -1,0 +1,12 @@
+//const HOST_PORT ='http://localhost:5000'
+const HOST_PORT= 'http://200.12.136.75:5000'
+const HOST_PORTB= 'http://200.12.136.74:4000'
+//const HOST_PORT= 'http://172.22.160.97:5000'
+//const HOST_PORTB= 'http://172.22.160.70:4000'
+export const URI_ALU = `${HOST_PORT}/alutivos`
+export const URI_CUR = `${HOST_PORT}/cursadas`
+export const URI_EGR = `${HOST_PORT}/dbegresados`
+export const URI_ING = `${HOST_PORT}/dbingreso`
+export const URI_INS = `${HOST_PORT}/dbinscriptos`
+export const URI_PER = `${HOST_PORTB}/biometrico`
+export const URI_REN = `${HOST_PORT}/rendimiento`
