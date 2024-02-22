@@ -242,29 +242,39 @@ const InfoUnoMuestraD = ({ infoalu }) => {
 
 
   const cambiardatos=()=>{
-    setMostrar(!mostrar)
+    setMostrar(true)
+  }
+
+  const cambiardatosP=()=>{
+    setMostrar(false)
   }
   return (
     <Container>
       <Grid container>
         
         <Grid item xs={12} md={12} lg={12} sx={{ml:2,mt:1}}>
-          <Button variant='contained'onClick={cambiardatos}>Intercambiar Muestra de Datos</Button>
-          {mostrar?<Typography variant="h5">Coef de Tiempo - Propuesta</Typography>:  <Typography variant="h5">Porcentaje de Avance - Propuesta</Typography>}
+          <Button variant='contained'onClick={cambiardatos} sx={{marginRight:'50px'}}>Coeficiente de Tiempo</Button> 
+          <Button variant='contained'onClick={cambiardatosP}>Porcentaje Avance</Button>
+          <hr />
+          {mostrar?<Typography variant="h5">Coeficiente de Tiempo - Propuesta</Typography>:  <Typography variant="h5">Porcentaje de Avance - Propuesta</Typography>}
+          <hr />
           </Grid>
         {mostrar?<Box>
         
         <Grid item xs={12} md={12} lg={12} sx={{ p: 2 }}>
           <TableContainer component={Paper}>
+               <Typography variant="h5">Valores Estadisticos</Typography>
             <Table>
+             
               <TableHead>
+                
                 <TableRow>
-                  <TableCell>Muestras(Alumnos)</TableCell>
+                  <TableCell>Muestra</TableCell>
                   <TableCell>Media</TableCell>
                   <TableCell>Maximo</TableCell>
                   <TableCell>Minimo</TableCell>
-                  <TableCell>Desv.Estandard</TableCell>
-                  <TableCell>Coeficiente Variacion</TableCell>
+                  <TableCell>Desv.Estandar</TableCell>
+                  <TableCell>Coef.Variación</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -282,6 +292,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
         </Grid>
         <Grid item xs={12} md={12} lg={12} sx={{ p: 2 }}>
           <TableContainer component={Paper}>
+          <Typography variant="h5">Distribución de la Muestra</Typography>
             <Table>
               <TableHead>
                 <TableRow>
@@ -316,15 +327,16 @@ const InfoUnoMuestraD = ({ infoalu }) => {
       
         <Grid item xs={12} md={12} lg={12} sx={{ p: 2 }}>
           <TableContainer component={Paper}>
+          <Typography variant="h5">Valores Estadisticos</Typography>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Muestras(Alumnos)</TableCell>
+                  <TableCell>Muestra</TableCell>
                   <TableCell>Media</TableCell>
                   <TableCell>Maximo</TableCell>
                   <TableCell>Minimo</TableCell>
-                  <TableCell>Desv.Estandard</TableCell>
-                  <TableCell>Coeficiente Variacion</TableCell>
+                  <TableCell>Desv.Estandar</TableCell>
+                  <TableCell>Coef.Variación</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -342,6 +354,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
         </Grid>
         <Grid item xs={12} md={12} lg={12} sx={{ p: 2 }}>
           <TableContainer component={Paper}>
+          <Typography variant="h5">Distribución de la Muestra</Typography>
             <Table>
               <TableHead>
                 <TableRow>

@@ -133,3 +133,20 @@ export const traerComisionesPerLect = async (anio) => {
         
     }
 }
+
+
+///traer inscriptos por actividad sede
+
+export const traerInscriptosactividadSede = async (anio,sede) => {
+    
+    try {
+        const rows = await axios.get(`${uri}/cantiInscActividadComi/${anio}/${sede}`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }
+}
+

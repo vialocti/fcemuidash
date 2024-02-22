@@ -254,17 +254,24 @@ const NavigationBar = () => {
           >
             <MenuItem
               component={NavLink}
+              to={"/inscripcionesComi"}
+              onClick={handleOnClose}
+            >Inscripciones Sede </MenuItem>
+
+            <MenuItem
+              component={NavLink}
               to={"/infocursadasanio"}
               onClick={handleOnClose}
             >
               Comisiones Año
             </MenuItem>
+
             <MenuItem
               component={NavLink}
               to={"/comisionescursadaanio"}
               onClick={handleOnClose}
             >
-              Comisiones por Actividad
+              Resultado por Actividad
             </MenuItem>
             <MenuItem component={NavLink} to={"/"} onClick={handleOnClose}>
               Comparativa Comisiones

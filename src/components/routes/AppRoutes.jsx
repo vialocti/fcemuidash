@@ -17,6 +17,7 @@ import EgresadosAnioListado from "../../pages/egresados/EgresadosAnioListado";
 import AlumnosInfoUno from "../../pages/rendimiento/AlumnosInfoUno";
 import ComisionesCursadasAnio from "../../pages/cursadas/ComisionesCursadasAnio";
 import InfoCursadasAnio from "../../pages/cursadas/InfoCursadasAnio";
+import ComisionesInscripcionesActividad from "../../pages/cursadas/ComisionesInscripcionesActividad";
 //cursadas
 
 //rendimiento
@@ -77,6 +78,12 @@ const AppRoutes = () => {
           exact
           path="/infocursadasanio"
           element={<InfoCursadasAnio />}
+        />
+
+        <Route
+          exact
+          path="/inscripcionesComi"
+          element={<ComisionesInscripcionesActividad />}
         />
 
         <Route exact path="/aluinfouno" element={<AlumnosInfoUno />} />

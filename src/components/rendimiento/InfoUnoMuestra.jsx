@@ -38,7 +38,7 @@ const InfoUnoMuestra = ({ infoalu }) => {
         rango = Math.pow(Math.abs(porcentaje[i] - media), 2);
         variacumula = variacumula + rango;
       }
-      console.log(variacumula);
+      //console.log(variacumula);
       return Math.sqrt(variacumula / porcentaje.length);
     };
 
@@ -47,10 +47,10 @@ const InfoUnoMuestra = ({ infoalu }) => {
         (valori, acumulador) => (acumulador += valori)
       );
       let media = suma / porcentaje.length;
-      console.log(media);
-      console.log(Math.min(...porcentaje));
-      console.log(Math.max(...porcentaje));
-      console.log(calculoVariancia(media));
+      //console.log(media);
+      //console.log(Math.min(...porcentaje));
+      //console.log(Math.max(...porcentaje));
+      //console.log(calculoVariancia(media));
     }
   }, [porcentaje]);
 

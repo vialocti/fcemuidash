@@ -51,9 +51,46 @@ const InfoCursadasAnio = () => {
 
         cargar()
     },[anio])
-   
-    const mostrarComisiones =(ubi,pgen)=>{
 
+    //traer pgen y ubi
+    const traerubicacion=sede=>{
+      
+     if(sede==='MZA'){
+        return 1
+      }else if(sede==='SRF'){
+        return 2
+      }else if(sede==='GALV'){
+        return 3
+      }else if(sede==='ESTE'){
+        return 4
+      }
+    }
+
+
+    const traerPgenerico=nombre=>{
+        
+        if(nombre==='Anual'){
+            return 1
+        }else if(nombre==='1er Cuatrimestre'){
+            return 2
+        }else if(nombre==='2do Cuatrimestre'){
+            return 3
+        }else if(nombre==='1er Bimestre'){
+            return 10
+        }else if(nombre==='2do Bimestre'){
+            return 11
+        }else if(nombre==='3er Bimestre'){
+            return 12
+        }else if(nombre==='4to Bimestre'){
+            return 13
+        }
+    
+    }
+   
+    const mostrarComisiones =(sede,nombre)=>{
+        
+        let ubi=traerubicacion(sede)
+        let pgen = traerPgenerico(nombre)
         const comisionesFiltro = comisionesAnio.filter((comision)=>comision.ubicacion===ubi && comision.periodo_generico===pgen) 
         setComisionesAnioSel(comisionesFiltro)
     }
@@ -61,7 +98,7 @@ const InfoCursadasAnio = () => {
     
     //if(loading) return <p>Cargando datos .....</p>
     //if(error) return <p>Error de Carga</p>
-    //console.log(sedeComisionesPL)
+    //console.log(comisionesAnio)
 
     return (
     <Container>
@@ -94,7 +131,7 @@ const InfoCursadasAnio = () => {
                               <TableCell>{item.sede}</TableCell>
                               <TableCell>{item.nombre}</TableCell>
                               <TableCell>{item.count}</TableCell>
-                              <TableCell><Button onClick={()=>mostrarComisiones(item.ubicacion,item.periodo_generico)}>M</Button></TableCell>
+                              <TableCell><Button onClick={()=>mostrarComisiones(item.sede,item.nombre)}>M</Button></TableCell>
                         </TableRow>
                         )):null}
                         </TableBody>

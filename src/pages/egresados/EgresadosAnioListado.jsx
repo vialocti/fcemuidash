@@ -88,16 +88,16 @@ const EgresadosAnioListado = () => {
             <Grid>
             
                     <Grid item xs={12} md={12}>
-                    <Typography variant='h5' textAlign={'center'} color={'white'} backgroundColor={'#444444'} 
-                    sx={{m:2}}
+                     <Typography variant='h5' textAlign={'center'} color={'white'} backgroundColor={'#444444'} 
+                        sx={{m:2}}
                     >Listado de Egresados Carrera - Año</Typography>
                     </Grid>
             
-                    <Box sx={{ display:'flex',border:1, borderRadius:2, backgroundColor:'beige',width:'100%',mt:1,mb:2, p:2 ,flexWrap:'wrap'}}>  
+                    <Box sx={{ display:'flex',border:1, borderRadius:2, backgroundColor:'beige',width:'100%',mt:1,mb:2, p:2 }}>  
 
-                    <Grid item xs={12} md={1}>
+                    <Grid item xs={12} md={1} sx={{marginRight:'10px'}}>
                  
-                        <InputLabel id="anio">Año Inicio </InputLabel>
+                        <InputLabel id="anio">Año </InputLabel>
                   
                         <TextField
                             variant='standard' 
@@ -111,9 +111,9 @@ const EgresadosAnioListado = () => {
                   
                     </Grid>
                   
-                    <Grid xs={12} md={1}></Grid>
+                    
 
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={2} sx={{marginRight:'20px'}}>
                             <InputLabel id="carrera">Carrera</InputLabel>
                             <Select
                             variant='standard'
@@ -132,7 +132,7 @@ const EgresadosAnioListado = () => {
                             </Select>
                     </Grid>
 
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={2} sx={{marginRight:'20px'}}>
                         <InputLabel id='lapso'>Periodo</InputLabel>
                         <Select 
                             variant='standard'
@@ -145,9 +145,8 @@ const EgresadosAnioListado = () => {
                                 
                             </Select>
                         </Grid>
-                    <Grid item xs={12} md={2}></Grid>
-
-                    <Grid item xs={12} md={2}>
+                    
+                    <Grid item xs={12} md={2} sx={{marginLeft:'50px'}}>
                           {listado?  
                         <Button variant='outlined'>
                         

@@ -10,34 +10,30 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { traerMateriasComiAnio } from "../../services/servicesCursadas";
-import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
+import { traerInscriptosactividadSede } from "../../services/servicesCursadas";
+//import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
+import InfoMuestraInscriptosSede from "../../components/cursadas/infoMuestraInscriptosSede";
 
-const ComisionesCursadasAnio = () => {
-  const [anioI, setAnioI] = useState(2023);
-  const [materias, setMaterias] = useState(null);
+const ComisionesInscripcionesActividad = () => {
+  const [anioI, setAnioI] = useState(2010);
+  const [sede, setSede] = useState(1);
   //const [comisiones, setComisiones] = useState([]);
-  const [materia, setMateria] = useState("");
+  const [materias, setMaterias] = useState("");
 
   useEffect(() => {
-    const getMatComisiones = async () => {
-      const resu = await traerMateriasComiAnio(anioI);
-      //console.log(resu);
-      setMaterias(resu);
-    };
-
-    getMatComisiones();
-  }, [anioI]);
-
+  
+  }, []);
+/*
   useEffect(() => {
     const getMatComisiones = async () => {
-      const resu = await traerMateriasComiAnio(2023);
+      const resu = await traerInscriptosactividadSede(anioI, sede);
+      console.log(resu)
       setMaterias(resu);
     };
 
     getMatComisiones();
   }, []);
-
+*/
   /*
   useEffect(() => {
     const getComisionesMat = async () => {
@@ -57,20 +53,28 @@ const ComisionesCursadasAnio = () => {
   };
 
   const onHandleChangeM = async (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     //const resu = await traerComisionesMateriaAnio(anioI, event.target.value);
     //setComisiones(resu);
-    setMateria(event.target.value);
+    setSede(event.target.value);
   };
 
-  const onHandleInfo = (event) => {};
+  const onHandleInfo = (event) => {
+    const getMatComisiones = async () => {
+      const resu = await traerInscriptosactividadSede(anioI, sede);
+      
+      setMaterias(resu);
+    };
+
+    getMatComisiones();
+  };
 
   return (
     <Container>
       <Grid container>
         <Grid item xs={12} md={12} bgcolor={"darkblue"} color={"white"}>
           <Typography variant="h6" textAlign={"center"}>
-            Resultado Comisiones por Actividad
+            Inscriptos a cursadas por Sede 
           </Typography>
         </Grid>
 
@@ -99,20 +103,18 @@ const ComisionesCursadasAnio = () => {
           </Grid>
 
           <Grid item xs={12} md={7}>
-            <InputLabel id="materias">Actividad</InputLabel>
+            <InputLabel id="sede">Sede</InputLabel>
             <Select
               variant="standard"
-              name="materias"
-              id="materias"
+              name="sede"
+              id="sede"
               onChange={onHandleChangeM}
             >
-              {materias
-                ? materias.map((elemento, index) => (
-                    <MenuItem value={elemento.nombre} key={index}>
-                      {elemento.nombre}
-                    </MenuItem>
-                  ))
-                : null}
+                <MenuItem value={'1'}>Mendoza</MenuItem>
+                <MenuItem value={'2'}>San Rafael</MenuItem>
+                <MenuItem value={'3'}>Gral.Alvear</MenuItem>
+                <MenuItem value={'4'}>Este</MenuItem>
+              
             </Select>
           </Grid>
 
@@ -124,14 +126,14 @@ const ComisionesCursadasAnio = () => {
         </Box>
       </Grid>
 
-      {materia ? (
-        <InfoMuestraComisiones anio={anioI} materia={materia} />
+      {materias ? (
+        <InfoMuestraInscriptosSede sede={sede} materias={materias} />
       ) : null}
     </Container>
   );
 };
 
-export default ComisionesCursadasAnio;
+export default ComisionesInscripcionesActividad;
 
 /*
  <Grid item xs={12} md={5}>

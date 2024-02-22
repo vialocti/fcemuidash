@@ -51,7 +51,7 @@ const AlumnosInfoUno = () => {
   }, []);
 
   useEffect(() => {
-    console.log(infoalumnos);
+    //console.log(infoalumnos);
   }, [infoalumnos]);
 
   const onHandleChange = (event) => {
@@ -101,7 +101,7 @@ const AlumnosInfoUno = () => {
       <Grid container>
         <Grid item xs={12} md={12} bgcolor={"darkblue"} color={"white"}>
           <Typography variant="h6" textAlign={"center"}>
-            Informacion Rendimiento Academico Nivel 1
+            Informacion Rendimiento Academico
           </Typography>
         </Grid>
 
@@ -145,7 +145,7 @@ const AlumnosInfoUno = () => {
             </Select>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <InputLabel id="propuesta">Propuesta Academica</InputLabel>
             <Select
               variant="standard"
