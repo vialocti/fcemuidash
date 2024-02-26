@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Container , Divider, Grid, Paper, Typography, Box, Table, TableHead, TableCell, TableRow, TableBody} from '@mui/material'
+import { Card, CardContent, CardHeader, Container , TableContainer, Grid, Paper,Table, TableHead, TableCell, TableRow, TableBody, Typography} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 //import {useInscripcionesAnio} from '../../hooks/useInscripcionesAnio'
 
@@ -157,54 +157,106 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
 
         
 
-        <Grid item xs={12} md={4} sx={{mt:1,p:2}}>
-            <Card sx={{border:1, p:1, borderRadius:4}}>  
-                 
-              <CardContent>
-              <Box sx={{border:1}}>
-                <Typography variant='h6'>Planes 98 Activos - No Vigentes</Typography>
-              </Box>
-                <Typography> CPN98-Mendoza: {cantiCPNmza} </Typography>
-                <Typography> LA98-Mendoza: {cantiLA98}</Typography>
-                <Typography> LE98-Mendoza: {cantiLE98}</Typography>
-                <Typography> CPN98-San Rafael: {cantiCPNsr} </Typography>
-              </CardContent>
-          </Card>
+     <Grid item xs={12} md={12} sx={{p:2}}>
+     <TableContainer component={Paper}>
+              <Table size="small" aria-label="a dense table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>PLAN-CARRERA</TableCell>
+                    <TableCell>SEDE</TableCell>
+                    <TableCell>TOTAL</TableCell>
+                  </TableRow>
+                </TableHead>
+              
+                <TableBody>
+                 <TableRow>
+                    <TableCell><Typography variant='h6'>Total Planes 19: {cantiCPmza + cantiLA19 +cantiLE19 + cantiCPsr}</Typography> </TableCell>
+                  </TableRow> 
+                <TableRow>
+                    <TableCell>CP19</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiCPmza}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LA19</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiLA19}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LE19</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiLE19}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>CP19</TableCell>
+                    <TableCell>SAN RAFAEL</TableCell>
+                    <TableCell>{cantiCPsr}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                 <TableCell><Typography variant='h6'>Total Planes 98:{cantiCPNmza + cantiCPNsr + cantiLE98 + cantiLA98}</Typography></TableCell> 
+                 </TableRow>
+                  <TableRow>
+                    <TableCell>CPN98</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiCPNmza} </TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LA98</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiLA98}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LE98</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiLE98}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>CPN98</TableCell>
+                    <TableCell>SAN RAFAEL</TableCell>
+                    <TableCell>{cantiCPNsr}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                 <TableCell> <Typography variant='h6'> Total Planes LLO:{cantiLLOmza + cantiLLOeste}</Typography></TableCell> 
+                 </TableRow> 
+                  <TableRow>
+                    <TableCell>LLO</TableCell>
+                    <TableCell>MENDOZA</TableCell>
+                    <TableCell>{cantiLLOmza}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LLO</TableCell>
+                    <TableCell>ESTE</TableCell>
+                    <TableCell>{cantiLLOeste}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                 <TableCell><Typography variant='h6'>Total Planes LNRG:{cantiLNRGeste + cantiLNRGgval}</Typography></TableCell> 
+                 </TableRow>
+                  <TableRow>
+                    <TableCell>LNRG</TableCell>
+                    <TableCell>ESTE</TableCell>
+                    <TableCell>{cantiLNRGeste}</TableCell> 
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>LNRG</TableCell>
+                    <TableCell>GRAL.ALVEAR</TableCell>
+                    <TableCell>{cantiLNRGgval}</TableCell> 
+                  </TableRow>
+              
+                </TableBody>
+              
+              </Table>
+        </TableContainer>
         </Grid>
 
-        <Grid item xs={12} md={4} sx={{mt:1, p:2}}>
-        <Card sx={{border:1, p:1, borderRadius:4}}>  
-                 
-                 <CardContent>
-                 <Box sx={{border:1}}>
-                   <Typography variant='h6'>Planes 19 Activos - Vigentes</Typography>
-                 </Box>
-           <Typography> CP19-Mendoza: {cantiCPmza} </Typography>
-           <Typography> LA19-Mendoza: {cantiLA19}</Typography>
-           <Typography> LE19-Mendoza: {cantiLE19}</Typography>
-           <Typography> CP19-San Rafael: {cantiCPsr} </Typography>
-           <Box sx={{border:1}}>
-                   <Typography variant='h6'>Plan LLO Activo - Vigente</Typography>
-                 </Box>
-           
-           <Typography> LLO-Mendoza: {cantiLLOmza}</Typography>
-           <Typography> LLO-Este: {cantiLLOeste} </Typography>
-           </CardContent>
-           </Card>
-        </Grid>
+
+
+        
 
         <Grid item xs={12} md={4} sx={{mt:1, p:2}}>
-        <Card sx={{border:1, p:1, borderRadius:4}}>  
-                 
-                 <CardContent>
-                 <Box sx={{border:1}}>
-                   <Typography variant='h6'>Planes LNRG Activo - Vigente</Typography>
-                 </Box>
-           <Typography> RGN12-Gral.Alvear: {cantiLNRGgval}</Typography>
-           <Typography> RGN12-Este: {cantiLNRGeste}</Typography>
-        </CardContent>
-        </Card>
+        
         </Grid>
+
+        
 
      
     
@@ -212,8 +264,9 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
      
      
      
+   
     <Grid item xs={12} md={6} sx={{p:2}}>
-      
+     {/*  
      <Box sx={{border:1, borderRadius:2}}>
     <Typography textAlign={'center'}>Detalle Por  Sede, Propuesta y Version plan</Typography>
     </Box>  
@@ -273,7 +326,8 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
           ):null:null}
           </TableBody>
           </Table> 
-      </Grid>
+      */}
+          </Grid>
       
       </Grid>
     </Container>

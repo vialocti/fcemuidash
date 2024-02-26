@@ -22,14 +22,14 @@ const InfoMuestraInscriptosSede = ({ sede, materias }) => {
   const [muestra, setMuestra] = useState(null)
 
   useEffect(()=>{
-    if(sede===1){
+    if(sede==='1'){
       setSedeN(' Mendoza')
-    }else if(sede===2){
+    }else if(sede==='2'){
       setSedeN(' San Rafael')
       
-    }else if(sede===3){
+    }else if(sede==='3'){
       setSedeN(' Gral.Alvear')
-    }else if(sede===4){
+    }else if(sede==='4'){
       setSedeN(' Este')
     }
     setActividad('')
@@ -41,12 +41,12 @@ const InfoMuestraInscriptosSede = ({ sede, materias }) => {
   const onHandleChange = (event) => {
     
     if (event.target.name === "actividad") {
-      setActividad(event.target.value);
+      setActividad(event.target.value );
     }
     
     let mat=[]
-    mat = materias.filter(tb=>tb.nombre.toUpperCase() === actividad.toUpperCase())
-    console.log(actividad)
+    mat = materias.filter(tb=>tb.nombre.toUpperCase() === event.target.value.toUpperCase())
+    //console.log(actividad)
     if(mat.length > 0){
       setMuestra(mat)
       //console.log(muestra)

@@ -21,6 +21,15 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
 
   const [cantiLNRGgval, setCantiLNRGgval]=useState(0)
   //console.log(anio)  
+
+
+  //totales
+  const [cantiCP, setCantiCP]=useState(0) //solo plan 19
+  const [cantiCPN, setCantiCPN]=useState(0) //solo plan 98
+  const [cantiLLO, setCantiLLO] = useState(0)
+  const [cantiLNRG, setCantiLNRG]=useState(0) 
+  
+
   useEffect(() => {
     
     //console.log(cantiAluSedePropuesta)
@@ -55,6 +64,7 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
       
       
       
+
       
       if(mzaCPN.length===1){
           setCantiCPNmza(mzaCPN[0].count)
@@ -69,6 +79,10 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
         setCantiCPNsr(srCPN.map(item =>item.count).reduce((prev,curr) =>prev + Number(curr),0))
       }
       
+      setCantiCPN(cantiCPNmza + cantiCPNsr) //total cpn
+      
+
+
       if(mzaLA98.length===1){
         setCantiLA98(mzaLA98[0].count)
        }else{
@@ -90,13 +104,15 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
        setCantiCPmza(mzaCP.map(item=>item.count).reduce((prev,curr)=>prev + Number(curr), 0))
 
        }
-//cp sr
+      //cp sr
        if(srCP.length===1){
         setCantiCPsr(srCP[0].count)
        }else{
        setCantiCPsr(srCP.map(item=>item.count).reduce((prev,curr)=>prev + Number(curr), 0))
 
        }
+
+       setCantiCP(cantiCPmza + cantiCPsr)//total CP
 
        if(mzaLA19.length===1){
         setCantiLA19(mzaLA19[0].count)
@@ -110,7 +126,10 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
        }else{
        setCantiLE19(mzaLE19.map(item=>item.count).reduce((prev,curr)=>prev + Number(curr), 0))
 
+
        }
+
+
        if(mzaLLO.length===1){
         setCantiLLOmza(mzaLLO[0].count)
        }else{
@@ -124,6 +143,8 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
        setCantiLLOeste(esteLLO.map(item=>item.count).reduce((prev,curr)=>prev + Number(curr), 0))
        }
        
+       setCantiLLO(cantiLLOmza + cantiLLOeste) //total LLO
+
 
        if(esteLNRG.length===1){
         setCantiLNRGeste(esteLNRG[0].count)
@@ -137,10 +158,12 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
         setCantiLNRGgval(galvLNRG.map(item =>item.count).reduce((prev,curr)=>prev + Number(curr), 0))
        }
 
-   
+       setCantiLNRG(cantiLNRGgval + cantiLNRGeste)        
+     /*
       if(galvLNRG.length===1){
       setCantiLNRGgval(galvLNRG[0].count)
       }
+*/
     }
 
     if(cantiAluSedePropuesta){
@@ -158,177 +181,159 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
         
 
      <Grid item xs={12} md={12} sx={{p:2}}>
+
+     <Typography variant='h6'>DISCRIMINADOS POR PLAN</Typography>    
      <TableContainer component={Paper}>
+ 
+
               <Table size="small" aria-label="a dense table">
+               
+                    
+                  
                 <TableHead>
+               
                   <TableRow>
-                    <TableCell>PLAN-CARRERA</TableCell>
-                    <TableCell>SEDE</TableCell>
-                    <TableCell>TOTAL</TableCell>
+                      
+                  <TableCell>PLAN</TableCell>
+                    <TableCell>CP</TableCell>
+                    <TableCell>LA</TableCell>
+                    <TableCell>LE</TableCell>
+                    <TableCell>LLO</TableCell>
+                    <TableCell>LNRG</TableCell>
+                    <TableCell>CPN</TableCell>
                   </TableRow>
                 </TableHead>
               
                 <TableBody>
-                 <TableRow>
-                    <TableCell><Typography variant='h6'>Total Planes 19: {cantiCPmza + cantiLA19 +cantiLE19 + cantiCPsr}</Typography> </TableCell>
-                  </TableRow> 
+                  
                 <TableRow>
-                    <TableCell>CP19</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiCPmza}</TableCell> 
+                    <TableCell>PLAN19</TableCell>
+                    <TableCell>{cantiCP}</TableCell>
+                    <TableCell>{cantiLA19}</TableCell>
+                    <TableCell>{cantiLE19}</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell> 
                   </TableRow>
                   <TableRow>
-                    <TableCell>LA19</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiLA19}</TableCell> 
+                    <TableCell>PLAN98/1</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell>{cantiLA98}</TableCell>
+                    <TableCell>{cantiLE98}</TableCell>
+                    <TableCell>{cantiLLO}</TableCell>
+                    <TableCell>{cantiLNRG}</TableCell>
+                    <TableCell>{cantiCPN}</TableCell> 
                   </TableRow>
+                 
                   <TableRow>
-                    <TableCell>LE19</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiLE19}</TableCell> 
+                  <TableCell>TOTAL</TableCell>
+                    <TableCell><strong>{cantiCP}</strong></TableCell>
+                    <TableCell><strong>{cantiLA98 + cantiLA19}</strong></TableCell>
+                    <TableCell><strong>{cantiLE98+ cantiLE19}</strong></TableCell>
+                    <TableCell><strong>{cantiLLO}</strong></TableCell>
+                    <TableCell><strong>{cantiLNRG}</strong></TableCell>
+                    <TableCell><strong>{cantiCPN}</strong></TableCell> 
+                  
+                    
                   </TableRow>
-                  <TableRow>
-                    <TableCell>CP19</TableCell>
-                    <TableCell>SAN RAFAEL</TableCell>
-                    <TableCell>{cantiCPsr}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                 <TableCell><Typography variant='h6'>Total Planes 98:{cantiCPNmza + cantiCPNsr + cantiLE98 + cantiLA98}</Typography></TableCell> 
-                 </TableRow>
-                  <TableRow>
-                    <TableCell>CPN98</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiCPNmza} </TableCell> 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>LA98</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiLA98}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>LE98</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiLE98}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>CPN98</TableCell>
-                    <TableCell>SAN RAFAEL</TableCell>
-                    <TableCell>{cantiCPNsr}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                 <TableCell> <Typography variant='h6'> Total Planes LLO:{cantiLLOmza + cantiLLOeste}</Typography></TableCell> 
-                 </TableRow> 
-                  <TableRow>
-                    <TableCell>LLO</TableCell>
-                    <TableCell>MENDOZA</TableCell>
-                    <TableCell>{cantiLLOmza}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>LLO</TableCell>
-                    <TableCell>ESTE</TableCell>
-                    <TableCell>{cantiLLOeste}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                 <TableCell><Typography variant='h6'>Total Planes LNRG:{cantiLNRGeste + cantiLNRGgval}</Typography></TableCell> 
-                 </TableRow>
-                  <TableRow>
-                    <TableCell>LNRG</TableCell>
-                    <TableCell>ESTE</TableCell>
-                    <TableCell>{cantiLNRGeste}</TableCell> 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>LNRG</TableCell>
-                    <TableCell>GRAL.ALVEAR</TableCell>
-                    <TableCell>{cantiLNRGgval}</TableCell> 
-                  </TableRow>
-              
+
+                                
                 </TableBody>
               
               </Table>
         </TableContainer>
+
+
+
         </Grid>
-
-
-
-        
-
-        <Grid item xs={12} md={4} sx={{mt:1, p:2}}>
-        
-        </Grid>
-
-        
-
      
-    
-     
-     
-     
-     
+     <br />
+
+    <Grid item xs={12} md={12} sx={{p:2}}>
+  <Typography variant='h6'>DISCRIMINADOS POR SEDE</Typography>
+  
+    <TableContainer component={Paper}>
+
+
+             <Table size="small" aria-label="a dense table">
+               <TableHead>
+                 
+                  
+                 <TableRow>
+                     
+                 <TableCell>SEDE</TableCell>
+                   <TableCell>CP</TableCell>
+                   <TableCell>LA</TableCell>
+                   <TableCell>LE</TableCell>
+                   <TableCell>LLO</TableCell>
+                   <TableCell>LNRG</TableCell>
+                   <TableCell>CPN</TableCell>
+                   <TableCell>TOTAL</TableCell>
+                 </TableRow>
+               </TableHead>
+             
+               <TableBody>
+                 
+               <TableRow>
+                   <TableCell>MENDOZA</TableCell>
+                   <TableCell>{cantiCPmza}</TableCell>
+                   <TableCell>{cantiLA19 + cantiLA98}</TableCell>
+                   <TableCell>{cantiLE19 + cantiLE98}</TableCell>
+                   <TableCell>{cantiLLOmza}</TableCell>
+                   <TableCell></TableCell>
+                   <TableCell>{cantiCPNmza}</TableCell> 
+                   <TableCell><strong>{cantiCPmza + cantiCPNmza + cantiLA19 + cantiLA98 + cantiLE19 + cantiLE98 + cantiLLOmza}</strong></TableCell>
+                 </TableRow>
+                 <TableRow>
+                   <TableCell>SAN RAFAEL</TableCell>
+                   <TableCell>{cantiCPsr}</TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell>{cantiCPNsr}</TableCell> 
+                   <TableCell><strong>{cantiCPsr + cantiCPNsr}</strong></TableCell>
+                 </TableRow>
+                
+                 <TableRow>
+                 <TableCell>GRAL.ALVEAR</TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell>{cantiLNRGgval}</TableCell>
+                   <TableCell></TableCell> 
+                   <TableCell><strong>{cantiLNRGgval}</strong></TableCell>
+                 
+                   
+                 </TableRow>
+
+
+                 <TableRow>
+                 <TableCell>ESTE</TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell></TableCell>
+                   <TableCell>{cantiLLOeste}</TableCell>
+                   <TableCell>{cantiLNRGeste}</TableCell>
+                   <TableCell></TableCell> 
+                   <TableCell><strong>{cantiLLOeste + cantiLNRGeste}</strong></TableCell>
+                 
+                   
+                 </TableRow>
+
+
+                               
+               </TableBody>
+             
+             </Table>
+       </TableContainer>
+
+
+
+       </Grid>
+  
    
-    <Grid item xs={12} md={6} sx={{p:2}}>
-     {/*  
-     <Box sx={{border:1, borderRadius:2}}>
-    <Typography textAlign={'center'}>Detalle Por  Sede, Propuesta y Version plan</Typography>
-    </Box>  
-        <Table size='small'>
-          <TableHead>
-            
-            <TableRow>
-              <TableCell>Sede</TableCell>
-              <TableCell>Propuesta</TableCell>
-              <TableCell>Plan-Vers.</TableCell>
-              <TableCell>Genero</TableCell>
-              <TableCell>Nro.Alumnos</TableCell>
-              
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-          {cantiAluSedePropuesta?cantiAluSedePropuesta.length>0? cantiAluSedePropuesta.map((ele, index)=>
-          <TableRow key={index}>
-            <TableCell>{ele.sede}</TableCell>
-            <TableCell>{ele.codigo}</TableCell>
-            <TableCell>{ele.plan_version}</TableCell>
-            <TableCell>{ele.sexo}</TableCell>
-            <TableCell>{ele.count}</TableCell>
-          </TableRow>
-          ):null:null}
-          </TableBody>
-          </Table> 
-      
-      </Grid>
-      
-      
-      
-      <Grid item xs={12} md={6} sx={{p:2}}>
-      <Box sx={{border:1, borderRadius:2}}>
-        <Typography textAlign={'center'}>Planes-version (A)Activos No Vigentes (V)Activos y Vigentes</Typography>
-      </Box>
-      
-      <Table size='small'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Plan</TableCell>
-              <TableCell>Versión</TableCell>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Estado</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-          {planesact?planesact.length>0? planesact.map((ele, index)=>
-          <TableRow key={index}>
-            <TableCell>{ele.codigo}</TableCell>
-            <TableCell>{ele.plan_version}</TableCell>
-            <TableCell>{ele.nombre}</TableCell>
-            <TableCell>{ele.estado}</TableCell>
-          </TableRow>
-          ):null:null}
-          </TableBody>
-          </Table> 
-      */}
-          </Grid>
-      
       </Grid>
     </Container>
   )
