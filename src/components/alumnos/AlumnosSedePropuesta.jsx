@@ -2,8 +2,12 @@ import { Card, CardContent, CardHeader, Container , TableContainer, Grid, Paper,
 import React, { useEffect, useState } from 'react'
 //import {useInscripcionesAnio} from '../../hooks/useInscripcionesAnio'
 
-const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
+const AlumnosSedePropuesta = ({alumnosSede}) => {
 
+
+
+
+  /*
 
   const [cantiCPNmza, setCantiCPNmza]=useState(0)
   const [cantiLA98, setCantiLA98]=useState(0)
@@ -163,15 +167,17 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
       if(galvLNRG.length===1){
       setCantiLNRGgval(galvLNRG[0].count)
       }
-*/
-    }
 
+    }
+    
     if(cantiAluSedePropuesta){
         cargarcantiplanes()
     }
   }, [cantiAluSedePropuesta])
   
   
+  */
+
   
    return (
     <Container>
@@ -208,9 +214,9 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
                   
                 <TableRow>
                     <TableCell>PLAN19</TableCell>
-                    <TableCell>{cantiCP}</TableCell>
-                    <TableCell>{cantiLA19}</TableCell>
-                    <TableCell>{cantiLE19}</TableCell>
+                    <TableCell>{alumnosSede.cantiCP}</TableCell>
+                    <TableCell>{alumnosSede.cantiLA19}</TableCell>
+                    <TableCell>{alumnosSede.cantiLE19}</TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell> 
@@ -218,21 +224,21 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
                   <TableRow>
                     <TableCell>PLAN98/1</TableCell>
                     <TableCell></TableCell>
-                    <TableCell>{cantiLA98}</TableCell>
-                    <TableCell>{cantiLE98}</TableCell>
-                    <TableCell>{cantiLLO}</TableCell>
-                    <TableCell>{cantiLNRG}</TableCell>
-                    <TableCell>{cantiCPN}</TableCell> 
+                    <TableCell>{alumnosSede.cantiLA98}</TableCell>
+                    <TableCell>{alumnosSede.cantiLE98}</TableCell>
+                    <TableCell>{alumnosSede.cantiLLO}</TableCell>
+                    <TableCell>{alumnosSede.cantiLNRG}</TableCell>
+                    <TableCell>{alumnosSede.cantiCPN}</TableCell> 
                   </TableRow>
                  
                   <TableRow>
                   <TableCell>TOTAL</TableCell>
-                    <TableCell><strong>{cantiCP}</strong></TableCell>
-                    <TableCell><strong>{cantiLA98 + cantiLA19}</strong></TableCell>
-                    <TableCell><strong>{cantiLE98+ cantiLE19}</strong></TableCell>
-                    <TableCell><strong>{cantiLLO}</strong></TableCell>
-                    <TableCell><strong>{cantiLNRG}</strong></TableCell>
-                    <TableCell><strong>{cantiCPN}</strong></TableCell> 
+                    <TableCell><strong>{alumnosSede.cantiCP}</strong></TableCell>
+                    <TableCell><strong>{alumnosSede.cantiLA98 + alumnosSede.cantiLA19}</strong></TableCell>
+                    <TableCell><strong>{alumnosSede.cantiLE98 + alumnosSede.cantiLE19}</strong></TableCell>
+                    <TableCell><strong>{alumnosSede.cantiLLO}</strong></TableCell>
+                    <TableCell><strong>{alumnosSede.cantiLNRG}</strong></TableCell>
+                    <TableCell><strong>{alumnosSede.cantiCPN}</strong></TableCell> 
                   
                     
                   </TableRow>
@@ -276,23 +282,23 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
                  
                <TableRow>
                    <TableCell>MENDOZA</TableCell>
-                   <TableCell>{cantiCPmza}</TableCell>
-                   <TableCell>{cantiLA19 + cantiLA98}</TableCell>
-                   <TableCell>{cantiLE19 + cantiLE98}</TableCell>
-                   <TableCell>{cantiLLOmza}</TableCell>
+                   <TableCell>{alumnosSede.cantiCPmza}</TableCell>
+                   <TableCell>{alumnosSede.cantiLA19 + alumnosSede.cantiLA98}</TableCell>
+                   <TableCell>{alumnosSede.cantiLE19 + alumnosSede.cantiLE98}</TableCell>
+                   <TableCell>{alumnosSede.cantiLLOmza}</TableCell>
                    <TableCell></TableCell>
-                   <TableCell>{cantiCPNmza}</TableCell> 
-                   <TableCell><strong>{cantiCPmza + cantiCPNmza + cantiLA19 + cantiLA98 + cantiLE19 + cantiLE98 + cantiLLOmza}</strong></TableCell>
+                   <TableCell>{alumnosSede.cantiCPNmza}</TableCell> 
+                   <TableCell><strong>{alumnosSede.cantiCPmza + alumnosSede.cantiCPNmza + alumnosSede.cantiLA19 + alumnosSede.cantiLA98 + alumnosSede.cantiLE19 + alumnosSede.cantiLE98 + alumnosSede.cantiLLOmza}</strong></TableCell>
                  </TableRow>
                  <TableRow>
                    <TableCell>SAN RAFAEL</TableCell>
-                   <TableCell>{cantiCPsr}</TableCell>
+                   <TableCell>{alumnosSede.cantiCPsr}</TableCell>
                    <TableCell></TableCell>
                    <TableCell></TableCell>
                    <TableCell></TableCell>
                    <TableCell></TableCell>
-                   <TableCell>{cantiCPNsr}</TableCell> 
-                   <TableCell><strong>{cantiCPsr + cantiCPNsr}</strong></TableCell>
+                   <TableCell>{alumnosSede.cantiCPNsr}</TableCell> 
+                   <TableCell><strong>{alumnosSede.cantiCPsr + alumnosSede.cantiCPNsr}</strong></TableCell>
                  </TableRow>
                 
                  <TableRow>
@@ -301,9 +307,9 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
                    <TableCell></TableCell>
                    <TableCell></TableCell>
                    <TableCell></TableCell>
-                   <TableCell>{cantiLNRGgval}</TableCell>
+                   <TableCell>{alumnosSede.cantiLNRGgval}</TableCell>
                    <TableCell></TableCell> 
-                   <TableCell><strong>{cantiLNRGgval}</strong></TableCell>
+                   <TableCell><strong>{alumnosSede.cantiLNRGgval}</strong></TableCell>
                  
                    
                  </TableRow>
@@ -314,10 +320,10 @@ const AlumnosSedePropuesta = ({cantiAluSedePropuesta, planesact}) => {
                    <TableCell></TableCell>
                    <TableCell></TableCell>
                    <TableCell></TableCell>
-                   <TableCell>{cantiLLOeste}</TableCell>
-                   <TableCell>{cantiLNRGeste}</TableCell>
+                   <TableCell>{alumnosSede.cantiLLOeste}</TableCell>
+                   <TableCell>{alumnosSede.cantiLNRGeste}</TableCell>
                    <TableCell></TableCell> 
-                   <TableCell><strong>{cantiLLOeste + cantiLNRGeste}</strong></TableCell>
+                   <TableCell><strong>{alumnosSede.cantiLLOeste + alumnosSede.cantiLNRGeste}</strong></TableCell>
                  
                    
                  </TableRow>
