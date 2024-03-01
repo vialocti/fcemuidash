@@ -13,9 +13,10 @@ import React, { useEffect, useState } from "react";
 import { traerInscriptosactividadSede } from "../../services/servicesCursadas";
 //import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
 import InfoMuestraInscriptosSede from "../../components/cursadas/infoMuestraInscriptosSede";
+import { CSVLink } from "react-csv";
 
 const ComisionesInscripcionesActividad = () => {
-  const [anioI, setAnioI] = useState(2010);
+  const [anioI, setAnioI] = useState(2023);
   const [sede, setSede] = useState(1);
   //const [comisiones, setComisiones] = useState([]);
   const [materias, setMaterias] = useState("");
@@ -68,7 +69,7 @@ const ComisionesInscripcionesActividad = () => {
 
     getMatComisiones();
   };
-
+  console.log(materias)
   return (
     <Container>
       <Grid container>
@@ -102,7 +103,7 @@ const ComisionesInscripcionesActividad = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} md={6}>
             <InputLabel id="sede">Sede</InputLabel>
             <Select
               variant="standard"
@@ -123,10 +124,22 @@ const ComisionesInscripcionesActividad = () => {
               Aceptar
             </Button>
           </Grid>
+          <Grid item xs={12} md={1} sx={{mt:2}}>
+               {materias ?
+                        <Button variant='outlined'>
+                        
+                        <CSVLink data={materias} filename={"ListadoInsc" +  ".csv"}>Exportar</CSVLink>
+                       
+                        </Button> :null 
+                  }              
+
+          </Grid>
+
         </Box>
       </Grid>
 
       {materias ? (
+        
         <InfoMuestraInscriptosSede sede={sede} materias={materias} />
       ) : null}
     </Container>
