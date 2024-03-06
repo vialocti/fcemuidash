@@ -18,6 +18,7 @@ import AlumnosInfoUno from "../../pages/rendimiento/AlumnosInfoUno";
 import ComisionesCursadasAnio from "../../pages/cursadas/ComisionesCursadasAnio";
 import InfoCursadasAnio from "../../pages/cursadas/InfoCursadasAnio";
 import ComisionesInscripcionesActividad from "../../pages/cursadas/ComisionesInscripcionesActividad";
+import ComparativasInscripcionesActividad from "../../pages/cursadas/ComparativaInscripcionesActividad";
 //cursadas
 
 //rendimiento
@@ -72,6 +73,11 @@ const AppRoutes = () => {
           exact
           path="/comisionescursadaanio"
           element={<ComisionesCursadasAnio />}
+        />
+        <Route
+          exact
+          path="/comparativaInsc"
+          element={<ComparativasInscripcionesActividad />}
         />
 
           <Route

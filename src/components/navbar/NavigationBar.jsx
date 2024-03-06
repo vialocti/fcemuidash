@@ -273,8 +273,8 @@ const NavigationBar = () => {
             >
               Resultado por Actividad
             </MenuItem>
-            <MenuItem component={NavLink} to={"/"} onClick={handleOnClose}>
-              Comparativa Comisiones
+            <MenuItem component={NavLink} to={"/comparativaInsc"} onClick={handleOnClose}>
+              Comparativa Inscripciones Actividad
             </MenuItem>
           </Menu>
 

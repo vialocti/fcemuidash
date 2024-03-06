@@ -16,6 +16,7 @@ const uri = URI_CUR
 '/detalleactasCur/:anio/:origen/:periodo'
 '/detalleporcomision/:anio/:ncomision'
 'router.get('/detalleporcomisiones/:anio/:ncomisiones',resultadoActaDetallesporComisiones)
+/comparativas/:anio/:sede'
 */
 
 export const traerPeriodosLectivos = async (anio) => {
@@ -146,6 +147,17 @@ export const traerInscriptosactividadSede = async (anio,sede) => {
 
     } catch (error) {
 
+        console.log(error)
+    }
+}
+
+export const traerComparativaInscripcionesAnio = async(anio,sede)=>{
+    console.log(sede,anio)
+    try {
+        const rows = await axios.get(`${uri}/comparativas/${anio}/${sede}`)
+        console.log(rows.data)
+        return rows.data
+    } catch (error) {
         console.log(error)
     }
 }
