@@ -75,7 +75,7 @@ const ComisionesInscripcionesActividad = () => {
       <Grid container>
         <Grid item xs={12} md={12} bgcolor={"darkblue"} color={"white"}>
           <Typography variant="h6" textAlign={"center"}>
-            Inscriptos a cursadas por Sede 
+            Inscriptos a Cursadas por Sede 
           </Typography>
         </Grid>
 

@@ -25,6 +25,20 @@ export const traerAlumosUbiPro = async () => {
         console.log(error)
     }
 }
+//alumnos sin legajos
+export const traerAlumosProvisoriosUP = async () => {
+    //console.log(`${uri}/inscrTotalIngreso/${anio}`)
+    try {
+        const rows = await axios.get(`${uri}/aluprovisorios`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }
+}
+
 
 
 export const traerCantidadPerAlu = async () => {

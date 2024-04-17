@@ -1,5 +1,5 @@
-const HOST_PORT ='http://localhost:5000'
-//const HOST_PORT= 'http://200.12.136.75:5000'
+//const HOST_PORT ='http://localhost:5000'
+const HOST_PORT= 'http://200.12.136.75:5000'
 const HOST_PORTB= 'http://200.12.136.74:4000'
 //const HOST_PORT= 'http://172.22.160.97:5000'
 //const HOST_PORTB= 'http://172.22.160.70:4000'

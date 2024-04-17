@@ -258,12 +258,8 @@ const NavigationBar = () => {
               onClick={handleOnClose}
             >Inscripciones Sede </MenuItem>
 
-            <MenuItem
-              component={NavLink}
-              to={"/infocursadasanio"}
-              onClick={handleOnClose}
-            >
-              Comisiones Año
+           <MenuItem component={NavLink} to={"/comparativaInsc"} onClick={handleOnClose}>
+              Comparativa Inscripciones Actividad
             </MenuItem>
 
             <MenuItem
@@ -273,9 +269,16 @@ const NavigationBar = () => {
             >
               Resultado por Actividad
             </MenuItem>
-            <MenuItem component={NavLink} to={"/comparativaInsc"} onClick={handleOnClose}>
-              Comparativa Inscripciones Actividad
+                        
+
+            <MenuItem
+                component={NavLink}
+                to={"/infocursadasanio"}
+                onClick={handleOnClose}
+              >
+                Comisiones Año
             </MenuItem>
+
           </Menu>
 
           {/*Rendimientos*/}

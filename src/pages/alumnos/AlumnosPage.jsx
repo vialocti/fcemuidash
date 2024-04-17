@@ -8,7 +8,7 @@ import { Box, Grid, Typography , Step} from '@mui/material'
 const AlumnosPage = () => {
 
 
-  const {loading, error,cantidadA, alumnosUbiSede, planesact} = useAlumnosActivos(2023)
+  const {loading, error,cantidadA, alumnosUbiSede, planesact} = useAlumnosActivos()
   
   const [datosAlu, setDatosalu]=useState(null)
   useEffect(() => {

@@ -14,25 +14,21 @@ import { traerMateriasComiAnio } from "../../services/servicesCursadas";
 import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
 //import { CSVLink } from "react-csv";
 
-//resultado por actividad
-
 const ComisionesCursadasAnio = () => {
   const [anioI, setAnioI] = useState(2023);
   const [materias, setMaterias] = useState(null);
-  const [sede, setSede] = useState(1);
+  //const [comisiones, setComisiones] = useState([]);
   const [materia, setMateria] = useState("");
 
-  
   useEffect(() => {
     const getMatComisiones = async () => {
       const resu = await traerMateriasComiAnio(anioI);
       //console.log(resu);
       setMaterias(resu);
     };
-    if(anioI && sede){
+
     getMatComisiones();
-    }
-  }, [anioI, sede]);
+  }, [anioI]);
 
   useEffect(() => {
     const getMatComisiones = async () => {
@@ -43,13 +39,21 @@ const ComisionesCursadasAnio = () => {
     getMatComisiones();
   }, []);
 
-  
+  /*
+  useEffect(() => {
+    const getComisionesMat = async () => {
+      const resu = await traerComisionesMateriaAnio(anioI, materia);
+      setComisiones(resu);
+    };
+    if (materia) {
+      getComisionesMat();
+    }
+  }, [materia, anioI]);
+*/
+
   const onHandleChange = (event) => {
     if (event.target.name === "anioI") {
       setAnioI(event.target.value);
-    }
-    if (event.target.name === "sede") {
-      setSede(event.target.value);
     }
   };
 
@@ -60,11 +64,7 @@ const ComisionesCursadasAnio = () => {
     setMateria(event.target.value);
   };
 
-  const onHandleInfo = async (event) => {
-    const resu = await traerMateriasComiAnio(anioI);
-      //console.log(resu);
-      setMaterias(resu);
-  };
+  const onHandleInfo = (event) => {};
 
   return (
     <Container>
@@ -98,24 +98,8 @@ const ComisionesCursadasAnio = () => {
               value={anioI}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
-            <InputLabel id="sede">Sede</InputLabel>
-            <Select
-              variant="standard"
-              name="sede"
-              id="sede"
-              value={sede}
-              onChange={onHandleChange}
-            >
-                <MenuItem value={'1'}>Mendoza</MenuItem>
-                <MenuItem value={'2'}>San Rafael</MenuItem>
-                <MenuItem value={'3'}>Gral.Alvear</MenuItem>
-                <MenuItem value={'4'}>Este</MenuItem>
-              
-            </Select>
-          </Grid>
 
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={7}>
             <InputLabel id="materias">Actividad</InputLabel>
             <Select
               variant="standard"
@@ -142,8 +126,8 @@ const ComisionesCursadasAnio = () => {
         </Box>
       </Grid>
 
-      {materia && anioI>2018 ? (
-        <InfoMuestraComisiones anio={anioI} materia={materia} sede={sede}/>
+      {materia ? (
+        <InfoMuestraComisiones anio={anioI} materia={materia} />
       ) : null}
     </Container>
   );

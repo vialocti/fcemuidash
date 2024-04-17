@@ -10,6 +10,9 @@ import Paper from "@mui/material/Paper";
 
 import React, { useEffect, useState } from "react";
 
+
+
+
 const InfoUnoMuestra = ({ infoalu }) => {
   const [porcentaje, setPorcentaje] = useState([]);
 
@@ -20,6 +23,7 @@ const InfoUnoMuestra = ({ infoalu }) => {
     }
     return completo;
   };
+  
 
   useEffect(() => {
     const getTratamiento = () => {
@@ -67,7 +71,7 @@ const InfoUnoMuestra = ({ infoalu }) => {
                   <TableCell>Aprobadas</TableCell>
                   <TableCell>Aplazos</TableCell>
                   <TableCell>Promedio</TableCell>
-                  <TableCell>Carrera%</TableCell>
+                  <TableCell>Carrera</TableCell>
                 </TableRow>
               </TableHead>
 

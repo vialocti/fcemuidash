@@ -34,16 +34,25 @@ const InfoUnoMuestraD = ({ infoalu }) => {
   const [varianzaT, setVarianzaT]=useState(0.0)
   const [desvEstandarT, setDesvEstandarT] = useState(0.0);
  
-
+  const localizedTextsMap = {
+    columnMenuUnsort: "No Orden",
+    columnMenuSortAsc: "Orden Asc",
+    columnMenuSortDesc: "Orden Desc",
+    columnMenuFilter: "Filtro",
+    columnMenuHideColumn: "Ocultar",
+    columnMenuManageColumns: "Admin Columnas"
+    
+  };
 
   //llena dos array con valores de %carrera y 
   const convertir = (infoalu) => {
     let completo = [];
     let completoT = [];
+    console.log(infoalu)
     for (const alumno of infoalu) {
     
-      completo.push(Number(alumno.completado.trim()))
-      completoT.push(Number(alumno.coef_tcarrera.trim()))
+      completo.push(Number(alumno.completado))
+      completoT.push(Number(alumno.coef_tcarrera))
       
     }
     setPorcentaje(completo);
@@ -91,8 +100,9 @@ const InfoUnoMuestraD = ({ infoalu }) => {
           intervalo = "0 a 10";
         
         } else {
-          valores = porcentaje.filter((valor) => valor <= i && valor > i - 9);
+          valores = porcentaje.filter((valor) => valor <= i && valor >= i-9);
           intervalo = String(i - 9) + " a " + String(i);
+          console.log(valores)
         }
         total = valores.length;
         interOb = {
@@ -104,6 +114,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
       }
       
       setIntervalos(ArrayI);
+     // console.log(ArrayI)
     };
 
     /////tiempo luego fucionar
@@ -134,20 +145,21 @@ const InfoUnoMuestraD = ({ infoalu }) => {
 
         }else if(i===12){
           valores = porcentajeT.filter((valor) => valor > i-2);
-          intervalo = ">12";
+          intervalo = ">10";
           
         } else {
           valores = porcentajeT.filter((valor) => valor <= i && valor > i - 2);
-          intervalo = String(i - 1) + " a " + String(i);
+          intervalo = String(i - 2) + " a " + String(i);
         }
         total = valores.length;
         interOb = {
           intervalo,
           total,
         };
-        //console.log(interOb);
+       // console.log(interOb);
         ArrayI.push(interOb);
       }
+      //console.log(ArrayI)
       setIntervalosT(ArrayI);
     };
 
@@ -191,14 +203,14 @@ const InfoUnoMuestraD = ({ infoalu }) => {
     },
     {
       field: "estudiante",
-      headerName: "Tot.",
+      headerName: "Estudiante",
       type: "string",
       width: 250,
       editable: false,
     },
     {
       field: "aprobadas",
-      headerName: "Mat.Ap.",
+      headerName: "Aprob.",
       type: "number",
       width: 100,
       editable: false,
@@ -206,7 +218,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
     {
       field: "reprobadas",
       type: "number",
-      headerName: "Aplaz.",
+      headerName: "Aplaz",
       width: 100,
       editable: false,
     },
@@ -231,6 +243,13 @@ const InfoUnoMuestraD = ({ infoalu }) => {
       width: 100,
       editable: false,
     },
+   /* {
+      field: "por_relativo",
+      type: "number",
+      headerName: "Comp_Fecha",
+      width: 100,
+      editable: false,
+    },*/
     {
       field: "coef_tcarrera",
       type: "number",
@@ -310,7 +329,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
                   <TableRow>
                     <TableCell align="left">{intervalosT[0].total}</TableCell>
                     <TableCell align="left">{intervalosT[1].total}</TableCell>
-                    <TableCell align="left">{intervalos[2].total}</TableCell>
+                    <TableCell align="left">{intervalosT[2].total}</TableCell>
                     <TableCell align="left">{intervalosT[3].total}</TableCell>
                     <TableCell align="left">{intervalosT[4].total}</TableCell>
                     <TableCell align="left">{intervalosT[5].total}</TableCell>
@@ -401,6 +420,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
               rows={infoalu}
               columns={columns}
               getRowId={(row) => row.alumno}
+              localeText={localizedTextsMap}
               initialState={{
                 pagination: {
                   paginationModel: { page: 0, pageSize: 5 },

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { traerComisionesPerLect, traerListadoComisiones } from '../../services/servicesCursadas.js'
 
+
+//comisiones del año lectivo actual REVISAR
 const InfoCursadasAnio = () => {
     
      const [comisionesAnio, setComisionesAnio]=useState(null)
@@ -50,6 +52,7 @@ const InfoCursadasAnio = () => {
         }
 
         cargar()
+        console.log(anio)
     },[anio])
 
     //traer pgen y ubi
@@ -108,7 +111,7 @@ const InfoCursadasAnio = () => {
             <Grid item xs={12} md={12} lg={12}>
             <Typography variant='h5' textAlign={'center'} color={'white'} backgroundColor={'#444444'} 
                     sx={{m:2}}
-                    >Información comisiones de Cursada  Año Lectivo :{anio}</Typography>
+                    >Información Comisiones de Cursada  Año Lectivo :{anio}</Typography>
 
             </Grid>
 

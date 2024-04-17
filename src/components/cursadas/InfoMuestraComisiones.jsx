@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Grid,
   Table,
@@ -15,15 +16,22 @@ import {
   traerDetalleComisiones,
   traerNumerosComisiones,
 } from "../../services/servicesCursadas";
+import { CSVLink } from "react-csv";
 
-const InfoMuestraComisiones = ({ anio, materia }) => {
-  const [comisiones, setComisiones] = useState(null);
-  const [comisionesnro, setComisionesnro] = useState("");
-  const [detalleComisiones, setDetalleComisiones] = useState(null);
-  const [muestraResu, setMuestraResu] = useState(null)
+const InfoMuestraComisiones = ({ anio, materia, sede }) => {
+  const [totalInsc, setTotalInsc] = useState(0);
+  const [totalRegulares, setTotalRegulares] = useState(0);
+  const [detalleComisiones, setDetalleComisiones] = useState(0);
+  const [totalReprobados, setTotalReprobados] = useState(null)
+  const [totalAusentes, setTotalAusentes] = useState(null)
+  const [totalPromocionados, setTotalPromocionados]= useState(0)
+   const [indiceT, setIndiceT]=useState(0)
+   const [indiceR, setIndiceR] = useState(0)
+   const [indiceP, setIndiceP] = useState(0)  
+
+  //console.log(anio, materia)
   
-
-
+/*
 
   const tratarRegulares =(arrayD)=>{
      
@@ -70,7 +78,7 @@ const InfoMuestraComisiones = ({ anio, materia }) => {
 
   }
 
-
+*/
 
   /*
   useEffect(() => {
@@ -121,16 +129,39 @@ const InfoMuestraComisiones = ({ anio, materia }) => {
   useEffect(() => {
   
   const getDetalleComisiones = async () => {
-      setDetalleComisiones(await traerDetalleComisiones(anio, materia));
+      setDetalleComisiones(await traerDetalleComisiones(anio, materia, sede));
     };
 
- if (materia && anio) {
+ if (materia && anio && sede ) {
       getDetalleComisiones();
     }
-  }, [anio, materia]);
+  }, [anio, materia, sede]);
+
+  useEffect(()=>{
+    if(detalleComisiones){
+    let cantiRegular = detalleComisiones.reduce((total,valorActual)=>{return total + parseInt(valorActual.regular)}, 0)
+    let cantiReprobado = detalleComisiones.reduce((total,valorActual)=>{return total + parseInt(valorActual.reprobado)}, 0)
+    let cantiAusente = detalleComisiones.reduce((total,valorActual)=>{return total + parseInt(valorActual.ausente)}, 0)
+    let cantiPromo = detalleComisiones.reduce((total,valorActual)=>{return total + parseInt(valorActual.promocionado)}, 0)
+    let cantiTotal = detalleComisiones.reduce((total,valorActual)=>{return total + parseInt(valorActual.total)}, 0)
+    
+   setTotalInsc(cantiTotal)
+   setTotalRegulares(cantiRegular)
+   setTotalReprobados(cantiReprobado)
+   setTotalAusentes(cantiAusente)
+   setTotalPromocionados(cantiPromo)
+    let indicereg= cantiRegular/cantiTotal 
+    let indicepro=cantiPromo/cantiTotal
+    setIndiceR(indicereg)
+    setIndiceP(indicepro)
+    setIndiceT(indicereg * 0.7 + indicepro * 0.3)
+
+   // console.log(cantiRegular,cantiPromo,cantiTotal, cantiReprobado, cantiAusente, indicereg, indicepro )
+    }
+  },[detalleComisiones])
 
   //formatear detalles
-
+/*
   const formateardetalle = () => {
     let arrayR = null;
     let arrayPunto = [];
@@ -159,7 +190,7 @@ setMuestraResu(arrayPunto)
 console.log(arrayPunto)
   
   };
- 
+ /*
   useEffect(() => {
     
     if(detalleComisiones){
@@ -173,14 +204,55 @@ console.log(arrayPunto)
     formateardetalle();
   }
 */
+console.log(detalleComisiones)
   return (
     <Container>
       <Grid container>
-        <Grid item xs={12} sm={12} md={12}>
+        <Grid item xs={12} sm={10} md={10}>
           <Box component="Paper" sx={{ p: 3 }}>
-            <Typography variant="h4">Materia:{materia}</Typography>
+            <Typography variant="h5">Materia: {materia} </Typography>
+            {indiceT>0?
+            <TableContainer>
+              <Table>
+                <TableHead>
+                    <TableCell>Inscriptos</TableCell>
+                    <TableCell>Regulares</TableCell>
+                    <TableCell>Repobados</TableCell>
+                    <TableCell>Ausentes</TableCell>
+                    <TableCell>Promocionados</TableCell>
+                    <TableCell>Indice Regulares</TableCell>
+                    <TableCell>Indice promocion</TableCell>
+                    <TableCell>Indice Cursada</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                </TableHead>
+                <TableBody>
+                  <TableCell>{totalInsc}</TableCell>
+                    <TableCell>{totalRegulares}</TableCell>
+                    <TableCell>{totalReprobados}</TableCell>
+                    <TableCell>{totalAusentes}</TableCell>
+                    <TableCell>{totalPromocionados}</TableCell>
+                    <TableCell>{indiceR.toFixed(2)}</TableCell>
+                    <TableCell>{indiceP.toFixed(2)}</TableCell>
+                    <TableCell>{indiceT.toFixed(2)}</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            :null}
           </Box>
         </Grid>
+        <Grid item xs={12} md={2} sx={{mt:2}}>
+               {detalleComisiones ?
+                        <Button variant='outlined'>
+                        
+                        <CSVLink data={detalleComisiones} filename={materia +"Resultado" +  ".csv"}>Exportar</CSVLink>
+                       
+                        </Button> :null 
+                  }              
+
+          </Grid>
 
         <Grid item xs={12} sm={12} md={12}>
           <Box component="Paper" sx={{ p: 2 }}>
@@ -188,6 +260,7 @@ console.log(arrayPunto)
               <Table>
                 <TableHead>
                   <TableRow>
+                    <TableCell>Periodo</TableCell>
                     <TableCell>Nombre</TableCell>
                     <TableCell>Promocionados</TableCell>
                     <TableCell>Regulares</TableCell>
@@ -196,20 +269,23 @@ console.log(arrayPunto)
                     <TableCell>Total Insc.</TableCell>
                     <TableCell>Regul.Relacion</TableCell>
                     <TableCell>Promoc.Relacion</TableCell>
+                    <TableCell>Indice</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {muestraResu
-                    ? muestraResu.map((dato, index) => (
+                  {detalleComisiones
+                    ? detalleComisiones.map((dato, index) => (
                         <TableRow key={index}>
-                          <TableCell>{dato.comision_name}</TableCell>
-                          <TableCell>{dato.promocionados}</TableCell>
-                          <TableCell>{dato.aprobados}</TableCell>
-                          <TableCell>{dato.reprobados}</TableCell>
-                          <TableCell>{dato.ausentes}</TableCell>
+                          <TableCell>{dato.periodo}</TableCell>
+                          <TableCell>{dato.nombre}</TableCell>
+                          <TableCell>{dato.promocionado}</TableCell>
+                          <TableCell>{dato.regular}</TableCell>
+                          <TableCell>{dato.reprobado}</TableCell>
+                          <TableCell>{dato.ausente}</TableCell>
                           <TableCell>{dato.total}</TableCell>
-                          <TableCell>{dato.porcentajeR.toFixed(2)}</TableCell>
-                          <TableCell>{dato.porcentajeP.toFixed(2)}</TableCell>
+                          <TableCell>{dato.porccentajeR.toFixed(2)}</TableCell>
+                          <TableCell>{dato.porccentajeP.toFixed(2)}</TableCell>
+                          <TableCell>{(dato.porccentajeR.toFixed(2) * 0.7 + dato.porccentajeP.toFixed(2)*0.3).toFixed(2)}</TableCell>
                         </TableRow>
                       ))
                     : null}

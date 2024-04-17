@@ -49,7 +49,7 @@ export const traerListadoComisiones = async (anio) => {
 
 //Materias NOMBRE
 export const traerMateriasComiAnio = async (anio) => {
-    console.log('uuu')
+   // console.log('uuu')
     try {
         const rows = await axios.get(`${uri}/materiascomision/${anio}`)
         
@@ -90,6 +90,7 @@ export const traerNumerosComisiones = async (anio,nmateria) => {
               comisionesN += elemento.comision + ",";
             }
             comisionesN = comisionesN.substring(0, comisionesN.length - 1);
+            //console.log(comisionesN)
             return comisionesN
       
           }
@@ -105,14 +106,24 @@ export const traerNumerosComisiones = async (anio,nmateria) => {
 
 //detalle comisiones 
 
-export const traerDetalleComisiones = async (anio,materia) => {
-    
-
+export const traerDetalleComisiones = async (anio,materia, sede) => {
+   
+    let codsede=''
+    if(parseInt(sede)===1){
+        codsede='M0'
+    }else if(parseInt(sede)===2){
+        codsede='S0'
+    }else if(parseInt(sede)===3){
+        codsede='GA'
+    }else if(parseInt(sede)===4){
+        codsede='SM'
+    }
+  console.log(codsede,anio,materia)
     try {
         let ncomisiones = await traerNumerosComisiones(anio,materia)
         //console.log(ncomisiones)
-        const rows = await axios.get(`${uri}/detalleporcomisiones/${anio}/${ncomisiones}`)
-        //console.log(rows.data)
+        const rows = await axios.get(`${uri}/detalleporcomisiones/${anio}/${ncomisiones}/${codsede}`)
+        console.log(rows.data)
         return rows.data
 
     } catch (error) {

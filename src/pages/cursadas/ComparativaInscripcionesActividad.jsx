@@ -16,6 +16,8 @@ import { traerComparativaInscripcionesAnio, traerInscriptosactividadSede } from 
 import { CSVLink } from "react-csv";
 import InfoMuestraInscriptosAniosSede from "../../components/cursadas/infoMuestraInscriptosAniosSede";
 
+
+//comparativa de Inscripciones 5 años
 const ComparativaInscripcionesActividad = () => {
   const [anioI, setAnioI] = useState(2023);
   const [sede, setSede] = useState(1);
@@ -25,28 +27,6 @@ const ComparativaInscripcionesActividad = () => {
   useEffect(() => {
   
   }, []);
-/*
-  useEffect(() => {
-    const getMatComisiones = async () => {
-      const resu = await traerInscriptosactividadSede(anioI, sede);
-      console.log(resu)
-      setMaterias(resu);
-    };
-
-    getMatComisiones();
-  }, []);
-*/
-  /*
-  useEffect(() => {
-    const getComisionesMat = async () => {
-      const resu = await traerComisionesMateriaAnio(anioI, materia);
-      setComisiones(resu);
-    };
-    if (materia) {
-      getComisionesMat();
-    }
-  }, [materia, anioI]);
-*/
 
   const onHandleChange = (event) => {
     if (event.target.name === "anioI") {
@@ -143,7 +123,7 @@ const ComparativaInscripcionesActividad = () => {
 
       {materias ? (
         
-        <InfoMuestraInscriptosAniosSede sede={sede} materias={materias} />
+        <InfoMuestraInscriptosAniosSede sede={sede} materias={materias} anio={anioI} />
       ) : null}
     </Container>
   );
@@ -151,23 +131,4 @@ const ComparativaInscripcionesActividad = () => {
 
 export default ComparativaInscripcionesActividad;
 
-/*
- <Grid item xs={12} md={5}>
-            <InputLabel id="comisiones">Comisiones</InputLabel>
-            <Select
-              variant="standard"
-              name="comisiones"
-              id="comisiones"
-              onChange={onHandleChangeCom}
-              value={comisiones}
-            >
-              {comisiones.length > 0
-                ? comisiones.map((elemento, index) => (
-                    <MenuItem value={elemento.comision} key={index}>
-                      {elemento.nmat}-{elemento.nombre}
-                    </MenuItem>
-                  ))
-                : null}
-            </Select>
-          </Grid>
-*/
+
