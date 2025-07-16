@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-   Container,
+  Container,
   Grid,
   InputLabel,
   MenuItem,
@@ -10,10 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { traerMateriasComiAnio ,  traerDetalleComisiones} from "../../services/servicesCursadas";
-import InfoMuestraComisiones  from "../../components/cursadas/InfoMuestraComisiones";
+import { traerDetalleComisiones, traerEvaluacionActividad, traerMateriasComiAnio } from "../../services/servicesCursadas";
+
 import HelpBusquedaResultadoA from "../../components/ayudas/HelpBusquedaResultadoA";
+import InfoMuestraComisiones  from "../../components/cursadas/InfoMuestraComisiones";
 import NotDataFound from "../../components/ayudas/NotDataFound";
+
 //import { CSVLink } from "react-csv";
 
 //resultado por actividad
@@ -33,6 +35,9 @@ import {
   const [materiaA, setMateriaA]=useState("")
   const [habilitado, sethabilitado]=useState(false)
   const [recursado, setRecursado]= useState('N')
+
+  const [datosEvaluacion, setDatosEvaluacion]=useState(null)
+  const [datosEvaluacionA, setDatosEvaluacionA]=useState(null)
 
   const [datosComianio, setDatoscomianio]=useState(null)
   const [datosComianioA, setDatoscomianioA]=useState(null)
@@ -102,9 +107,9 @@ import {
     //console.log(event.target.value);
     //const resu = await traerComisionesMateriaAnio(anioI, event.target.value);
     //setComisiones(resu);
-   sethabilitado(false)
+    sethabilitado(false)
     setMateria(null)
-   setTimeout(()=>{
+    setTimeout(()=>{
     setMateria(event.target.value)
     setMateriaA(event.target.value) 
   },1000)
@@ -116,7 +121,7 @@ import {
 
   const onHandleChangeP=(event)=>{
     //console.log(event.target.value)
-    setPropuesta(event.target.value)
+    setPropuesta(0)
     setDatoscomianio(null)
     setDatoscomianioA(null)
   }
@@ -177,16 +182,21 @@ import {
   const onHandleInfo = async (event) => {
     try {
       // Se ejecutan las llamadas en paralelo para mejorar el rendimiento
-      const [resu, detalleComi, detalleComiA] = await Promise.all([
+      const [resu, detalleComi, detalleComiA, detalleEvaluacion, detalleEvaluacionA] = await Promise.all([
         traerMateriasComiAnio(anioI),
         traerDetalleComisiones(anioI, materia, sede, recursado,propuesta),
         traerDetalleComisiones(anioI-1, materia, sede, recursado, propuesta),
+        traerEvaluacionActividad(sede===1?'M':sede===2?'S':sede===4?'SM':'G',anioI, materia),
+        traerEvaluacionActividad(sede===1?'M':sede===2?'S':sede===4?'SM':'G',anioI-1, materia),
+        
       ]);
-  
+     //console.log(sede)
       // Actualizamos los estados una vez que tenemos todos los datos
       setMaterias(resu);
       setDatoscomianio(detalleComi);
       setDatoscomianioA(detalleComiA);
+      setDatosEvaluacion(detalleEvaluacion);
+      setDatosEvaluacionA(detalleEvaluacionA);
       
     
     } catch (error) {
@@ -262,7 +272,9 @@ import {
               
             </Select>
           </Grid>
+       
           <Grid item xs={12} md={2}>
+                {/*
             <InputLabel id="propuesta">Propuesta</InputLabel>
             <Select
               variant="standard"
@@ -278,7 +290,9 @@ import {
                 <MenuItem value={'8'}>C.Público</MenuItem>
               
             </Select>
+            */}
           </Grid>
+
           <Grid item xs={12} md={4}>
             <InputLabel id="materias">Actividad</InputLabel>
             <Select
@@ -326,11 +340,11 @@ import {
       {materia && anioI>2018 && datosComianio && datosComianioA && habilitado  ? (
         <>
         {datosComianio.length >0 ?
-        <InfoMuestraComisiones resumenM= {resumenMateriaAnio} datosComi={datosComianio} anio={anioI} materia={materia}/>
+        <InfoMuestraComisiones resumenM= {resumenMateriaAnio} datosComi={datosComianio} anio={anioI} materia={materia} docentes={datosEvaluacion}/>
         : <NotDataFound message={'Año :' + anioI} messageone={'Podria ser que la actividad no corresponda a una propuesta o no se haya dictado en dicho año'}/>}
         <hr />
         {datosComianioA.length >0 ?
-        <InfoMuestraComisiones resumenM= {resumenMateriaAnioA} datosComi={datosComianioA} anio={anioI-1} materia={materia}/>
+        <InfoMuestraComisiones resumenM= {resumenMateriaAnioA} datosComi={datosComianioA} anio={anioI-1} materia={materia} docentes={datosEvaluacionA}/>
         :<NotDataFound message={'Año :' + (anioI-1) } messageone={'Podria ser que la actividad no corresponda a una propuesta o no se haya dictado en dicho año'}/>}
         </>)
        : <HelpBusquedaResultadoA />}

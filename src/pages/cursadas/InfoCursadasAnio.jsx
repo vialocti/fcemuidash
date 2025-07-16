@@ -75,10 +75,18 @@ const InfoCursadasAnio = () => {
   
     const comisionesFiltro = comisionesAnio
       ?.filter(item => item.ubicacion === ubi && item.periodo_generico === pgen)
-  
+   // console.log(comisionesFiltro)
     const actividadesUnicas = [...new Set(comisionesFiltro?.map(item => item.mater))]
-      .sort((a, b) => a.localeCompare(b)) // ← Orden alfabético
-  
+     .sort((a, b) => a.localeCompare(b)) // ← Orden alfabético
+   
+     // const actividadesUnicas = [
+     //   ...new Set(comisionesFiltro?.map(item => `${item.mater} (${item.codigo.slice(0, 2)})`))
+     // ].sort((a, b) => a.localeCompare(b));  
+      
+
+   //   const actividadesUnicas =[...new Map(comisionesFiltro.map(item => [item.mater, item])).values()]
+   //   .sort((a, b) => a.mater.localeCompare(b.mater))
+
     setActividades(actividadesUnicas)
     setComision('')
   }
@@ -118,6 +126,7 @@ const InfoCursadasAnio = () => {
   }, [comisiones])
   
   const onHandleMostrar = async () => {
+    console.log(actividad)
     setComisiones(null)
     setDatos(null)
     if(!procesado){
@@ -198,6 +207,7 @@ const InfoCursadasAnio = () => {
                   onChange={async (e) => {
                   
                     const act = e.target.value
+                   
                     setComisionNombre(null)
                     setProcesado(false)
                     setActividad(act)

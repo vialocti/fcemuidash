@@ -77,6 +77,7 @@ const TablaDatosComision = ({ datos, comisionN }) => {
               <TableCell><strong>Documento</strong></TableCell>
               <TableCell><strong>Apellido</strong></TableCell>
               <TableCell><strong>Nombre</strong></TableCell>
+              <TableCell align="center"><strong>Prop</strong></TableCell>
               <TableCell align="center"><strong>Cant.RAN</strong></TableCell>
               <TableCell align="center"><strong>Últ.RAN</strong></TableCell>
               <TableCell align='center'><strong>Promedio</strong></TableCell>
@@ -93,6 +94,7 @@ const TablaDatosComision = ({ datos, comisionN }) => {
                 <TableCell>{alumno.nro_documento}</TableCell>
                 <TableCell>{alumno.apellido}</TableCell>
                 <TableCell>{alumno.nombres}</TableCell>
+                <TableCell align="center">{alumno.propuesta || '—'}</TableCell>
                 <TableCell align="center">{alumno.perdidasreg ?? 0}</TableCell>
                 <TableCell align="center">{alumno.ultimaperdireg ?? '—'}</TableCell> 
                 <TableCell align="center">{alumno.promedioca ?? '—'}</TableCell>

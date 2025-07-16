@@ -258,3 +258,30 @@ export const traerComparativaInscripcionesActividad = async (anio,sede,actividad
         console.log(error)
     }
 }
+
+//traer docenteseval
+
+export const traerEvaluacionActividad = async (sede, anio, actividad) => {
+    try {
+        const rows = await axios.get(`${uri}/evaluacionAct/${sede}/${anio}/${actividad}`)
+        //console.log(rows.data)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }   
+}
+
+
+export const traerEvaluacionDocentes = async (iddocent) => {
+    try {
+        const rows = await axios.get(`${uri}/evaluacionDoc/${iddocent}`)
+        //console.log(rows.data)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }   
+}

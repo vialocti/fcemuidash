@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { traerAprobadasAnio } from '../../services/servicesExamenes'
 import { Box, CircularProgress, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 
-
-
+import { traerAprobadasAnio } from '../../services/servicesExamenes'
 
 const InfoMuestraAprobadasT = ({anio,sede,propuesta}) => {
 
@@ -17,7 +15,7 @@ const [datosA, setdatosA] = useState(null)
       setdatosA(await traerAprobadasAnio(anio,sede,propuesta, tipoO))
     }
 
-    if (anio && sede && propuesta){
+    if (anio && sede && propuesta){ 
       cargarDatos()
     }
   }, [anio, sede,propuesta])

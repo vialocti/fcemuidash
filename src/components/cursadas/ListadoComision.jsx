@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from 'react'
 import {
-  Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+
 import { traerListadoAlumnosComision } from '../../services/servicesCursadas.js'
 
 const ListadoComision = ({ comision, fxNameProp }) => {
@@ -13,6 +19,7 @@ const ListadoComision = ({ comision, fxNameProp }) => {
       if (comision) {
         const data = await traerListadoAlumnosComision(comision)
         setListado(data)
+        
       }
     }
     cargarListado()
@@ -39,7 +46,7 @@ const ListadoComision = ({ comision, fxNameProp }) => {
           {listado?.map((item, index) => (
             <TableRow key={index}>
               <TableCell>{item.nro_orden}</TableCell>
-              <TableCell>{item.legajo}</TableCell>
+               <TableCell>{item.legajo}</TableCell>
               <TableCell>{item.apellido}</TableCell>
               <TableCell>{item.nombres}</TableCell>
               <TableCell>{fxNameProp(item.propuesta)}</TableCell>
