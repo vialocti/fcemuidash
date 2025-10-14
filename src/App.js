@@ -18,6 +18,7 @@ import {
 } from "firebase/auth";
 
 import AppRoutes from "./components/routes/AppRoutes";
+import HelpBot from "./HelpBot";
 import Login from "./pages/common/Login";
 import { signOut } from "firebase/auth";
 
@@ -27,7 +28,7 @@ const App = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-
+  
   const auth = useMemo(() => getAuth(), []);
 
   useEffect(() => {
@@ -37,6 +38,25 @@ const App = () => {
     });
     return () => unsubscribe();
   }, [auth]);
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .message-bubble {
+            animation: pop-in 0.3s forwards;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        @keyframes pop-in { to { transform: scale(1); opacity: 1; } }
+        .dot-flashing { position: relative; width: 10px; height: 10px; border-radius: 5px; background-color: #4b5563; color: #4b5563; animation: dotFlashing 1s infinite linear alternate; animation-delay: .5s; }
+        .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; }
+        .dot-flashing::before { left: -15px; width: 10px; height: 10px; border-radius: 5px; background-color: #4b5563; color: #4b5563; animation: dotFlashing 1s infinite alternate; animation-delay: 0s; }
+        .dot-flashing::after { left: 15px; width: 10px; height: 10px; border-radius: 5px; background-color: #4b5563; color: #4b5563; animation: dotFlashing 1s infinite alternate; animation-delay: 1s; }
+        @keyframes dotFlashing { 0% { background-color: #4b5563; } 50%, 100% { background-color: #d1d5db; } }
+    `;
+    document.head.appendChild(style);
+    return () => { document.head.removeChild(style); };
+}, []);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -89,7 +109,10 @@ const App = () => {
   }
 
   return user ? (
+    <>
     <AppRoutes onLogout={handleLogout} user={user} />
+    <HelpBot />
+    </>
   ) : (
     <Container
       sx={{

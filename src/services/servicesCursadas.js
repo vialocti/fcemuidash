@@ -2,21 +2,7 @@ import { URI_CUR } from '../utils/constantes.js'
 import axios from 'axios'
 
 const uri = URI_CUR
-//const uri = 'http://200.12.136.75:5000/cursadas'
-/*
-'/periodoslectivos/:anio'//periodos lectivos
-'/listcomisionesanio/:anio'//listado comisiones
-'/comisionesanio/:anio'//cantidad de comisiones por sede
-'/comisionesperlect/:anio' //cantidad de comisiones por sede periodo
-'/comisionesaniopatron/:anio/:nmateria', //listado comisiones año materia
-'/materiascomision/:anio' materias comision
-'/cantiInsccomisiones/:anio'
-'/cantiinscriptosComiplan/:anio'
-'/detalleactasCur/:anio/:origen/:periodo'
-'/detalleporcomision/:anio/:ncomision'
-'router.get('/detalleporcomisiones/:anio/:ncomisiones',resultadoActaDetallesporComisiones)
-/comparativas/:anio/:sede'
-*/
+
 
 export const traerPeriodosLectivos = async (anio) => {
     
@@ -284,4 +270,51 @@ export const traerEvaluacionDocentes = async (iddocent) => {
 
         console.log(error)
     }   
+}
+
+//inscripciones a cursadas por sede propuesta plan version
+
+//traer comisiones de cursadas año actual
+
+export const traerComisionesCursadasAnio = async (periodo) => {
+        
+        try {
+            const rows = await axios.get(`${uri}/comisionesperiodo/${periodo}`)
+            //console.log(rows)
+            return rows.data
+    
+        } catch (error) {
+    
+            console.log(error)
+        }       
+}
+
+
+//inscripciones
+export const traerInscripcionesCursadasSedepropuesta = async (anio) => {    
+    try {
+        const rows = await axios.get(`${uri}/traerinscriptostotsede/${anio}`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }
+
+}
+
+
+//alumnos
+export const traerInscritosCursadaSedepropuesta = async (anio) => {   
+    try {
+        const rows = await axios.get(`${uri}/alumnosinscriptos/${anio}`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }   
+
 }

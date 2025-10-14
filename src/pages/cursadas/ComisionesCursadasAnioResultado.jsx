@@ -128,7 +128,7 @@ import {
   
   const calcularActividadCompleta=(detalle, t)=>{
 
-
+    console.log(detalle)
     let cantiRegular = detalle.reduce((total,valorActual)=>{return total + parseInt(valorActual.regular)}, 0)
     let cantiReprobado = detalle.reduce((total,valorActual)=>{return total + parseInt(valorActual.reprobado)}, 0)
     let cantiAusente = detalle.reduce((total,valorActual)=>{return total + parseInt(valorActual.ausente)}, 0)
@@ -197,7 +197,7 @@ import {
       setDatoscomianioA(detalleComiA);
       setDatosEvaluacion(detalleEvaluacion);
       setDatosEvaluacionA(detalleEvaluacionA);
-      
+     
     
     } catch (error) {
       console.error("Error al obtener los datos:", error);

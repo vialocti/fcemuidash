@@ -1,15 +1,11 @@
 import { Box, Container, Grid, Tab, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Typography } from '@mui/material'
 import React, { useState } from 'react'
-//import LineChartMultIndicesTot from '../../utils/graphics/LinesChartMultIndicesTot'
-//import BarChartMultIndicesTot from '../../utils/graphics/BarChartMultIndicesTot'
-//import BarChartMultIndicesTotICL from '../../utils/graphics/BarChartMultIndicesTotICL'
 
-import BarChartMultIndicesPACLP from '../../utils/graphics/BarChartMultIndicesPACLP'
-import BarChartMultIndicesPACLC from '../../utils/graphics/BarChartMultIndicesPACLC'
-import BarChartMultIndicesPACLL from '../../utils/graphics/BarChartMultIndicesPACLLP'
-import LineChartIndice from '../../utils/graphics/indices/LineChartIndice'
-//import LineChartTotales from '../../utils/graphics/indices/LineChartTotales'
-import BarChartTotales from '../../utils/graphics/indices/BarCharTotales'
+import BarChartMultIndicesPACLC from '../../../utils/graphics/BarChartMultIndicesPACLC'
+import BarChartMultIndicesPACLL from '../../../utils/graphics/BarChartMultIndicesPACLLP'
+import BarChartMultIndicesPACLP from '../../../utils/graphics/BarChartMultIndicesPACLP'
+import BarChartTotales from '../../../utils/graphics/indices/BarCharTotales'
+import LineChartIndice from '../../../utils/graphics/indices/LineChartIndice'
 
 const InfoMuestraIndicesTotPeriodo = ({datosI}) => {
      const [tabIndex, setTabIndex] = useState(0);
@@ -45,12 +41,12 @@ const InfoMuestraIndicesTotPeriodo = ({datosI}) => {
                     <TableRow key={index}>
                        <TableCell>{element.anio_academico}</TableCell>
                         <TableCell><Typography variant='h6'>{element.totalInscriptos}</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalRegulares}({(element.totalRegulares/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalDesaprobados}({(element.totalDesaprobados/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalAusentes}({(element.totalAusentes/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalPromocionados}({(element.totalPromocionados/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalaprobadascc}({(element.totalaprobadascc/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
-                        <TableCell><Typography variant='h6'>{element.totalaprobadascl}({(element.totalaprobadascl/element.totalInscriptos).toFixed(2)}%)</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalRegulares}</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalDesaprobados}</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalAusentes}</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalPromocionados}</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalaprobadascc}</Typography></TableCell>
+                        <TableCell><Typography variant='h6'>{element.totalaprobadascl}</Typography></TableCell>
                         <TableCell><Typography variant='h6'>{element.promedioindicecursada}</Typography></TableCell>
                         <TableCell><Typography variant='h6'>{element.promedioindicecorto}</Typography></TableCell>
                         <TableCell><Typography variant='h6'>{element.promedioindicelargo}</Typography></TableCell>

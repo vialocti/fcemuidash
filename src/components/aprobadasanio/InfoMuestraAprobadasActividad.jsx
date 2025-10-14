@@ -1,7 +1,8 @@
+import { Box, CircularProgress, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React, { useState } from 'react'
+
 import { traerAprobadasAnioActividades } from '../../services/servicesExamenes'
 import { useEffect } from 'react'
-import { Box, CircularProgress, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 
 const InfoMuestraAprobadasActividad = ({anio,sede,propuesta}) => {
 
@@ -20,11 +21,11 @@ const InfoMuestraAprobadasActividad = ({anio,sede,propuesta}) => {
     }
   }, [anio, sede,propuesta])
   
-/*
+
   if(datosAc){
-    console.log(datosAc)
+   //console.log(datosAc)
   }
-    */
+    
   return (
     <Container>
     <hr />

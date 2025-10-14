@@ -1,33 +1,37 @@
-import React,{useEffect,useState} from 'react'
-//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
-import { traerIngresantesEntreAnios } from '../../services/servicesIngresantes'
-//import { Wrapper, Button, LabelF, SelectorV } from '../../styled-components/FormStyles'
-
 import { Box, Button, Card, Container, Grid, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import React,{useEffect, useState} from 'react'
+
 import BarChartMultI from '../../utils/graphics/BarChartMultI'
 import LinesChartMultI from '../../utils/graphics/LinesChartMultI'
+import { set } from 'date-fns'
+//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
+import { traerIngresantesEntreAnios } from '../../services/servicesIngresantes'
+
+//import { Wrapper, Button, LabelF, SelectorV } from '../../styled-components/FormStyles'
 
 
 
 
-const IngresantesPageEntreAnios = () => {
 
-  //const [cantidad, setCantidad]= useState(0)
+const IngresantesPageEntreAnios = (anioFinal) => {
+
+  console.log(anioFinal.anioFinal)
   const [ingreAnios, setIngreAnios]=useState(null)
-  const [anioi,setAnioi] = useState(2020)
-  const [aniof,setAniof] = useState(2024)
+  //const [anioi,setAnioi] = useState(anioFinal-5)
+  //const [aniof,setAniof] = useState(anioFinal)
   const [tgrafico, setTgrafico] = useState('1')  
   
   useEffect(()=>{
     
     const getTraerDatos = async ()=>{
-      
-      setIngreAnios( await traerIngresantesEntreAnios(anioi,aniof))
+      //setAniof(anioFinal)
+      //setAnioi(anioFinal-5)
+      setIngreAnios( await traerIngresantesEntreAnios(anioFinal.anioFinal-4,anioFinal.anioFinal))
            
     }
 
     getTraerDatos()
-  },[])
+  },[anioFinal])
   
   
 
@@ -36,6 +40,7 @@ const IngresantesPageEntreAnios = () => {
 
   }
 */
+/*
   const onHandleChange =(event)=>{
     if(event.target.name==='anioi'){
         setAnioi(event.target.value)
@@ -52,15 +57,15 @@ const IngresantesPageEntreAnios = () => {
   
   }
 
-   
+   */
   //console.log(ingreAnios)
   return (
 
-   <Container maxWidth='false' sx={{width:'90%', paddingInline:10}}>
+   <Container maxWidth="xl" sx={{ mt: 3 }}>
     <Grid container>
         
            
-            <Box sx={{ display:'flex',border:1, borderRadius:2, backgroundColor:'beige',width:'100%', p:2 ,flexWrap:'wrap'}}>  
+            <Box sx={{ display:'flex',width:'100%', p:2 ,flexWrap:'wrap'}}>  
            
            
             <Grid item xs={12} md={12} bgcolor={"blue"} color={"white"} sx={{borderRadius:2,width:'97%',p:1,marginBottom:2}}>
@@ -69,7 +74,7 @@ const IngresantesPageEntreAnios = () => {
                 Comparativa Ingresantes Periodo Años Lectivos Sucesivos  </Typography>
             </Grid>
            
-           
+           {/* <Grid item xs={12} md={1}></Grid> 
             <Grid item xs={12} md={1}>
                  
                
@@ -128,7 +133,7 @@ const IngresantesPageEntreAnios = () => {
                     Mostrar
                   </Button>
             </Grid>
-
+*/}
          </Box >  
              {ingreAnios? ingreAnios.length > 0?
               <>     

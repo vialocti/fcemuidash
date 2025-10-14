@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { URI_REN } from '../utils/constantes.js'
+import axios from 'axios'
 
 const uri = URI_REN
 //const uri = 'http://200.12.136.75:5000/rendimiento'
@@ -57,6 +57,69 @@ export const traerIndicesTotPeriodo = async (anioI, anioF, sede)=>{
         console.log(error)
     }
 }
+
+// traer indices por sedesanios
+
+export const traerIndicesTotperiodoSede =async (anioI, anioF) => {
+    try {
+      // 1. Genera el array de años.
+      const anios = [];
+      for (let anio = anioI; anio <= anioF; anio++) {
+        anios.push(anio);
+      } 
+  
+      // 2. Convierte el array en una cadena separada por comas.
+      const aniosString = anios.join(',');
+      const rows = await axios.get(`${uri}/indices?tipo=anio_sede&anios=${aniosString}`)
+      return rows.data
+      // 3. Construye el URL completo.
+ 
+      
+      // Aquí puedes usar la URL para hacer la petición, por ejemplo con fetch.
+      //console.log(url); // Muestra el URL en la consola para verificar que se construyó correctamente.
+      
+      // Ejemplo de cómo usar fetch para llamar al endpoint.
+      // const response = await fetch(url);
+      // const data = await response.json();
+      // return data;
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  export const traerIndicesTotperiodoPropuesta =async (anioI, anioF) => {
+    try {
+      // 1. Genera el array de años.
+      const anios = [];
+      for (let anio = anioI; anio <= anioF; anio++) {
+        anios.push(anio);
+      } 
+  
+      // 2. Convierte el array en una cadena separada por comas.
+      const aniosString = anios.join(',');
+      const rows = await axios.get(`${uri}/indices?tipo=anio_propuesta&anios=${aniosString}`)
+      return rows.data
+      // 3. Construye el URL completo.
+ 
+      
+      // Aquí puedes usar la URL para hacer la petición, por ejemplo con fetch.
+      //console.log(url); // Muestra el URL en la consola para verificar que se construyó correctamente.
+      
+      // Ejemplo de cómo usar fetch para llamar al endpoint.
+      // const response = await fetch(url);
+      // const data = await response.json();
+      // return data;
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
+
+
 
 //traer coef de tcarrera por propuesta
 export const traerCoeficientesPropuestasPlan = async ()=>{

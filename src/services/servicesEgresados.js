@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { URI_EGR } from '../utils/constantes.js'
+import axios from 'axios'
 
 const uri = URI_EGR
 //const uri = 'http://200.12.136.75:5000/dbegresados'
@@ -36,7 +36,7 @@ export const getListadoEgreAnioSedePropuesta = async (anio, lapso, sede, car) =>
 
 }
 
-
+ 
 
 //listado por carrera anio promedios y duracion
 export const getListadoEgreAnioPropuesta = async (anio, car, lapso, ficola, ffcola) => {

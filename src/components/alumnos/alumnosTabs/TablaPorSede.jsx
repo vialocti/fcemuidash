@@ -1,5 +1,6 @@
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
 //const parse = (value) => Number(value) || 0;
 
@@ -72,7 +73,7 @@ const TablaPorSede = ({ alumnosSede }) => (
                       <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLLOeste + alumnosSede.cantiLLO2este}</TableCell>
                       <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLNRGeste}</TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell> 
-                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLLOeste + alumnosSede.cantiLNRGeste}</strong></TableCell>
+                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLLOeste + alumnosSede.cantiLLO2este + alumnosSede.cantiLNRGeste}</strong></TableCell>
                       </TableRow>
                     <TableRow>
                       <TableCell>TOTAL</TableCell>

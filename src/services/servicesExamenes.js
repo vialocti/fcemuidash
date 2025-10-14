@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { URI_EXA } from '../utils/constantes';
+import axios from 'axios';
 
 const api = axios.create({
     baseURL: URI_EXA, // Asegúrate de que `uri` esté configurado como la base de la API
@@ -183,7 +183,7 @@ export const traermesasExamenPeriodo =async (anio, periodo, ubicacion)=>{
 
 //mesas con resultado
 export const traeResultadosMesasPeriodo =async (anio, periodo, ubicacion)=>{
-
+    console.log(anio, periodo, ubicacion)
     if(!anio && !periodo && !ubicacion){
         console.error('Parámetros año o periodo o ubicacion invalidos');
         return { error: 'Parámetros año o periodo o ubicacion invalidos' };
@@ -191,6 +191,7 @@ export const traeResultadosMesasPeriodo =async (anio, periodo, ubicacion)=>{
 
     try {
         const response = await api.get(`/examentuti/${anio}/${periodo}/${ubicacion}`);
+        //console.log(response.data)
         return response.data; // Devuelve los datos de la API
     } catch (error) {
         // Diferenciar el error de red de otros errores

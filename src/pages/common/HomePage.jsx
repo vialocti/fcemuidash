@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { usePageInicial } from "../../hooks/usepageInicial";
 import {
   Box,
   Container,
@@ -13,6 +11,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import React, { useEffect, useState } from "react";
+
+import { usePageInicial } from "../../hooks/usepageInicial";
+
 //import BarChartBasic from '../../utils/graphics/BarChartBasic'
 
 const HomePage = () => {
@@ -56,7 +58,13 @@ const HomePage = () => {
     }
   };
 
-  const buscarCountCur = (arrayEgre, sede) => {
+  const buscarCountCur = (arrayEgre, ubicacion) => {
+   
+    
+    return arrayEgre
+    .filter(item => item.ubicacion === ubicacion)
+    .reduce((sum, item) => sum + Number(item.count), 0);
+  /*   
     //console.log(arrayEgre, sede)
     let seleccion = arrayEgre.find((ele) => ele.ubicacion === parseInt(sede));
     //console.log(seleccion)
@@ -64,7 +72,11 @@ const HomePage = () => {
       return seleccion.tot;
     } else {
       return 0;
+    
+    
     }
+ 
+ */
   };
 
   const buscarCountP = (arrayEgre, sede) => {
@@ -139,7 +151,7 @@ const HomePage = () => {
       }
 
       if (cantidadInscriptosCursada) {
-        
+        //console.log(cantidadInscriptosCursada)
         setCursadas({
           mza: buscarCountCur(cantidadInscriptosCursada, 1),
           sr: buscarCountCur(cantidadInscriptosCursada, 2),

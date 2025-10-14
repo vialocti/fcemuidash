@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { URI_AI } from '../utils/constantes';
+import axios from 'axios';
 
 // Configuración de Axios
 const api = axios.create({
@@ -52,7 +52,25 @@ try {
     }
   };
   
+ export const helpmeDash =async (query)=>{
 
+  try {
+    const response= await api.post('/helpme', {
+      query
+    });
+
+    console.log('✅ Respuesta del análisis:', response.data);
+    return response.data.reply;
+
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('❌ Error en Axios:', error.response?.data || error.message);
+    } else {
+      console.error('❌ Error inesperado:', error);
+    }
+  }
+
+ }
 
 
 export const sendDataForAnalysis = async (dataArray) => {

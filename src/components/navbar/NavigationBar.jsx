@@ -103,100 +103,35 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
       <Toolbar sx={{ minHeight: '50px',justifyContent: 'center' }}>
         <Typography variant="h7" sx={{mr:5}}>FCE-DASH</Typography>
         
-        <Box>
+          <Box>
       
-          <Button color="inherit" component={NavLink} to={"/"} sx={{
-        fontSize: '0.9rem',     // más chico
-        textTransform: 'none',   // evitar mayúsculas automáticas
-        padding: '2px 8px',      // más compacto
-      }}>
+            <Button color="inherit" component={NavLink} to={"/"} sx={{
+              fontSize: '0.9rem',     // más chico
+              textTransform: 'none',   // evitar mayúsculas automáticas
+              padding: '2px 8px',      // más compacto
+            }}>
             Inicio
           </Button>
 
           
           
           {esAdmin && (<>
-          <Button
-            id="btn-inscriptos"
-            color="inherit"
-            onClick={onHandleClick}
-            aria-controls={open ? "mnu-inscriptos" : undefined}
-            ria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-            
-          >
-            Aspirantes
-          </Button>
-          <Menu
-            id="mnu-inscriptos"
-            anchorEl={anchorE1}
-            open={open}
-            MenuListProps={{
-              "aria-labelledby": "btn-inscriptos",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/inscriptos"}
-              onClick={handleOnClose}
-            >
-              Aspirantes Año
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/inscriptosanios"}
-              onClick={handleOnClose}
-            >
-              Comparativa Aspirantes Años
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/compaaspingre"}
-              onClick={handleOnClose}
-            >
-              Comparativa Aspirantes-Ingresantes
-            </MenuItem>
-          </Menu>
+         
 
-          <Button
-            id="btn-ingresantes"
-            color="inherit"
-            onClick={onHandleClickI}
-            aria-controls={open1 ? "mnu-ingresantes" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open1 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-          >
-            Ingresantes
+            <Button
+                id="btn-ingresantes"
+                component={NavLink}
+                to="/ingresantes"
+                color="inherit"
+                sx={{
+                  fontSize: '0.9rem',
+                  textTransform: 'none',
+                  padding: '2px 8px',
+                }}
+              >
+               Ingresantes
           </Button>
-          <Menu
-            id="mnu-ingresantes"
-            anchorEl={anchorE2}
-            open={open1}
-            MenuListProps={{
-              "aria-labelledby": "btn-ingresantes",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/ingresantes"}
-              onClick={handleOnClose}
-            >
-              Ingresantes Año
-            </MenuItem>
+          {/** 
             <MenuItem
               component={NavLink}
               to={"/ingresantesanios"}
@@ -204,9 +139,8 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
             >
               Comparativa Ingresantes Años
             </MenuItem>
-          </Menu>
-
-        
+            */}
+     
           {/**Alumnos */}
           <Button
             id="btn-alumnos"
@@ -247,13 +181,15 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
             >
               Desgranamiento Cohorte
             </MenuItem>
+        
+        {/**
             <MenuItem
                component={NavLink}
                to={"/consuopenai"}
                onClick={handleOnClose}
             >
               Consulta Alumnos Info
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               component={NavLink}
               to={"/aluinfouno"}
@@ -264,8 +200,30 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
 
           
           </Menu>
+
+          
+          <Button
+                id="btn-actividad_academica"
+                component={NavLink}
+                to="/actividadacad"
+                color="inherit"
+                sx={{
+                  fontSize: '0.9rem',
+                  textTransform: 'none',
+                  padding: '2px 8px',
+                }}
+              >
+               Info Ciclo Lectivo
+          </Button>
+
+        
           </>)}
+
+
+
+
  {/*Cursadas*/}
+
           <Button
             id="btn-cursadas"
             color="inherit"

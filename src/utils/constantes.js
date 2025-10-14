@@ -14,3 +14,4 @@ export const URI_REN = `${HOST_PORT}/rendimiento`
 export const URI_EXA = `${HOST_PORT}/examenes`
 export const URI_UTL = `${HOST_PORT}/utiles`
 export const URI_AI= `${HOST_PORT}/datosanalisis`
+export const URI_ALUI= `${HOST_PORT}/aluinfo`

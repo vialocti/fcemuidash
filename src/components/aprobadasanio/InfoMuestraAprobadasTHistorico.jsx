@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
 //import { traerAprobadasAluAnioHist } from '../../services/servicesExamenes'
 import { Box, CircularProgress, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-
-
-
+import React, { useEffect } from 'react'
 
 const InfoMuestraAprobadasTHistorico = ({datosA}) => {
 
@@ -71,7 +68,7 @@ const InfoMuestraAprobadasTHistorico = ({datosA}) => {
                     <TableCell>{ele.ap_siete}</TableCell>
                     <TableCell>{ele.ap_ocho}</TableCell>
                     <TableCell>{ele.ap_nueve}</TableCell>
-                    <TableCell>{(ele.ap_nueve/sumar(ele)).toFixed(2)}</TableCell>
+                    <TableCell>{ele.propuesta===7 ?  (ele.ap_ocho/sumar(ele)).toFixed(2) :(ele.ap_nueve/sumar(ele)).toFixed(2)}</TableCell>
                     <TableCell>{(sumarmas3(ele)/sumar(ele)).toFixed(2)}</TableCell>
                     
               </TableRow>

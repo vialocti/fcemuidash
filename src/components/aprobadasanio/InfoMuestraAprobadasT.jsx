@@ -28,10 +28,11 @@ const [datosA, setdatosA] = useState(null)
   const sumarmas3 = (datosA)=>{
     return datosA[0].cuatro + datosA[0].cinco + datosA[0].seis + datosA[0].siete + datosA[0].ocho + datosA[0].nueve
   }
-  if(datosA){
-   
+  
+ /* if(datosA){
+   console.log(datosA)
   }
-
+*/
   return (
     <Container>
     

@@ -1,32 +1,33 @@
-import React,{useEffect,useState} from 'react'
-//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
-
 import { Box, Button, Container, Grid, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import React,{useEffect, useState} from 'react'
+
 import BarChartMultI from '../../utils/graphics/BarChartMultI'
 import LinesChartMultI from '../../utils/graphics/LinesChartMultI'
 import { traerInscriptosEntreAnios } from '../../services/servicesInscriptos'
 
+//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
 
 
 
-const InscriptosPageEnTableRoweAnios = () => {
+
+
+const InscriptosPageEnTableRoweAnios = (anioFinal) => {
 
   //const [cantidad, setCantidad]= useState(0)
   const [inscripAnios, setInscripAnios]=useState(null)
-  const [anioi,setAnioi] = useState(2020)
-  const [aniof,setAniof] = useState(2024)
+ 
   const [tgrafico, setTgrafico] = useState('1')  
   
   useEffect(()=>{
     
     const getTableRowaerDatos = async ()=>{
       
-      setInscripAnios( await traerInscriptosEntreAnios (anioi,aniof))
+      setInscripAnios( await traerInscriptosEntreAnios (anioFinal.anioFinal-4,anioFinal.anioFinal))
            
     }
 
     getTableRowaerDatos()
-  },[])
+  },[anioFinal])
   
   
 
@@ -34,7 +35,7 @@ const InscriptosPageEnTableRoweAnios = () => {
   const buscarInfo =()=>{
 
   }
-*/
+*
   const onHandleChange =(event)=>{
     if(event.target.name==='anioi'){
         setAnioi(event.target.value)
@@ -51,20 +52,23 @@ const InscriptosPageEnTableRoweAnios = () => {
   
   }
 
-   
+   */
   //console.log(ingreAnios)
   return (
-    <Container maxWidth='false' sx={{width:'90%', paddingInline:10}}>
+    <Container maxWidth="xl" sx={{ mt: 3 }}>
    
     <Grid container>
         
            
-            <Box sx={{ display:'flex',border:1, borderRadius:2, backgroundColor:'beige',width:'100%', p:2 ,flexWrap:'wrap'}}>  
+            <Box sx={{ display:'flex',width:'100%', p:2 ,flexWrap:'wrap'}}>  
               <Grid item xs={12} md={12} bgcolor={"blue"} color={"white"} sx={{borderRadius:2,width:'97%',p:1,marginBottom:2}}>
 
                             <Typography variant='h5' textAlign={'center'} >
                             Comparativa Aspirantes Periodo Años Lectivos Sucesivos  </Typography>
-                          </Grid>
+              </Grid>
+          
+          {/*
+          
             <Grid item xs={12} md={1}>
                  
                   <InputLabel id="anioi">Año Inicio </InputLabel>
@@ -121,7 +125,7 @@ const InscriptosPageEnTableRoweAnios = () => {
                     Mostrar
                   </Button>
             </Grid>
-
+*/}
            </Box>
     
          {inscripAnios ? inscripAnios.length > 0?

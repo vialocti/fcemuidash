@@ -25,7 +25,7 @@ const InfoMuestraComisiones = ({ resumenM, datosComi, materia, anio, docentes })
   const [evaluaciones, setEvaluaciones] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [docenteSeleccionado, setDocenteSeleccionado] = useState(null);
-
+ 
   const calcularPromedioCalificacion = (docentes) => {
     if (!Array.isArray(docentes) || docentes.length === 0) return 0;
     const calificaciones = docentes
@@ -36,6 +36,7 @@ const InfoMuestraComisiones = ({ resumenM, datosComi, materia, anio, docentes })
     return (suma / calificaciones.length).toFixed(2);
   };
 
+ 
   useEffect(() => {
     if (datosComi) {
       setDetalleComisiones(datosComi);
@@ -45,6 +46,7 @@ const InfoMuestraComisiones = ({ resumenM, datosComi, materia, anio, docentes })
   useEffect(() => {
     if (docentes && docentes.length > 0) {
       setEvaluaciones(docentes);
+      console.log(docentes)
       setPromedioEncuesta(calcularPromedioCalificacion(docentes));
     } else {
       setEvaluaciones(null);

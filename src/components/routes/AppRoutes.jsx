@@ -1,11 +1,12 @@
 //import React,{useEffect, useState} from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import ActividadAcademicaPage from "../../pages/actividadAcademica/ActividadAcademicaPage";
 import AlumnosCohorteDesgrana from "../../pages/alumnos/AlumnosCohorteDesgrana";
 import AlumnosInfoUno from "../../pages/rendimiento/AlumnosInfoUno";
 import AlumnosPage from "../../pages/alumnos/AlumnosPage";
 import AprobadasAnioResultado from "../../pages/cursadas/AprobadasAnioResultado";
-import AprobadasAñoIngresantes from "../../pages/reportes/AprobadasAñoIngresantes";
+import AprobadasAñoIngresantes from "../../pages/reportes/AprobadasAñoIngresantes"; //aprobadas primer año nuevo report
 import AprobadasHistoricosprimer from "../../pages/historicosAp/AprobadasHistoricosprimer";
 import ComisionesCursadasAnioResultado from "../../pages/cursadas/ComisionesCursadasAnioResultado";
 import ComisionesInscripcionesActividad from "../../pages/cursadas/ComisionesInscripcionesActividad";
@@ -22,7 +23,8 @@ import EgresadosEntreAniosCarrera from "../../pages/egresados/EgresadosEntreAnio
 import HomePage from "../../pages/common/HomePage";
 import IndicesTotalPeriodo from "../../pages/historicosAp/IndicesTotalPeriodo";
 import InfoCursadasAnio from "../../pages/cursadas/InfoCursadasAnio";
-import IngresantesPage from "../../pages/ingresantes/IngresantesPage";
+import IngresantesAspirantes from "../../pages/ingresantes/IngresantesAspirantes";
+//import IngresantesPage from "../../pages/ingresantes/IngresantesPage";
 import IngresantesPageEntreAnios from "../../pages/ingresantes/IngresantesPageEntreAnios";
 import InscriptosPage from "../../pages/inscriptos/InscriptosPage";
 import InscriptosPageEntreAnios from "../../pages/inscriptos/InscritosPageEntreAnios";
@@ -53,24 +55,26 @@ const AppRoutes = ({onLogout, user}) => {
         <Route exact path="/" element={<HomePage />} />
         
         {esAdmin && <> 
-        <Route exact path="/ingresantes" element={<IngresantesPage />} />
+        <Route exact path="/ingresantes" element={<IngresantesAspirantes />} /> {/** aspirantes ingresantes */}
         <Route
           exact
-          path="/ingresantesanios"
+         // path="/ingresantesanios"
           element={<IngresantesPageEntreAnios />}
         />
 
         <Route exact path="/inscriptos" element={<InscriptosPage />} />
         <Route
           exact
-          path="/inscriptosanios"
+         // path="/inscriptosanios"
           element={<InscriptosPageEntreAnios />}
         />
         <Route
           exact
-          path="/compaaspingre"
+         // path="/compaaspingre"
           element={<CompararaAspiIngresoLapso />}
         />
+
+        <Route exact path="/actividadacad" element={<ActividadAcademicaPage />}/>{/**actividad academica año lectivo */}
 
         <Route
           exact

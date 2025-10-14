@@ -1,19 +1,18 @@
 import { Alert, Box, Button, Checkbox, Container, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import ReporteAprobadasIngresantes from '../../components/reportes/ReporteAprobadasIngresantes';
-import { traerAprobadasAnioReport } from '../../services/servicesUtils'
+
 import HelpBusquedareporAIngreso from '../../components/ayudas/HelpBusquedareporAIngreso';
 import NotDataFound from '../../components/ayudas/NotDataFound';
+import ReporteAprobadas from '../../components/reportes/ReporteAprobadas';
+//import ReporteAprobadasIngresantes from '../../components/reportes/ReporteAprobadasIngresantes';
 import { blue } from '@mui/material/colors';
-
-
-
+import { traerAprobadasAnioReport } from '../../services/servicesUtils'
 
 const AprobadasAñoIngresantes = () => {
  
-    const [anioI, setAnioI] = useState(2023);
+    const [anioI, setAnioI] = useState(2025);
    
-    const [propuesta, setPropuesta] = useState("8");
+    //const [propuesta, setPropuesta] = useState("8");
     
     const [fecha, setFecha] = useState("2024-12-18");
     const [sede, setSede] = useState('0');
@@ -156,7 +155,9 @@ const AprobadasAñoIngresantes = () => {
         }else{}
     }
 
-
+ // if (datosmat){
+  //  console.log(datosmat)
+  //}
 
   return (
     <Container maxWidth='false' sx={{width:'90%',paddingInline:10}}>
@@ -270,7 +271,8 @@ const AprobadasAñoIngresantes = () => {
 
       {datosmat? 
       datosmat.length>0? 
-      <ReporteAprobadasIngresantes datos={datosmat} sede={sede} anio={anioI} fecha={fechaFormat}/>
+ 
+          <ReporteAprobadas data ={datosmat} />
        : <NotDataFound message={'sin datos para el periodo solicitado'} messageone={'verifique mes que desea comparar'} /> 
        : !loading ? <HelpBusquedareporAIngreso/>:
        
@@ -282,4 +284,4 @@ const AprobadasAñoIngresantes = () => {
 }
 
 export default AprobadasAñoIngresantes
-        //
+        // {/**    <ReporteAprobadasIngresantes datos={datosmat} sede={sede} anio={anioI} fecha={fechaFormat}/>*/} 

@@ -1,9 +1,9 @@
 import { Box, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React,{useEffect, useState} from 'react'
-import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresantes'
 
 //import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
 import IngresantesTabs from '../../components/ingresantes/IngresantesTabs'
+import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresantes'
 
 const IngresantesPage = () => {
 
@@ -11,6 +11,7 @@ const IngresantesPage = () => {
   //const [cantidadSede, setCantidadSede]=useState(null)
   const [cantidadTSx, setCantidadTSx]=useState(null)
   const [anio,setAnio] = useState(2025)
+  
 
  // const [anioTitulo, setanioTitulo] = useState(2023)
   

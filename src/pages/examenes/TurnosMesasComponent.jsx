@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-
 import {
   Button,
   Container,
@@ -16,8 +14,10 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import ReporteResultadoExamen from '../../components/reportes/ReporteResultadoExamen';
+import React, { useEffect, useState } from 'react';
 import { traeResultadosMesasPeriodo, traerPeriodosExamen, traerResultadoTurno } from '../../services/servicesExamenes';
+
+import ReporteResultadoExamen from '../../components/reportes/ReporteResultadoExamen';
 
 // Opciones de año (puedes obtenerlas de otra fuente o pasarlas como prop)
 const years = [2019,2020,2021,2022, 2023, 2024,2025,2026,2027,2028,2029,2030,2031];
@@ -46,7 +46,7 @@ const TurnosMesasComponent = () => {
   useEffect(() => {
     const fetchTurnos = async () => {
       try {
-        //const response = await axios.get(http://200.12.136.75:5000/examenes/turnosAnio/${selectedYear});
+       
         const response = await  traerPeriodosExamen(selectedYear) 
         //console.log(response)
         setTurnos(response);
@@ -64,7 +64,7 @@ const TurnosMesasComponent = () => {
   useEffect(() => {
     const fetchResultados = async () => {
       try {
-        //const response = await axios.get(http://200.12.136.75:5000/examenes/resultadoturno/${llamados});
+  
         const response = await traerResultadoTurno(llamados)
         //console.log(response)
         const resultadosMap = {
@@ -97,12 +97,12 @@ const TurnosMesasComponent = () => {
     const fetchMesas = async () => {
    
       try {
-        //const response = await axios.get(
-        //  http://200.12.136.75:5000/examenes/examentuti/${selectedYear}/${selectedTurnoPeriodo}/${selectedUbicacion}
-        //);
-
+       
+        console.log(selectedYear,selectedTurnoPeriodo,selectedUbicacion)
         const response = await traeResultadosMesasPeriodo(selectedYear,selectedTurnoPeriodo,selectedUbicacion)
+        //console.log(response)
         setDatosmesa(response);
+     
         const mesasData = response;
 
         // Construir el string con los llamado_mesa separados por comas

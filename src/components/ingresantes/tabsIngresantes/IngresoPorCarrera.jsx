@@ -1,8 +1,8 @@
+import { Box, Paper, Typography } from '@mui/material';
 // IngresoPorCarrera.jsx
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import BarChartBasic from '../../../utils/graphics/BarChartBasic';
 
+import BarChartBasic from '../../../utils/graphics/BarChartBasic';
 
 const IngresoPorCarrera = ({ cantidadSede }) => {
   const [totales, setTotales] = useState({});

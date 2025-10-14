@@ -1,7 +1,5 @@
-
-import axios from 'axios';
 import { URI_UTL } from '../utils/constantes';
-
+import axios from 'axios';
 
 const api = axios.create({
     baseURL: URI_UTL, // Asegúrate de que `uri` esté configurado como la base de la API

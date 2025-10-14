@@ -5,7 +5,7 @@ const uri = URI_ING
 //const uri = 'http://200.12.136.75:5000/dbingreso'
 
 const tratamientoDatos = (datos) => {
-    console.log(datos)
+   // console.log(datos)
     const anioscomp = []
 
 
@@ -59,6 +59,7 @@ export const traerCantidadIngresoUbicacion = async (anio) => {
 
 
 export const traerIngresantesEntreAnios = async (anioi, aniof) => {
+    console.log(`Traer ingresantes entre años: ${anioi} - ${aniof}`)
 
     try {
 

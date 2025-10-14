@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import "jspdf-autotable";
+
 import {
+  Button,
   Card,
   CardContent,
-  Typography,
   Container,
   Grid,
-  Button,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Typography
 } from "@mui/material";
+import React, { useState } from "react";
+
 import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 
 const ExamenesAnalysis = ({ datosComparativa, periodo }) => {
 
@@ -60,7 +62,7 @@ const ExamenesAnalysis = ({ datosComparativa, periodo }) => {
     doc.setFontSize(18);
     doc.text("Reporte Resultado Examenes Turno", 14,20)
     doc.setFontSize(14);
-    doc.text(periodo==='I'?'Periodo Junio-Agosto':periodo==='M'?' Periodo Noviembre-Diciembre':' Periodo Febrero-Marzo', 14, 30);
+    doc.text(periodo==='I'?'Periodo Junio-Agosto':periodo==='M'?' Periodo Noviembre-Diciembre':periodo==='F'?' Periodo Febrero-Marzo':'Junio-Agosto, Noviembre-Diciembre y Febrero-Marzo', 14, 30);
 
     let currentY = 40;
 
@@ -118,7 +120,7 @@ const ExamenesAnalysis = ({ datosComparativa, periodo }) => {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Resultado Turno de Examenes - {periodo==='I'?'Junio-Agosto':periodo==='M'?'Noviembre-Diciembre':'Febrero-Marzo'}
+        Resultado Turno de Examenes : {periodo==='I'?'Junio-Agosto':periodo==='M'?'Noviembre-Diciembre':periodo==='F'? ' Periodo Febrero-Marzo':'Junio-Agosto, Noviembre-Diciembre y Febrero-Marzo'}
       </Typography>
       <Grid container spacing={3}>
         {statsArray.map((item, index) => (

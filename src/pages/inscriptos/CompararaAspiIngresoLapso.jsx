@@ -1,16 +1,18 @@
-import React,{useEffect,useState} from 'react'
-//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
+import { Box, Button, Container, Grid, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import React,{useEffect, useState} from 'react'
 
-import { Box, Button, Container, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import BarChartMultI from '../../utils/graphics/BarChartMultI'
 import LinesChartMultI from '../../utils/graphics/LinesChartMultI'
-import { traerInscriptosEntreAnios } from '../../services/servicesInscriptos'
 import { traerIngresantesEntreAnios } from '../../services/servicesIngresantes'
+import { traerInscriptosEntreAnios } from '../../services/servicesInscriptos'
+
+//import IngresantesAnioSede from '../../components/ingresantes/IngreseantesAnioSede'
 
 
 
 
-const CompararaAspiIngresoLapso = () => {
+
+const CompararaAspiIngresoLapso = (anioFinal) => {
 
   //const [cantidad, setCantidad]= useState(0)
   const [inscripAnios, setInscripAnios]=useState(null)
@@ -18,8 +20,7 @@ const CompararaAspiIngresoLapso = () => {
   const [aniolectivo, setAniolectivo]=useState(new Date().getFullYear())
   const [compara, setCompara]= useState(null)
 
-  const [anioi,setAnioi] = useState(2020)
-  const [aniof,setAniof] = useState(2024)
+ 
   const [tgrafico, setTgrafico] = useState('1')  
   
   const tratamiento = (aspirantes, ingresantes )=>{
@@ -51,8 +52,8 @@ const CompararaAspiIngresoLapso = () => {
 
   useEffect(()=>{
       const traerdatosIni = async ()=>{
-        setInscripAnios( await traerInscriptosEntreAnios(anioi,aniof))
-        setIngreAnios(await traerIngresantesEntreAnios(anioi,aniof))
+        setInscripAnios( await traerInscriptosEntreAnios(anioFinal.anioFinal-4,anioFinal.anioFinal))
+        setIngreAnios(await traerIngresantesEntreAnios(anioFinal.anioFinal-4,anioFinal.anioFinal))
       }
       traerdatosIni()
   },[])
@@ -78,7 +79,7 @@ const CompararaAspiIngresoLapso = () => {
   const buscarInfo =()=>{
 
   }
-*/
+
   const onHandleChange =(event)=>{
     if(event.target.name==='anioi'){
         setAnioi(event.target.value)
@@ -95,23 +96,24 @@ const CompararaAspiIngresoLapso = () => {
     setIngreAnios(await traerIngresantesEntreAnios(anioi,aniof))
     
   }
-
+*/
    
   //console.log(ingreAnios)
   return (
 
-   <Container maxWidth='false' sx={{width:'90%', paddingInline:10}}>
+    <Container maxWidth="xl" sx={{ mt: 3 }}>
     <Grid container >
         
-              
-            <Box sx={{ display:'flex',border:1, borderRadius:2, backgroundColor:'beige',width:'100%',mt:1,mb:2, p:2 ,flexWrap:'wrap'}}>  
+    
+            <Box sx={{ display:'flex', width:'100%', p:2 ,flexWrap:'wrap'}}>  
 
            <Grid item xs={12} md={12} bgcolor={"blue"} color={"white"} sx={{borderRadius:2,width:'97%',p:1,marginBottom:2}}>
 
               <Typography variant='h5' textAlign={'center'}>
                Comparativa Aspirantes/Ingresantes  </Typography>
             </Grid>
-           
+
+           {/*
             <Grid item xs={12} md={1}>
                  
                   <InputLabel id="anioi">Año Inicio </InputLabel>
@@ -168,8 +170,9 @@ const CompararaAspiIngresoLapso = () => {
                     Mostrar
                   </Button>
             </Grid>
+            */}
           </Box>
-           
+    
     
          {compara ? compara.length > 0?
               <>     
