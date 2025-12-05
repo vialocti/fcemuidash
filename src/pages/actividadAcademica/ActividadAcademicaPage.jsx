@@ -9,6 +9,9 @@ import IndCursadas from '../../components/actividadAcademica/indicestabs/IndCurs
 //import InfoReinscriptosTab from '../../components/actividadAcademica/tabsAcademica/InfoReinscriptosTab';
 import { traerAlumosUbiPro } from '../../services/servicesAlumnos';
 import { traerReinscriptosAnio } from '../../services/servicesAcademica';
+import EvolucionIngresantesTab from '../../components/actividadAcademica/tabsAcademica/EvolucionIngresantesTab';
+
+
 
 // Año inicial inteligente
 const getAnioInicial = () => {
@@ -26,7 +29,7 @@ const traerTotalAlumnos = (data) => {
 
 const ActividadAcademicaPage = () => {
 
-  const [anio, setAnio] = useState(getAnioInicial());
+  const [anio, setAnio] = useState(0);
   const [totalReinscriptos, setTotalReinscriptos] = useState(0)
   const [totalAlumnosActividad, setTotalAlumnosActividad] = useState(0)
 
@@ -36,6 +39,12 @@ const ActividadAcademicaPage = () => {
 
   
   const [cargando, setCargando] = useState(false);
+   
+
+  useEffect(() => {
+    const anioInicial = getAnioInicial();
+    setAnio(anioInicial);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +58,9 @@ const ActividadAcademicaPage = () => {
         const data1= await traerAlumosUbiPro();
         //console.warn("Respuesta de traerAlumosUbiPro:", data1);
         setAlumnosActividad(data1);
+      
+
+
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       } finally {
@@ -56,6 +68,9 @@ const ActividadAcademicaPage = () => {
       }
     };
     fetchData();
+
+    
+    
   }, [anio]);
 
   useEffect(() => {
@@ -120,7 +135,7 @@ const ActividadAcademicaPage = () => {
               sx={{ mb: 1 }}
               onClick={() => setSeleccion('cursadas')}
             >
-              Informacion Insc. Cursadas 
+              Informacion Insc.Cursadas 
             </Button>
 
             <Button
@@ -130,7 +145,7 @@ const ActividadAcademicaPage = () => {
               sx={{ mb: 1 }}
               onClick={() => setSeleccion('indice_cursadas')}
             >
-              Informacion Indice Cursadas 
+              Informacion Ind.Cursadas 
             </Button>
 
             <Button
@@ -153,6 +168,17 @@ const ActividadAcademicaPage = () => {
               Informacion Egresados
             </Button>
 
+              <Button
+              variant="contained"
+              fullWidth
+              color="success"
+              sx={{ mb: 1 }}
+              onClick={() => setSeleccion('ingresantes')}
+            >
+              Informacion Ingresantes
+            </Button>
+
+
             
           </Paper>
         </Grid>
@@ -164,6 +190,7 @@ const ActividadAcademicaPage = () => {
           {seleccion === 'indice_cursadas' && <IndCursadas /> }
           {seleccion === 'examenes' &&  <ExamenesTab  />}
           {seleccion === 'egresados' &&  <EgresadosTab />}
+          {seleccion === 'ingresantes' && <EvolucionIngresantesTab />}
        
         </Grid>
       </Grid>

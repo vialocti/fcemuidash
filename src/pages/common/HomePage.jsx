@@ -1,17 +1,16 @@
 import {
-  Box,
+  
   Container,
   Grid,
   Paper,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePageInicial } from "../../hooks/usepageInicial";
 

@@ -10,7 +10,7 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  Typography,
+  
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -36,11 +36,11 @@ const HelpBot = () => {
   
     // Llamar a tu servicio conectado al asistente
     const reply = await helpmeDash(input);
-    console.log(reply)
+    // console.log(reply.respuesta)
     // Reemplazar el mensaje "Pensando..." por la respuesta real
     setMessages((prev) => {
       const copy = [...prev];
-      copy[copy.length - 1] = { from: "bot", text: reply };
+      copy[copy.length - 1] = { from: "bot", text: reply.respuesta };
       return copy;
     });
   

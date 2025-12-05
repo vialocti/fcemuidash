@@ -29,7 +29,7 @@ function TabPanel(props) {
 
 const EgresadosTab = () => {
     const [egresadosAnio, setEgresadosAnio] = useState([]);
-    const [anio, setAnio] = useState(calcularaniolectivo());
+    const [anio, setAnio] = useState(0);
     
     // --- NUEVO: Estado para controlar la pestaña activa (0 = Carrera, 1 = Sede) ---
     const [activeTab, setActiveTab] = useState(0);
@@ -62,7 +62,11 @@ const EgresadosTab = () => {
     // --- NUEVO: Estado para datos por sede (un solo objeto) ---
     const [datosPorSede, setDatosPorSede] = useState({});
 
-    // --- La lógica de carga de datos no cambia ---
+    // --- 
+    useEffect(() => {
+        const anioActual = calcularaniolectivo();
+        setAnio(anioActual);
+    }, []);    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -177,12 +181,54 @@ const EgresadosTab = () => {
         setActiveTab(newValue);
     };
 
-    const determinarColorDeFondo = (car) => {
-        // ... (lógica de color existente)
-        if (['CP', 'CPN', 'LA', 'LE', 'LLO', 'LNRG'].includes(car || '')) return 'success.light';
-        return 'grey.300';
-    };
+    
 
+
+
+    const determinarColorDeFondo = (car) => {
+    let relacion = 0;
+    car = car || '';
+    //const totalPresentesGeneral = totalaprobados + totaldesaprobados;
+    //if (totalPresentesGeneral === 0) return 'grey.300'; // Evitar división por cero
+
+    //const relacionGeneral = totalaprobados / totalPresentesGeneral;
+
+    if (car === 'CP') relacion = promedioCP / promedioEgresados;
+    if (car === 'CPN') relacion = promedioCPN / promedioEgresados;
+    if (car === 'LA') relacion = promedioLA / promedioEgresados;
+    if (car === 'LE') relacion = promedioLE / promedioEgresados;
+    if (car === 'LLO') relacion = promedioLLO / promedioEgresados;
+    if (car === 'LNRG') relacion = promedioLNRG / promedioEgresados;
+
+    if (isNaN(relacion) || relacion===0) return 'grey.300'; // Color por defecto si hay división por cero
+
+    if (relacion >= 1) return 'success.light';
+    if (relacion < 1) return 'warning.light';
+    return 'error.light';
+  };
+
+  
+  const determinarColorFondoSede=(sede, promedio)=>{
+      let relacion=0
+      sede = sede || '';
+      //console.log(sede, promedio);  
+      
+      
+      if(sede==='MZA') relacion = promedio / promedioEgresados;
+      if(sede==='SRF') relacion = promedio / promedioEgresados;
+      if(sede==='GA') relacion = promedio / promedioEgresados;
+      if(sede==='ESTE') relacion = promedio / promedioEgresados;
+
+      if (isNaN(relacion || relacion===0)) return 'grey.300'; // Color por defecto si hay división por cero
+     // console.log(relacion)
+      if (relacion >= 1) return 'success.light';
+      if (relacion < 1) return 'warning.light';
+      return 'error.light';
+
+
+  }
+
+  
     return (
         <Grid container spacing={2}>
             {/* Título General */}
@@ -278,7 +324,7 @@ const EgresadosTab = () => {
                     {/* Iteramos sobre el nuevo estado 'datosPorSede' para generar las tarjetas dinámicamente */}
                     {Object.keys(datosPorSede).sort().map(sedeName => (
                         <Grid item xs={12} sm={6} md={3} key={sedeName}>
-                            <Paper elevation={3} sx={{ p: 2, textAlign: 'center' }}>
+                            <Paper elevation={3} sx={{ p: 2, textAlign: 'center', backgroundColor: determinarColorFondoSede(sedeName,datosPorSede[sedeName].promedio) }}>
                                 <Typography variant='h6' sx={{ fontWeight: 'bold' }}>{sedeName}</Typography>
                                 <Typography variant='h6'>Egresados: {datosPorSede[sedeName].total}</Typography>
                                 <Typography variant='h6'>Promedio: {datosPorSede[sedeName].promedio}</Typography>

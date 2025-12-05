@@ -1,7 +1,6 @@
 import {
   Box,
   CircularProgress,
-  Container,
   Grid,
   Paper,
   Tab,
@@ -17,6 +16,7 @@ import PromediosPorPeriodo from './PromediosPorPeriodo';
 import PromediosPorSede from './PromediosPorSede';
 import { calcularResumen } from '../../../utils/helpers/calculopromedioindices';
 import { traerDatosindicesCursada } from '../../../services/servicesAcademica';
+import { calcularaniolectivo } from '../../../utils/helpers/calcularanio';
 
 // Componente principal del dashboard
 const IndCursadas = () => {
@@ -27,6 +27,12 @@ const IndCursadas = () => {
   const [resumenGral, setResumenGral]=useState([])
 
   // Simulación de una llamada a API
+  
+  useEffect(() => {
+    const anioActual = calcularaniolectivo();
+    setAnio(anioActual);
+  }, []);
+  
   useEffect(() => {
     // Reemplaza esto con tu llamada real a fetch o axios
     const getDatosIndice=async ()=>{
@@ -53,7 +59,7 @@ const IndCursadas = () => {
       </Box>
     );
   }
-console.log(resumenGral)
+//console.log(resumenGral)
   return (
     <Grid container spacing={2} >
     {/* Primera fila: Título (sin cambios) */}
@@ -110,13 +116,13 @@ console.log(resumenGral)
       </Box>
       
       <TabPanel value={tabValue} index={0}>
-        <PromediosPorCarrera data={data} />
+        <PromediosPorCarrera data={data} indcur={resumenGral.indice_cursada} />
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        <PromediosPorSede data={data} />
+        <PromediosPorSede data={data} indcur={resumenGral.indice_cursada} />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <PromediosPorPeriodo data={data} />
+        <PromediosPorPeriodo data={data} indcur={resumenGral.indice_cursada} />
       </TabPanel>
       </Grid>
     </Grid>

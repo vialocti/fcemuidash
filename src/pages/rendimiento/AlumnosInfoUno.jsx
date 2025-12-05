@@ -207,32 +207,3 @@ const AlumnosInfoUno = () => {
 };
 
 export default AlumnosInfoUno;
-
-/**
- *  
- * 
- *  <Box
-          sx={{
-            display: "flex",
-            border: 1,
-            borderRadius: 2,
-            backgroundColor: "beige",
-            width: "100%",
-            p: 2,
-            flexWrap: "wrap",
-          }}
-        >
- * <Grid item xs={12} md={1} sx={{ mr: 1 }}>
-            <InputLabel id="anioFC">AñoU.Re</InputLabel>
-
-            <TextField
-              variant="standard"
-              type="text"
-              id="anioFC"
-              name="anioFC"
-              onChange={onHandleChange}
-              value={anioFC}
-            />
-          </Grid>
-
- */

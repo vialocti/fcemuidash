@@ -1,8 +1,9 @@
 import { Box, Grid, Paper, Tab, Tabs, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { traerComisionesCursadasAnio, traerInscripcionesCursadasSedepropuesta, traerInscritosCursadaSedepropuesta } from '../../../services/servicesCursadas';
 
 import { calcularaniolectivo } from '../../../utils/helpers/calcularanio';
+
 
 // --- (La función calcularSumaPorMultiplesCriterios no cambia, la dejamos como está) ---
 const calcularSumaPorMultiplesCriterios = (arr, filtros) => {
@@ -44,7 +45,7 @@ const CursadasTab = () => {
   const [inscripciones, setInscripciones] = useState([])
   const [comisiones, setComisiones] = useState([])
   const [alumnosInsc, setAlumnosInsc] = useState([])
-  const [anio, setAnio] = useState(calcularaniolectivo());
+  const [anio, setAnio] = useState(0);
   const [cargando, setCargando] = useState(false);
   const [periodo, setPeriodo] = useState(0);
   const [totInscripciones, setTotInscripciones] = useState(0);
@@ -77,6 +78,12 @@ const CursadasTab = () => {
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
+ 
+  useEffect(() => {
+    const anioActual = calcularaniolectivo();
+    setAnio(anioActual);
+    setPeriodo(0);
+    }, []);
 
   useEffect(() => { 
     const fetchData = async () => {

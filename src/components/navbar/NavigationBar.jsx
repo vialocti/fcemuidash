@@ -7,12 +7,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { KeyboardArrowDown, Logout } from "@mui/icons-material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 import React, { useState } from "react";
 
 //import { getAuth, signOut } from "firebase/auth"; esto hay que habilitar
 import { NavLink } from "react-router-dom";
-import { signOut } from "firebase/auth";
+//import { signOut } from "firebase/auth";
 
 const NavigationBar = ({onLogout, user}) => {
 const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
@@ -116,7 +116,20 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
           
           
           {esAdmin && (<>
-         
+            <Button
+                id="btn-actividad_academica"
+                component={NavLink}
+                to="/info-ciclo-lectivo"
+                color="inherit"
+                sx={{
+                  fontSize: '0.9rem',
+                  textTransform: 'none',
+                  padding: '2px 8px',
+                }}
+              >
+               Ciclo Lectivo
+          </Button>
+
 
             <Button
                 id="btn-ingresantes"
@@ -169,14 +182,14 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
           >
             <MenuItem
               component={NavLink}
-              to={"/alumnos"}
+              to={"/estudiantes-activos"}
               onClick={handleOnClose}
             >
               Estudiantes Activos
             </MenuItem>
             <MenuItem
               component={NavLink}
-              to={"/cohortedesme"}
+              to={"/cohorte-evolucion"}
               onClick={handleOnClose}
             >
               Desgranamiento Cohorte
@@ -192,7 +205,7 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
             </MenuItem> */}
             <MenuItem
               component={NavLink}
-              to={"/aluinfouno"}
+              to={"/alumnos-coeficiente"}
               onClick={handleOnClose}
             >
              Coef. Tiempo Estudiantes 
@@ -202,20 +215,7 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
           </Menu>
 
           
-          <Button
-                id="btn-actividad_academica"
-                component={NavLink}
-                to="/actividadacad"
-                color="inherit"
-                sx={{
-                  fontSize: '0.9rem',
-                  textTransform: 'none',
-                  padding: '2px 8px',
-                }}
-              >
-               Info Ciclo Lectivo
-          </Button>
-
+          
         
           </>)}
 
@@ -265,7 +265,7 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
 
             <MenuItem
               component={NavLink}
-              to={"/comisionescursadaanio"}
+              to={"/comisiones-cursadas-anio"}
               onClick={handleOnClose}
             >
               Resultado por Actividad
@@ -273,10 +273,10 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
             
             <MenuItem
               component={NavLink}
-              to={"/aprobadasanioprimer"}
+              to={"/aprobadas-carrera-1er-anio"}
               onClick={handleOnClose}
             >
-              Aprobadas Año Lectivo(1er)
+              Aprobadas Carrera(1er Año)
             </MenuItem>
             
             
@@ -469,10 +469,10 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
           >
             <MenuItem
               component={NavLink}
-              to={"/aprobadasprimerreport"}
+              to={"/aprobadas-primer-anio-reporte"}
               onClick={handleOnClose}
             >
-              Aprobadas Ingresantes
+              Comparativa Aprobadas Ingresantes
             </MenuItem>
 
             <MenuItem
@@ -514,10 +514,10 @@ const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
           </Menu>
            </>)}
           <Button variant="contained"  color="success" onClick={() => {
-                console.log("Cerrar sesión clickeado");
+               // console.log("Cerrar sesión clickeado");
                 onLogout();
-}}
-sx={{
+          }}
+      sx={{
         fontSize: '0.9rem',     // más chico
         textTransform: 'none',   // evitar mayúsculas automáticas
         padding: '2px 8px',      // más compacto

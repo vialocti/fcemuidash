@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 
 // Función genérica para agrupar
 function agruparPorCampos(data, campos) { 
-  console.log(campos);
-    console.log(data);
+  //console.log(campos);
+  //  console.log(data);
   return data.reduce((acc, item) => {
     const key = campos.map(c => item[c]).join("|");
    

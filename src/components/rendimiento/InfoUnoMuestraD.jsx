@@ -23,7 +23,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
   const [minimo, setMinimo] = useState(0);
   const [maximo, setMaximo] = useState(0);
   const [media, setMedia] = useState(0.0);
-  const [varianza, setVarianza]=useState(0.0)
+ // const [varianza, setVarianza]=useState(0.0)
   const [desvEstandar, setDesvEstandar] = useState(0.0);
   //datos de coef de tcarrera
   const [porcentajeT, setPorcentajeT] = useState([]);
@@ -31,7 +31,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
   const [minimoT, setMinimoT] = useState(0);
   const [maximoT, setMaximoT] = useState(0);
   const [mediaT, setMediaT] = useState(0.0);
-  const [varianzaT, setVarianzaT]=useState(0.0)
+  //const [varianzaT, setVarianzaT]=useState(0.0)
   const [desvEstandarT, setDesvEstandarT] = useState(0.0);
  
   const localizedTextsMap = {
@@ -83,7 +83,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
         rango = Math.pow(porcentaje[i] - media, 2);
         variacumula = variacumula + rango;
       }
-      setVarianza(variacumula);
+      //setVarianza(variacumula);
       setDesvEstandar(Math.sqrt(variacumula / porcentaje.length));
     };
 
@@ -127,7 +127,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
         rango = Math.pow(porcentajeT[i] - media, 2);
         variacumula = variacumula + rango;
       }
-      setVarianzaT(variacumula);
+      //setVarianzaT(variacumula);
       setDesvEstandarT(Math.sqrt(variacumula / porcentajeT.length));
     };
 
@@ -189,7 +189,7 @@ const InfoUnoMuestraD = ({ infoalu }) => {
       calculoVariancia(media);
       calculoIntervalos();
     }
-  }, [porcentaje, porcentajeT]);
+  }, [porcentaje, porcentajeT,media,mediaT]);
 
 
 

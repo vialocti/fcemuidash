@@ -19,11 +19,11 @@ const InfoMuestraAprobadasTHistorico = ({datosA}) => {
   const sumarmas3=(ele)=>{
     return ele.ap_cuatro + ele.ap_cinco + ele.ap_seis + ele.ap_siete +ele.ap_ocho + ele.ap_nueve
   }
-  
+  /*
   if(datosA){
     console.log(datosA)
   }
-
+*/
   return (
     <Container maxWidth={false}>
     

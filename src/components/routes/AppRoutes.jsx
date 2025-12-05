@@ -74,7 +74,7 @@ const AppRoutes = ({onLogout, user}) => {
           element={<CompararaAspiIngresoLapso />}
         />
 
-        <Route exact path="/actividadacad" element={<ActividadAcademicaPage />}/>{/**actividad academica año lectivo */}
+        <Route exact path="/info-ciclo-lectivo" element={<ActividadAcademicaPage />}/>{/**actividad academica año lectivo */}
 
         <Route
           exact
@@ -88,11 +88,11 @@ const AppRoutes = ({onLogout, user}) => {
           element={<EgresadosEntreAniosCarrera />}
         />
 
-        <Route exact path="/alumnos" element={<AlumnosPage />} />
+        <Route exact path="/estudiantes-activos" element={<AlumnosPage />} />
 
         <Route
           exact
-          path="/cohortedesme"
+          path="/cohorte-evolucion"
           element={<AlumnosCohorteDesgrana />}
         />
 
@@ -102,7 +102,7 @@ const AppRoutes = ({onLogout, user}) => {
 
         <Route
           exact
-          path="/comisionescursadaanio"
+          path="/comisiones-cursadas-anio"
           element={<ComisionesCursadasAnioResultado />}
         />
       
@@ -123,14 +123,14 @@ const AppRoutes = ({onLogout, user}) => {
 
           <Route
             exact
-            path="/aprobadasanioprimer"
+            path="/aprobadas-carrera-1er-anio"
             element={<AprobadasAnioResultado />}
           
           />
 
           <Route  
             exact
-            path='/aprobadasprimerreport'
+            path='/aprobadas-primer-anio-reporte'
             element={<AprobadasAñoIngresantes />}
           />
 
@@ -175,7 +175,7 @@ const AppRoutes = ({onLogout, user}) => {
           element={<IndicesTotalPeriodo />}
           />
 
-        <Route exact path="/aluinfouno" element={<AlumnosInfoUno />} />
+        <Route exact path="/alumnos-coeficiente" element={<AlumnosInfoUno />} /> {/** alumnos coeficiente de tiempo*/}
 
         <Route exact path="/meshoras" element={<PersonalMesHoras />} />
 

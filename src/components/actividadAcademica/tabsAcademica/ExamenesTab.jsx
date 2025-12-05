@@ -52,7 +52,7 @@ const ExamenesTab = () => {
   // --- (Toda la sección de useState y useEffect para la data no cambia) ---
   const [periodosturno, setPeriodosturno] = useState('');
   const [examenesresultados, setExamenesresultados] = useState([]);
-  const [anioselected, setAnioselected] = useState(calcularaniolectivo());
+  const [anioselected, setAnioselected] = useState(0);
   const [totmesas, setTotmesas] = useState(0);
   const [totalexamenes, setTotalexamenes] = useState(0);
   const [totalaprobados, setTotalaprobados] = useState(0);
@@ -138,6 +138,10 @@ const ExamenesTab = () => {
 
 
   }
+  useEffect(() => { 
+    const anioActual = calcularaniolectivo(); 
+    setAnioselected(anioActual);
+  }, []);
 
   useEffect(() => {
     const fetchTurnos = async () => {

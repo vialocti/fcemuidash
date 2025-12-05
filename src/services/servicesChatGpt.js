@@ -53,14 +53,15 @@ try {
   };
   
  export const helpmeDash =async (query)=>{
-
+ //console.log("Consulta al asistente:", query);
   try {
     const response= await api.post('/helpme', {
       query
     });
 
-    console.log('✅ Respuesta del análisis:', response.data);
-    return response.data.reply;
+    //console.log('✅ Respuesta del análisis:', response.data);
+    //console.log("Respuesta del asistente:", response.data.respuesta);
+    return response.data;
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
