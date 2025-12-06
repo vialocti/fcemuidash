@@ -95,8 +95,8 @@ const ActividadAcademicaPage = () => {
     <Container sx={{ mt: 2}}>
       <Paper elevation={2} sx={{ p: 2 }}>
       
-        <Typography variant="h6">Actividad Academica Año Lectivo</Typography>
-        <Typography variant="h6">Año:{anio}</Typography>
+        <Typography variant="h6">Actividad Academica Año Lectivo {anio}</Typography>
+        
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Typography variant="h6">

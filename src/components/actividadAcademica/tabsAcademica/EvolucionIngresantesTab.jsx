@@ -25,6 +25,7 @@ const procesarDatos = (registro) => {
 
   const totalIngresantes = valores.reduce((acc, v) => acc + v, 0);
   const masDeUna = valores.slice(2).reduce((acc, v) => acc + v, 0);
+
   const menosDeDos = valores[0] + valores[1];
 
   return {
@@ -159,8 +160,8 @@ const EvolucionIngresantesTab = () => {
   // --- Renderizado con MUI ---
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Evolución de Ingresantes — {anio}
+      <Typography variant="h4" component="h1" gutterBottom>
+        Evolución de Ingresantes
       </Typography>
 
       <hr/>
@@ -173,7 +174,7 @@ const EvolucionIngresantesTab = () => {
           border: '2px solid #0066aa',
           bgcolor: 'primary.light',
           borderRadius: 2,
-          mb: 4
+          mb: 1
         }}
       >
         <Typography variant="h6" component="h2" gutterBottom color="primary.dark">
@@ -194,9 +195,9 @@ const EvolucionIngresantesTab = () => {
           <Grid item xs={12} sm={6} md={3}>
             <SummaryCard 
                 icon={<CheckCircleOutlineIcon color="success" sx={{ fontSize: 40 }} />}
-                title="Más de 1 materia"
-                value={resumen.totalMasDeUna}
-                details={`(${resumen.porcMasDeUna}%)`}
+                title="2 y 3 Materias Aprobadas"
+                value={resumen.totalMasDeUna - resumen.totalMasDeTres}
+                details={`(${(resumen.porcMasDeUna - resumen.porcMasDeTres).toFixed(2)}%)`}
             />
           </Grid>
           {/* Al menos 4 materias */}
@@ -254,7 +255,7 @@ const EvolucionIngresantesTab = () => {
                         </Typography>
                         <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                             {/* Mostrar el porcentaje al lado del valor para mejor contexto */}
-                            <strong>Más de 1 materia aprobada:</strong> {item.info.masDeUna} ({item.info.porcMasDeUna}%)
+                            <strong>2 o mas aprobadas:</strong> {item.info.masDeUna} ({item.info.porcMasDeUna}%)
                         </Typography>
                         <Typography variant="caption" display="block" sx={{ mb: 1, color: bgColor === 'error.light' ? 'error.main' : 'success.main' }}>
                             {/* Mensaje para el usuario */}
@@ -264,7 +265,7 @@ const EvolucionIngresantesTab = () => {
                             }
                         </Typography>
                         <Typography variant="body2">
-                            <strong>Al menos 4 materias aprobadas:</strong> {item.info.masDeTres}
+                            <strong>Promocionados a 2do:</strong> {item.info.masDeTres}
                         </Typography>
                         <Typography variant="body2">
                             <strong>0 o 1 materias aprobadas:</strong> {item.info.menosDeDos} ({item.info.porcMenosDeDos}%)

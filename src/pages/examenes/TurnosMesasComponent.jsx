@@ -1,12 +1,15 @@
 import {
-  Button,
+  
+  Box,
   Container,
+  Divider,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Paper,
   Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -18,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { traeResultadosMesasPeriodo, traerPeriodosExamen, traerResultadoTurno } from '../../services/servicesExamenes';
 
 import ReporteResultadoExamen from '../../components/reportes/ReporteResultadoExamen';
+import { AccessTime, CalendarToday, LocationOn } from '@mui/icons-material';
 
 // Opciones de año (puedes obtenerlas de otra fuente o pasarlas como prop)
 const years = [2019,2020,2021,2022, 2023, 2024,2025,2026,2027,2028,2029,2030,2031];
@@ -125,103 +129,127 @@ const TurnosMesasComponent = () => {
   }, [selectedYear, selectedTurnoPeriodo, selectedUbicacion]);
 
  
-
+ const turnosAvailable = selectedYear && turnos.length > 0;
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Búsqueda de Mesas de Examen
+    <Paper elevation={4} sx={{ p: 3, borderRadius: 2, borderLeft: '5px solid #1976d2' }}>
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+        {/* Ícono llamativo y color principal */}
+        <CalendarToday color="primary" sx={{ fontSize: 30 }} />
+        <Typography variant="h5" component="h2" sx={{ fontWeight: 600, color: '#1976d2' }}>
+          Consulta de Resultados de Turno Exámenes 
         </Typography>
+      </Stack>
 
-        <Grid container spacing={2}>
+      <Divider sx={{ mb: 3 }} />
 
-          {/* Selección de Año */}
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth>
-              <InputLabel id="year-label">Año</InputLabel>
-              <Select
-                labelId="year-label"
-                id="yearSelect"
-                value={selectedYear}
-                label="Año"
-                onChange={(e) => {
-                  setSelectedYear(e.target.value);
-                 // setTurnos([]);
-                 // setSelectedTurnoPeriodo('');
-                 // setMesas([]);
-                 // setMesallanada('');
-                }}
-              >
-                <MenuItem value="">
-                  <em>Seleccione un año</em>
+      <Grid container spacing={4}>
+        
+        {/* Selección de Año */}
+        <Grid item xs={12} sm={4}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="year-label">Año Lectivo</InputLabel>
+            <Select
+              labelId="year-label"
+              id="yearSelect"
+              value={selectedYear}
+              label="Año Lectivo"
+              onChange={(e) => {
+                setSelectedYear(e.target.value);
+                // Aquí irían tus setters
+              }}
+              startAdornment={
+                <Box sx={{ mr: 1, display: 'flex' }}>
+                  <CalendarToday sx={{ color: 'action.active' }} />
+                </Box>
+              }
+            >
+              <MenuItem value="">
+                <em>Seleccione un año</em>
+              </MenuItem>
+              {years.map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
                 </MenuItem>
-                {years.map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          {/* Selección de Turno */}
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth disabled={!selectedYear || turnos.length === 0}>
-              <InputLabel id="turno-label">Turno Examen</InputLabel>
-              <Select
-                labelId="turno-label"
-                id="turnoSelect"
-                value={selectedTurnoPeriodo}
-                label="Turno Examen"
-                onChange={(e) => {
-                  setSelectedTurnoPeriodo(e.target.value);
-                  setMesas([]);
-                  setMesallanada('');
-                }}
-              >
-                <MenuItem value="">
-                  <em>Seleccione un turno</em>
-                </MenuItem>
-                {turnos.map((item, index) => (
-                  <MenuItem key={index} value={item.turno_examen_periodo}>
-                    {item.turno_examen_nombre}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          {/* Selección de Ubicación */}
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth>
-              <InputLabel id="ubicacion-label">Ubicación</InputLabel>
-              <Select
-                labelId="ubicacion-label"
-                id="ubicacionSelect"
-                value={selectedUbicacion}
-                label="Ubicación"
-                onChange={(e) => {
-                  setSelectedUbicacion(e.target.value);
-                  setMesas([]);
-                  setMesallanada('');
-                }}
-              >
-                <MenuItem value="">
-                  <em>Seleccione una ubicación</em>
-                </MenuItem>
-                {ubicaciones.map((ubi, index) => (
-                  <MenuItem key={index} value={ubi.value}>
-                    {ubi.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
 
-      </Paper>
+        {/* Selección de Turno */}
+        <Grid item xs={12} sm={4}>
+          <FormControl 
+            fullWidth 
+            variant="outlined"
+            // Desactivar y darle un aspecto visual de "espera" si no hay año o turnos
+            disabled={!turnosAvailable}
+          >
+            <InputLabel id="turno-label">Turno de Examen</InputLabel>
+            <Select
+              labelId="turno-label"
+              id="turnoSelect"
+              value={selectedTurnoPeriodo}
+              label="Turno de Examen"
+              onChange={(e) => {
+                setSelectedTurnoPeriodo(e.target.value);
+                // Aquí irían tus setters
+              }}
+              startAdornment={
+                <Box sx={{ mr: 1, display: 'flex' }}>
+                  <AccessTime sx={{ color: 'action.active' }} />
+                </Box>
+              }
+            >
+              <MenuItem value="">
+                <em>Seleccione un turno</em>
+              </MenuItem>
+              {turnos.map((item, index) => (
+                <MenuItem key={index} value={item.turno_examen_periodo}>
+                  {item.turno_examen_nombre}
+                </MenuItem>
+              ))}
+            </Select>
+            {!turnosAvailable && (
+              <Box component="span" sx={{ fontSize: '0.75rem', color: 'error.main', mt: 0.5 }}>
+                Seleccione un año primero para cargar los turnos.
+              </Box>
+            )}
+          </FormControl>
+        </Grid>
 
+        {/* Selección de Ubicación */}
+        <Grid item xs={12} sm={4}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="ubicacion-label">Sede / Ubicación</InputLabel>
+            <Select
+              labelId="ubicacion-label"
+              id="ubicacionSelect"
+              value={selectedUbicacion}
+              label="Sede / Ubicación"
+              onChange={(e) => {
+                setSelectedUbicacion(e.target.value);
+                // Aquí irían tus setters
+              }}
+              startAdornment={
+                <Box sx={{ mr: 1, display: 'flex' }}>
+                  <LocationOn sx={{ color: 'action.active' }} />
+                </Box>
+              }
+            >
+              <MenuItem value="">
+                <em>Seleccione una ubicación</em>
+              </MenuItem>
+              {ubicaciones.map((ubi, index) => (
+                <MenuItem key={index} value={ubi.value}>
+                  {ubi.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+      </Grid>
+    </Paper>
         {resultados?
         
         <Paper elevation={4} sx={{ p: 2, borderRadius: 3 }}>

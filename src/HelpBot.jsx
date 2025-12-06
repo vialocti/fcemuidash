@@ -10,12 +10,12 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  
 } from "@mui/material";
-import React, { useState } from "react";
+// 🚨 Importar useEffect y useRef para el scroll automático
+import React, { useState, useRef, useEffect } from "react";
 
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { helpmeDash } from "./services/servicesChatGpt";
+import { helpmeDash } from "./services/servicesChatGpt"; // Manteniendo la importación original
 
 const HelpBot = () => {
   const [open, setOpen] = useState(false);
@@ -24,32 +24,57 @@ const HelpBot = () => {
   ]);
   const [input, setInput] = useState("");
 
-  const handleSend =async  () => {
+  // 1. 🚨 Crear la referencia para el final de los mensajes
+  const messagesEndRef = useRef(null);
 
+  // Función auxiliar para realizar el scroll
+  const scrollToBottom = () => {
+    // Usamos 'optional chaining' (?) y 'scrollIntoView' con comportamiento suave
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // 2. 🚨 Ejecutar el scroll cada vez que la lista de mensajes cambie
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSend = async () => {
     if (!input.trim()) return;
 
-    // mostrar mensaje del usuario
-    setMessages((prev) => [...prev, { from: "user", text: input }]);
-  
-    // respuesta por defecto (mientras carga)
-    setMessages((prev) => [...prev, { from: "bot", text: "⏳ Pensando..." }]);
-  
-    // Llamar a tu servicio conectado al asistente
-    const reply = await helpmeDash(input);
-    // console.log(reply.respuesta)
+    const userMessage = input;
+
+    // Mostrar mensaje del usuario
+    setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
+
+    // Respuesta por defecto (mientras carga)
+    // Usamos un identificador único para el mensaje de carga
+    setMessages((prev) => [
+      ...prev,
+      { from: "bot", text: "⏳ Pensando...", id: "loading" },
+    ]);
+
+    // Limpiar input inmediatamente
+    setInput("");
+
+    // Llamar a tu servicio conectado al asistente (simulación)
+    const reply = await helpmeDash(userMessage);
+    //const reply = await new Promise(resolve => setTimeout(() => resolve({ respuesta: "Esta es la respuesta del asistente." }), 1000));
+
     // Reemplazar el mensaje "Pensando..." por la respuesta real
     setMessages((prev) => {
       const copy = [...prev];
-      copy[copy.length - 1] = { from: "bot", text: reply.respuesta };
+      // Buscamos el mensaje con el id 'loading' y lo reemplazamos
+      const loadingIndex = copy.findIndex((msg) => msg.id === "loading");
+      if (loadingIndex !== -1) {
+        copy[loadingIndex] = { from: "bot", text: reply.respuesta };
+      }
       return copy;
     });
-  
-    setInput("");
   };
 
   return (
     <>
-      {/* Botón flotante con borde redondeado */}
+      {/* Botón flotante original */}
       <Fab
         color="primary"
         aria-label="help"
@@ -68,7 +93,7 @@ const HelpBot = () => {
         <HelpOutlineIcon fontSize="large" />
       </Fab>
 
-      {/* Ventana de chat con más estilo */}
+      {/* Ventana de chat original */}
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -76,7 +101,7 @@ const HelpBot = () => {
         maxWidth="sm"
         PaperProps={{
           sx: {
-            borderRadius: 4, // redondeado
+            borderRadius: 4,
             position: "fixed",
             bottom: 100,
             right: 20,
@@ -96,13 +121,23 @@ const HelpBot = () => {
         >
           🤖 Asistente de Ayuda
         </DialogTitle>
-        <DialogContent dividers sx={{ bgcolor: "#f9f9f9" }}>
-          <List>
+        <DialogContent
+          dividers
+          sx={{
+            bgcolor: "#f9f9f9",
+            // 🚨 Es crucial establecer un alto y overflow para que el scroll funcione
+            height: "100%",
+            overflowY: "auto",
+            p: 0, // Ajuste de padding para un mejor uso del espacio
+          }}
+        >
+          <List sx={{ pt: 1, pb: 1 }}>
             {messages.map((msg, i) => (
               <ListItem
                 key={i}
                 sx={{
-                  justifyContent: msg.from === "user" ? "flex-end" : "flex-start",
+                  justifyContent:
+                    msg.from === "user" ? "flex-end" : "flex-start",
                 }}
               >
                 <Box
@@ -120,6 +155,8 @@ const HelpBot = () => {
                 </Box>
               </ListItem>
             ))}
+            {/* 3. 🚨 El elemento al que apuntará la referencia para el scroll */}
+            <div ref={messagesEndRef} />
           </List>
         </DialogContent>
         <DialogActions
@@ -150,4 +187,3 @@ const HelpBot = () => {
 };
 
 export default HelpBot;
-
