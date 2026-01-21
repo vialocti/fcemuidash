@@ -9,7 +9,7 @@ const uri_a = URI_ALU;
 const uri_c = URI_CUR;
 
 export const usePageInicial = (anio) => {
-  const [anioC, setAnioC] = useState(anio);
+  const [anioC, setAnioC] = useState(0);
   const [cantidadSedeEgr, setCantidadEgr] = useState(null);
   const [cantidadAlu, setCantidadAlu] = useState(null);
   const [cantidadInsc, setCantidadInsc] = useState(null);
@@ -43,6 +43,7 @@ export const usePageInicial = (anio) => {
     }
   };
 
+
   useEffect(() => {
     fetchData();
   }, [anioC]);
@@ -51,11 +52,14 @@ export const usePageInicial = (anio) => {
     const fecha = new Date();
     const anioActual = fecha.getFullYear();
     setAnioC(fecha < new Date(`${anioActual}-04-01`) ? anioActual - 1 : anioActual);
+
+
   }, [anio]);
 
   // Funciones de obtención de datos
 
   const traerCantidadPorSede = async () => {
+    console.log(anioC)
     const { data } = await axios.get(`${uri_e}/egresadosanio/${anioC}/L`);
     setCantidadEgr(data);
   };
@@ -84,7 +88,7 @@ export const usePageInicial = (anio) => {
   const traerAlumnosProvisorios = async () => {
     const fecha = new Date();
     const anioActual = fecha.getFullYear();
-    let anioP=fecha > new Date(`${anioActual}-03-05`) ? anioActual  : anioActual-1
+    let anioP = fecha > new Date(`${anioActual}-03-05`) ? anioActual : anioActual - 1
     const { data } = await axios.get(`${uri_a}/aluprovisoriosSede/${anioP}`);
     setCantidadProvisorios(data);
   };
@@ -96,8 +100,8 @@ export const usePageInicial = (anio) => {
   };
 
   const traerInscritosCursadaSede = async () => {
-    const anioFull = new Date().getFullYear();
-    const { data } = await axios.get(`${uri_c}/traerinscriptostotsede/${anioFull}`);
+    // const anioFull = new Date().getFullYear();
+    const { data } = await axios.get(`${uri_c}/traerinscriptostotsede/${anioC}`);
     setCantidadInscriptosCursada(data);
   };
 

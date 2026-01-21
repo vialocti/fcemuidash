@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -6,568 +7,301 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  Divider,
 } from "@mui/material";
-import { KeyboardArrowDown } from "@mui/icons-material";
-import React, { useState } from "react";
-
-//import { getAuth, signOut } from "firebase/auth"; esto hay que habilitar
+import {
+  KeyboardArrowDown,
+  Menu as MenuIcon,
+  ExpandLess,
+  ExpandMore,
+  Logout
+} from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
-//import { signOut } from "firebase/auth";
 
-const NavigationBar = ({onLogout, user}) => {
-const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
+const NavigationBar = ({ onLogout, user }) => {
+  const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar";
 
+  // --- ESTADOS ---
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState(""); // Controla submenús en Mobile
+  const [anchorEl, setAnchorEl] = useState({
+    estudiantes: null,
+    cursadas: null,
+    examenes: null,
+    egresados: null,
+    historicos: null,
+    reportes: null,
+  });
 
- 
-  
- // const auth = getAuth(); esto tambien
-  const [anchorE1, setAnchorE1] = useState(null);
-  const [anchorE2, setAnchorE2] = useState(null);
-  const [anchorE3, setAnchorE3] = useState(null);
-  const [anchorE4, setAnchorE4] = useState(null);
-  const [anchorE5, setAnchorE5] = useState(null);
-  const [anchorE6, setAnchorE6] = useState(null);
-  const [anchorE7, setAnchorE7] = useState(null);
-  const [anchorE8, setAnchorE8] = useState(null);
-  //const [anchorE9, setAnchorE9] = useState(null);
+  // --- HANDLERS ---
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
-
-  const open = Boolean(anchorE1);
-  const open1 = Boolean(anchorE2);
-  const open2 = Boolean(anchorE3);
-  const open3 = Boolean(anchorE4);
-  const open4 = Boolean(anchorE5);
-  const open5 = Boolean(anchorE6);
-  const open6 = Boolean(anchorE7);
-  const open7 = Boolean(anchorE8);
-  //const open8 = Boolean(anchorE9);
-
-
-  const onHandleClick = (event) => {
-    setAnchorE1(event.currentTarget);
-  };
-  const onHandleClickI = (event) => {
-    setAnchorE2(event.currentTarget);
+  const handleOpenMenu = (event, menuId) => {
+    setAnchorEl({ ...anchorEl, [menuId]: event.currentTarget });
   };
 
-  const onHandleClickA = (event) => {
-    setAnchorE3(event.currentTarget);
-  };
-  const onHandleClickE = (event) => {
-    setAnchorE4(event.currentTarget);
-  };
-  const onHandleClickP = (event) => {
-    setAnchorE5(event.currentTarget);
-  };
-
-  const onHandleClickC = (event) => {
-    setAnchorE6(event.currentTarget);
+  const handleCloseMenu = () => {
+    setAnchorEl({
+      estudiantes: null,
+      cursadas: null,
+      examenes: null,
+      egresados: null,
+      historicos: null,
+      reportes: null,
+    });
   };
 
-  const onHandleClickR = (event) => {
-    setAnchorE7(event.currentTarget);
-  };
-  const onHandleClickM = (event) => {
-    setAnchorE8(event.currentTarget);
-  };
-  /*
-  const onHandleClickCAI = (event) => {
-    setAnchorE9(event.currentTarget);
+  const handleMobileSubMenu = (name) => {
+    setOpenSubMenu(openSubMenu === name ? "" : name);
   };
 
-*/
-  const handleOnClose = () => {
-    setAnchorE1(null);
-    setAnchorE2(null);
-    setAnchorE3(null);
-    setAnchorE4(null);
-    setAnchorE5(null);
-    setAnchorE6(null);
-    setAnchorE7(null);
-    setAnchorE8(null);
-//    setAnchorE9(null);
-
+  const handleMobileClick = () => {
+    setMobileOpen(false);
+    setOpenSubMenu("");
   };
-/* esto tambien
-  const handleLogout =async ()=>{
-    try {
-      await signOut(auth);
-      console.log("Sesión cerrada exitosamente");
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error.message);
-    }
-  }
-    */
+
+  // --- COMPONENTE SUBMENÚ REUTILIZABLE (Para evitar repetir código) ---
+  const MenuLink = ({ to, primary, mobile = false }) => (
+    <ListItem
+      button
+      component={NavLink}
+      to={to}
+      onClick={mobile ? handleMobileClick : handleCloseMenu}
+      sx={mobile ? { pl: 4 } : {}}
+    >
+      {mobile ? <ListItemText primary={primary} /> : primary}
+    </ListItem>
+  );
+
+  // --- CONTENIDO DEL DRAWER (MOBILE) ---
+  const drawer = (
+    <Box sx={{ width: 280 }}>
+      <Box sx={{ p: 2, textAlign: 'center', bgcolor: 'primary.main', color: 'white' }}>
+        <Typography variant="h6">FCE-DASH</Typography>
+      </Box>
+      <List component="nav">
+        <ListItem button component={NavLink} to="/" onClick={handleMobileClick}>
+          <ListItemText primary="Inicio" />
+        </ListItem>
+
+        {esAdmin && (
+          <>
+            <ListItem button component={NavLink} to="/info-ciclo-lectivo" onClick={handleMobileClick}>
+              <ListItemText primary="Ciclo Lectivo" />
+            </ListItem>
+            <ListItem button component={NavLink} to="/ingresantes" onClick={handleMobileClick}>
+              <ListItemText primary="Ingresantes" />
+            </ListItem>
+
+            {/* Estudiantes */}
+            <ListItem button onClick={() => handleMobileSubMenu("estudiantes")}>
+              <ListItemText primary="Estudiantes" />
+              {openSubMenu === "estudiantes" ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openSubMenu === "estudiantes"} timeout="auto">
+              <List disablePadding>
+                <MenuLink to="/estudiantes-activos" primary="Estudiantes Activos" mobile />
+                <MenuLink to="/cohorte-evolucion" primary="Desgranamiento Cohorte" mobile />
+                <MenuLink to="/alumnos-coeficiente" primary="Coef. Tiempo Estudiantes" mobile />
+              </List>
+            </Collapse>
+          </>
+        )}
+
+        {/* Cursadas */}
+        <ListItem button onClick={() => handleMobileSubMenu("cursadas")}>
+          <ListItemText primary="Cursadas" />
+          {openSubMenu === "cursadas" ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openSubMenu === "cursadas"} timeout="auto">
+          <List disablePadding>
+            <MenuLink to="/inscripcionesComi" primary="Inscripciones Sede" mobile />
+            <MenuLink to="/comparativaInsc" primary="Comparativa Actividad" mobile />
+            <MenuLink to="/infocursadalistado" primary="Listado Inscriptos" mobile />
+            <MenuLink to="/comisiones-cursadas-anio" primary="Resultado Actividad" mobile />
+            <MenuLink to="/aprobadas-carrera-1er-anio" primary="Aprobadas (1er Año)" mobile />
+          </List>
+        </Collapse>
+
+        {esAdmin && (
+          <>
+            {/* Exámenes */}
+            <ListItem button onClick={() => handleMobileSubMenu("examenes")}>
+              <ListItemText primary="Exámenes" />
+              {openSubMenu === "examenes" ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openSubMenu === "examenes"} timeout="auto">
+              <List disablePadding>
+                <MenuLink to="/reporteexamenes" primary="Exámenes Mesa" mobile />
+                <MenuLink to="/reporteexamenescp" primary="Comparativa Turnos" mobile />
+                <MenuLink to="/reporteepocasexamen" primary="Resultados Período" mobile />
+              </List>
+            </Collapse>
+
+            {/* Egresados */}
+            <ListItem button onClick={() => handleMobileSubMenu("egresados")}>
+              <ListItemText primary="Egresados" />
+              {openSubMenu === "egresados" ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openSubMenu === "egresados"} timeout="auto">
+              <List disablePadding>
+                <MenuLink to="/egreaniocarrera" primary="Egresados Año" mobile />
+                <MenuLink to="/egreanios" primary="Comparativa Años" mobile />
+                <MenuLink to="/egreanioscar" primary="Egresados Carrera/Sexo" mobile />
+              </List>
+            </Collapse>
+
+            {/* Datos Históricos */}
+            <ListItem button onClick={() => handleMobileSubMenu("historicos")}>
+              <ListItemText primary="Datos Históricos" />
+              {openSubMenu === "historicos" ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openSubMenu === "historicos"} timeout="auto">
+              <List disablePadding>
+                <MenuLink to="/indicetotperiodo" primary="Índices Período Ciclo" mobile />
+                <MenuLink to="/historicoresuActividad" primary="Análisis Actividades" mobile />
+                <MenuLink to="/historicosAprobadas" primary="Aprobadas Ingresantes" mobile />
+              </List>
+            </Collapse>
+
+            {/* Reportes */}
+            <ListItem button onClick={() => handleMobileSubMenu("reportes")}>
+              <ListItemText primary="Reportes" />
+              {openSubMenu === "reportes" ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openSubMenu === "reportes"} timeout="auto">
+              <List disablePadding>
+                <MenuLink to="/aprobadas-primer-anio-reporte" primary="Comp. Aprobadas Ing." mobile />
+                <MenuLink to="/datosactividadreport" primary="Datos Actividad Ing." mobile />
+                <MenuLink to="/listado-alumnos-info-rendimiento" primary="Alumnos Rendimiento" mobile />
+                <MenuLink to="/reportecomicontacto" primary="Índices Comisiones" mobile />
+              </List>
+            </Collapse>
+          </>
+        )}
+      </List>
+      <Divider />
+      <Box sx={{ p: 2 }}>
+        <Button fullWidth variant="outlined" color="error" startIcon={<Logout />} onClick={onLogout}>
+          Cerrar Sesión
+        </Button>
+      </Box>
+    </Box>
+  );
+
   return (
-    <AppBar  position="static" color="primary" enableColorOnDark sx={{mb:1, height: 50, minHeight: 50 }}>
-      <Toolbar sx={{ minHeight: '50px',justifyContent: 'center' }}>
-        <Typography variant="h7" sx={{mr:5}}>FCE-DASH</Typography>
-        
-          <Box>
-      
-            <Button color="inherit" component={NavLink} to={"/"} sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}>
-            Inicio
-          </Button>
+    <>
+      <AppBar position="static" color="primary" sx={{ height: 50 }}>
+        <Toolbar sx={{ minHeight: '50px !important', px: 2 }}>
 
-          
-          
-          {esAdmin && (<>
-            <Button
-                id="btn-actividad_academica"
-                component={NavLink}
-                to="/info-ciclo-lectivo"
-                color="inherit"
-                sx={{
-                  fontSize: '0.9rem',
-                  textTransform: 'none',
-                  padding: '2px 8px',
-                }}
-              >
-               Ciclo Lectivo
-          </Button>
-
-
-            <Button
-                id="btn-ingresantes"
-                component={NavLink}
-                to="/ingresantes"
-                color="inherit"
-                sx={{
-                  fontSize: '0.9rem',
-                  textTransform: 'none',
-                  padding: '2px 8px',
-                }}
-              >
-               Ingresantes
-          </Button>
-          {/** 
-            <MenuItem
-              component={NavLink}
-              to={"/ingresantesanios"}
-              onClick={handleOnClose}
-            >
-              Comparativa Ingresantes Años
-            </MenuItem>
-            */}
-     
-          {/**Alumnos */}
-          <Button
-            id="btn-alumnos"
+          {/* BOTÓN HAMBURGUESA - Solo visible en móvil */}
+          <IconButton
             color="inherit"
-            onClick={onHandleClickA}
-            aria-controls={open2 ? "mnu-alumnos" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open2 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
-            Estudiantes
-          </Button>
-          <Menu
-            id="mnu-alumnos"
-            anchorEl={anchorE3}
-            open={open2}
-            MenuListProps={{
-              "aria-labelledby": "btn-alumnos",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/estudiantes-activos"}
-              onClick={handleOnClose}
-            >
-              Estudiantes Activos
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/cohorte-evolucion"}
-              onClick={handleOnClose}
-            >
-              Desgranamiento Cohorte
-            </MenuItem>
-        
-        {/**
-            <MenuItem
-               component={NavLink}
-               to={"/consuopenai"}
-               onClick={handleOnClose}
-            >
-              Consulta Alumnos Info
-            </MenuItem> */}
-            <MenuItem
-              component={NavLink}
-              to={"/alumnos-coeficiente"}
-              onClick={handleOnClose}
-            >
-             Coef. Tiempo Estudiantes 
-            </MenuItem>
+            <MenuIcon />
+          </IconButton>
 
-          
-          </Menu>
+          <Typography variant="h6" sx={{ flexGrow: { xs: 1, md: 0 }, mr: 3, fontSize: '1rem' }}>
+            FCE-DASH
+          </Typography>
 
-          
-          
-        
-          </>)}
+          {/* MENÚ DESKTOP - Oculto en móviles */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, gap: 0.5 }}>
+            <Button color="inherit" component={NavLink} to="/" sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Inicio</Button>
 
+            {esAdmin && (
+              <>
+                <Button color="inherit" component={NavLink} to="/info-ciclo-lectivo" sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Ciclo Lectivo</Button>
+                <Button color="inherit" component={NavLink} to="/ingresantes" sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Ingresantes</Button>
 
+                {/* Estudiantes */}
+                <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'estudiantes')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Estudiantes</Button>
+                <Menu anchorEl={anchorEl.estudiantes} open={Boolean(anchorEl.estudiantes)} onClose={handleCloseMenu}>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/estudiantes-activos">Estudiantes Activos</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/cohorte-evolucion">Desgranamiento Cohorte</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/alumnos-coeficiente">Coef. Tiempo Estudiantes</MenuItem>
+                </Menu>
+              </>
+            )}
 
+            {/* Cursadas */}
+            <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'cursadas')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Cursadas</Button>
+            <Menu anchorEl={anchorEl.cursadas} open={Boolean(anchorEl.cursadas)} onClose={handleCloseMenu}>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/inscripcionesComi">Inscripciones Sede</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/comparativaInsc">Comparativa Actividad</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/infocursadalistado">Listado Inscriptos</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/comisiones-cursadas-anio">Resultado Actividad</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/aprobadas-carrera-1er-anio">Aprobadas Carrera(1er Año)</MenuItem>
+            </Menu>
 
- {/*Cursadas*/}
+            {esAdmin && (
+              <>
+                {/* Exámenes */}
+                <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'examenes')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Exámenes</Button>
+                <Menu anchorEl={anchorEl.examenes} open={Boolean(anchorEl.examenes)} onClose={handleCloseMenu}>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteexamenes">Exámenes Mesa</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteexamenescp">Comparativa Turnos</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteepocasexamen">Resultados Período</MenuItem>
+                </Menu>
+
+                {/* Egresados */}
+                <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'egresados')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Egresados</Button>
+                <Menu anchorEl={anchorEl.egresados} open={Boolean(anchorEl.egresados)} onClose={handleCloseMenu}>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/egreaniocarrera">Egresados Año</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/egreanios">Comparativa Años</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/egreanioscar">Comparativa Carrera/Sexo</MenuItem>
+                </Menu>
+
+                {/* Históricos */}
+                <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'historicos')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Históricos</Button>
+                <Menu anchorEl={anchorEl.historicos} open={Boolean(anchorEl.historicos)} onClose={handleCloseMenu}>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/indicetotperiodo">Índices Período Ciclo</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/historicoresuActividad">Análisis Actividades</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/historicosAprobadas">Aprobadas Ingresantes</MenuItem>
+                </Menu>
+
+                {/* Reportes */}
+                <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'reportes')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Reportes</Button>
+                <Menu anchorEl={anchorEl.reportes} open={Boolean(anchorEl.reportes)} onClose={handleCloseMenu}>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/aprobadas-primer-anio-reporte">Comp. Aprobadas Ingresantes</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/datosactividadreport">Datos Actividad Ingresantes</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/listado-alumnos-info-rendimiento">Alumnos - Rendimiento</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reportecomicontacto">Índices Comisiones-Contacto</MenuItem>
+                </Menu>
+              </>
+            )}
+          </Box>
 
           <Button
-            id="btn-cursadas"
-            color="inherit"
-            onClick={onHandleClickC}
-            aria-controls={open5 ? "mnu-cursadas" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open5 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
+            variant="contained"
+            color="success"
+            onClick={onLogout}
+            sx={{ ml: 2, display: { xs: 'none', md: 'inline-flex' }, fontSize: '0.75rem', textTransform: 'none' }}
           >
-            Cursadas
-          </Button>
-          <Menu
-            id="mnu-cursadas"
-            anchorEl={anchorE6}
-            open={open5}
-            MenuListProps={{
-              "aria-labelledby": "btn-egresados",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/inscripcionesComi"}
-              onClick={handleOnClose}
-            >Inscripciones Sede </MenuItem>
-
-           <MenuItem component={NavLink} to={"/comparativaInsc"} onClick={handleOnClose}>
-              Comparativa Inscripciones Actividad
-            </MenuItem>
-           
-            <MenuItem component={NavLink} to={"/infocursadalistado"} onClick={handleOnClose}>
-              Listado Inscriptos Comision
-            </MenuItem>
-
-            <MenuItem
-              component={NavLink}
-              to={"/comisiones-cursadas-anio"}
-              onClick={handleOnClose}
-            >
-              Resultado por Actividad
-            </MenuItem>
-            
-            <MenuItem
-              component={NavLink}
-              to={"/aprobadas-carrera-1er-anio"}
-              onClick={handleOnClose}
-            >
-              Aprobadas Carrera(1er Año)
-            </MenuItem>
-            
-            
-
-          </Menu>
-       {esAdmin && (<>
-          
-           {/*examenes*/}
-           <Button
-            id="btn-examenes"
-            color="inherit"
-            onClick={onHandleClickM}
-            aria-controls={open7 ? "mnu-examenes" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open7 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-          >
-            Examenes
-          </Button>
-          <Menu
-            id="mnu-examenes"
-            anchorEl={anchorE8}
-            open={open7}
-            MenuListProps={{
-              "aria-labelledby": "btn-egresados",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/reporteexamenes"}
-              onClick={handleOnClose}
-            >Examenes Mesa</MenuItem>
-
-           <MenuItem component={NavLink} to={"/reporteexamenescp"} onClick={handleOnClose}>
-              Comparativa Turnos Examen
-            </MenuItem>
-           
-            <MenuItem
-              component={NavLink}
-              to={"/reporteepocasexamen"}
-              onClick={handleOnClose}
-            >
-              Resultados Examenes Periodo
-            </MenuItem>
-                       
-
-          </Menu>
-
-          {/* Egresados*/}
-          <Button
-            id="btn-egresados"
-            color="inherit"
-            onClick={onHandleClickE}
-            aria-controls={open3 ? "mnu-egresados" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open3 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-          >
-            Egresados
-          </Button>
-          <Menu
-            id="mnu-egresados"
-            anchorEl={anchorE4}
-            open={open3}
-            MenuListProps={{
-              "aria-labelledby": "btn-egresados",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/egreaniocarrera"}
-              onClick={handleOnClose}
-            >
-              Egresados Año
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/egreanios"}
-              onClick={handleOnClose}
-            >
-              Comparativa Egresados Años
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/egreanioscar"}
-              onClick={handleOnClose}
-            >
-              Comparativa Egresados Carrera/Sexo Años
-            </MenuItem>
-          </Menu>
-
-         
-
-
-           
-
-
-
-          {/*Rendimientos*/}
-          <Button
-            id="btn-rendimiento"
-            color="inherit"
-            onClick={onHandleClickR}
-            aria-controls={open6 ? "mnu-rendimiento" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open6 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-          >
-            Datos Historicos
-          </Button>
-          <Menu
-            id="mnu-rendimiento"
-            anchorEl={anchorE7}
-            open={open6}
-            MenuListProps={{
-              "aria-labelledby": "btn-rendimiento",
-            }}
-            onClose={handleOnClose}
-          >
-
-            <MenuItem
-                component={NavLink}
-                to={"/indicetotperiodo"}
-                onClick={handleOnClose}
-              >
-                Historicos Indices Periodo
-            </MenuItem>
-            <MenuItem
-                component={NavLink}
-                to={"/historicoresuActividad"}
-                onClick={handleOnClose}
-              >
-                Historicos Resultado Actividad
-            </MenuItem>
-            <MenuItem
-              component={NavLink}
-              to={"/historicosAprobadas"}
-              onClick={handleOnClose}
-            >
-              Historicos Aprobadas 1er Año
-            </MenuItem>
-
-
-
-           
-          </Menu>
-
-          {/*Personas*/}
-          <Button
-            id="btn-personal"
-            color="inherit"
-            onClick={onHandleClickP}
-            aria-controls={open4 ? "mnu-personal" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open4 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              fontSize: '0.9rem',     // más chico
-              textTransform: 'none',   // evitar mayúsculas automáticas
-              padding: '2px 8px',      // más compacto
-            }}
-          >
-            Reportes
-          </Button>
-          <Menu
-            id="mnu-personal"
-            anchorEl={anchorE5}
-            open={open4}
-            MenuListProps={{
-              "aria-labelledby": "btn-egresados",
-            }}
-            onClose={handleOnClose}
-          >
-            <MenuItem
-              component={NavLink}
-              to={"/aprobadas-primer-anio-reporte"}
-              onClick={handleOnClose}
-            >
-              Comparativa Aprobadas Ingresantes
-            </MenuItem>
-
-            <MenuItem
-              component={NavLink}
-              to={"/datosactividadreport"}
-              onClick={handleOnClose}
-            >
-              Datos Actividad Igresantes
-            </MenuItem>
-
-                       
-            
-            <MenuItem
-              component={NavLink}
-              to={"/listadoaluinfo"}
-              onClick={handleOnClose}
-            > 
-                Alumnos - Rendimiento
-            </MenuItem>
-           
-            <MenuItem
-              component={NavLink}
-              to={"/reportecomicontacto"}
-              onClick={handleOnClose}
-            > 
-                Indices Comisiones-Contacto
-            </MenuItem>
-
-            <MenuItem
-              component={NavLink}
-              to={"/"}
-              onClick={handleOnClose}
-            >
-              Reporte Periodo Lectivo
-            </MenuItem>
-            
-           
-           
-          </Menu>
-           </>)}
-          <Button variant="contained"  color="success" onClick={() => {
-               // console.log("Cerrar sesión clickeado");
-                onLogout();
-          }}
-      sx={{
-        fontSize: '0.9rem',     // más chico
-        textTransform: 'none',   // evitar mayúsculas automáticas
-        padding: '2px 8px',      // más compacto
-        
-      }}>
-            Cerrar Sesion
-          </Button>
-
-
-
- </Box>
-
-
-           
-          {/**
-           *  to={"/reportegeneral"}
-          <Button
-            id="btn-personal"
-            color="inherit"
-            onClick={onHandleClickCAI}
-            aria-controls={open8 ? "mnu-personal" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open8 ? "true" : undefined}
-            endIcon={<KeyboardArrowDown />}
-          >
-            Consultas AI
-          </Button>
-           <Menu
-             id="mnu-consultaai"
-             anchorEl={anchorE9}
-             open={open8}
-             MenuListProps={{
-               "aria-labelledby": "btn-egresados",
-             }}
-             onClose={handleOnClose}
-           >
-
-        
-
-          </Menu>
-       
-        */}
-        {/* Contenedor para empujar el botón a la derecha 
-        <Box sx={{ ml: "auto" }}>
-          <Button color="secondary" variant="contained" onClick={handleLogout}>
             Cerrar Sesión
           </Button>
-        </Box>*/}
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+
+      {/* DRAWER PARA MÓVIL */}
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+      >
+        {drawer}
+      </Drawer>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ const uri = URI_CUR
 
 
 export const traerPeriodosLectivos = async (anio) => {
-    
+
     try {
         const rows = await axios.get(`${uri}/periodoslectivos/${anio}`)
         //console.log(rows)
@@ -33,14 +33,14 @@ export const traerListadoComisiones = async (anio) => {
 }
 
 
-export const traerListadoAlumnosComision = async (comision,anio,sede,actividad) => {
+export const traerListadoAlumnosComision = async (comision, anio, sede, actividad) => {
     //console.log(comision,anio,sede,actividad)
     try {
         const rows = await axios.get(`${uri}/listadoalumnoscomision/${comision}/${anio}/${sede}/${actividad}`)
         //console.log(rows)
-        
-               return rows.data
-        
+
+        return rows.data
+
     } catch (error) {
 
         console.log(error)
@@ -48,12 +48,12 @@ export const traerListadoAlumnosComision = async (comision,anio,sede,actividad) 
 }
 
 //Materias NOMBRE
-export const traerMateriasComiAnio = async (anio,sede) => {
-   // console.log('uuu')
+export const traerMateriasComiAnio = async (anio, sede) => {
+    // console.log('uuu')
     try {
         const rows = await axios.get(`${uri}/materiascomision/${anio}/${sede}`)
-        
-       // console.log(rows.data)
+
+        // console.log(rows.data)
         return rows.data
 
     } catch (error) {
@@ -64,8 +64,8 @@ export const traerMateriasComiAnio = async (anio,sede) => {
 
 //COmisiones Materias
 
-export const traerComisionesMateriaAnio = async (anio,nmateria) => {
-    
+export const traerComisionesMateriaAnio = async (anio, nmateria) => {
+
     try {
         const rows = await axios.get(`${uri}/comisionesaniopatron/${anio}/${nmateria}`)
         //console.log(rows.data)
@@ -77,23 +77,23 @@ export const traerComisionesMateriaAnio = async (anio,nmateria) => {
     }
 }
 
-export const traerNumerosComisiones = async (anio,nmateria) => {
-    
+export const traerNumerosComisiones = async (anio, nmateria) => {
+
     try {
         const rows = await axios.get(`${uri}/comisionesnumero/${anio}/${nmateria}`)
         //console.log(rows.data)
         let comisiones = rows.data
-        if(comisiones){
+        if (comisiones) {
             let comisionesN = "";
             for (const elemento of comisiones) {
-              //console.log(elemento);
-              comisionesN += elemento.comision + ",";
+                //console.log(elemento);
+                comisionesN += elemento.comision + ",";
             }
             comisionesN = comisionesN.substring(0, comisionesN.length - 1);
             //console.log(comisionesN)
             return comisionesN
-      
-          }
+
+        }
 
 
     } catch (error) {
@@ -106,24 +106,24 @@ export const traerNumerosComisiones = async (anio,nmateria) => {
 
 //detalle comisiones 
 
-export const traerDetalleComisiones = async (anio,materia, sede,recursado, propuesta) => {
-   
-    let codsede=''
-    if(parseInt(sede)===1){
-        codsede='M0'
-    }else if(parseInt(sede)===2){
-        codsede='S0'
-    }else if(parseInt(sede)===3){
-        codsede='GA'
-    }else if(parseInt(sede)===4){
-        codsede='SM'
+export const traerDetalleComisiones = async (anio, materia, sede, recursado, propuesta) => {
+
+    let codsede = ''
+    if (parseInt(sede) === 1) {
+        codsede = 'M0'
+    } else if (parseInt(sede) === 2) {
+        codsede = 'S0'
+    } else if (parseInt(sede) === 3) {
+        codsede = 'GA'
+    } else if (parseInt(sede) === 4) {
+        codsede = 'SM'
     }
-  //console.log(codsede,anio,materia)
+    //console.log(codsede,anio,materia)
     try {
-        let ncomisiones = await traerNumerosComisiones(anio,materia)
+        let ncomisiones = await traerNumerosComisiones(anio, materia)
         //console.log(ncomisiones)
         const rows = await axios.get(`${uri}/detalleporcomisiones/${anio}/${ncomisiones}/${codsede}/${recursado}/${propuesta}`)
-       // console.log(rows.data)
+        // console.log(rows.data)
         return rows.data
 
     } catch (error) {
@@ -134,7 +134,7 @@ export const traerDetalleComisiones = async (anio,materia, sede,recursado, propu
 
 //comisionesperiodo lectivo
 export const traerComisionesPerLect = async (anio) => {
-       
+
 
     try {
         const rows = await axios.get(`${uri}/comisionesperlect/${anio}`)
@@ -142,7 +142,7 @@ export const traerComisionesPerLect = async (anio) => {
 
     } catch (err) {
         console.log(err)
-        
+
     }
 }
 
@@ -150,7 +150,7 @@ export const traerComisionesPerLect = async (anio) => {
 //traer inscriptos por actividad sede
 
 export const traerpropuestaversion = async (propuesta) => {
-    
+
     try {
         const rows = await axios.get(`${uri}/propuestaversionact/${propuesta}`)
         //console.log(rows)
@@ -164,8 +164,8 @@ export const traerpropuestaversion = async (propuesta) => {
 
 //traer inscriptos por actividad sede
 
-export const traerInscriptosPropuestaSede = async (anio,sede,versionact) => {
-    
+export const traerInscriptosPropuestaSede = async (anio, sede, versionact) => {
+
     try {
         const rows = await axios.get(`${uri}/inscriptospropuestasede/${anio}/${sede}/${versionact}`)
         //console.log(rows)
@@ -180,8 +180,8 @@ export const traerInscriptosPropuestaSede = async (anio,sede,versionact) => {
 
 ///traer inscriptos por actividad sede
 
-export const traerInscriptosactividadSede = async (anio,sede) => {
-    
+export const traerInscriptosactividadSede = async (anio, sede) => {
+
     try {
         const rows = await axios.get(`${uri}/cantiInscActividadComi/${anio}/${sede}`)
         //console.log(rows)
@@ -194,8 +194,8 @@ export const traerInscriptosactividadSede = async (anio,sede) => {
 }
 
 //comparativas anio sede
-export const traerComparativaInscripcionesAnio = async(anio,sede)=>{
-    console.log(sede,anio)
+export const traerComparativaInscripcionesAnio = async (anio, sede) => {
+    console.log(sede, anio)
     try {
         const rows = await axios.get(`${uri}/comparativas/${anio}/${sede}`)
         //console.log(rows.data)
@@ -205,11 +205,12 @@ export const traerComparativaInscripcionesAnio = async(anio,sede)=>{
     }
 }
 
+//traera actividades historicas segun filtros
 
-
-export const traerActividadesHistoricas = async(sede, anioI)=>{
+export const traerActividadesHistoricas = async (sede, propuesta, periodo, anioI) => {
+    //console.log(sede, propuesta, periodo, anioI)
     try {
-        const rows = await axios.get(`${uri}/actividadeshistoricos/${sede}/${anioI}`)
+        const rows = await axios.get(`${uri}/actividadeshistoricos/${sede}/${propuesta}/${periodo}/${anioI}`)
         //console.log(anioI,sede)
         return rows.data
     } catch (error) {
@@ -218,11 +219,12 @@ export const traerActividadesHistoricas = async(sede, anioI)=>{
 }
 
 
-export const datosHistoricosResultados= async (anioI,anioF, sede, actividad, tcomi)=>{
-    
-    
+//trae los resultados historicos segun filtros
+export const datosHistoricosResultados = async (sede, propuesta, periodo, actividad, anioI, anioF) => {
+    console.log(sede, propuesta, periodo, actividad, anioI, anioF)
+
     try {
-        const rows = await axios.get(`${uri}/historicoIndice/${sede}/${anioI}/${anioF}/${actividad}/${tcomi}`)
+        const rows = await axios.get(`${uri}/historicoIndice/${sede}/${propuesta}/${periodo}/${actividad}/${anioI}/${anioF}`)
         return rows.data
     } catch (error) {
         console.log(error)
@@ -232,8 +234,8 @@ export const datosHistoricosResultados= async (anioI,anioF, sede, actividad, tco
 
 
 //comparativas inscripciones actividad
-export const traerComparativaInscripcionesActividad = async (anio,sede,actividad,pgenerico) => {
-    
+export const traerComparativaInscripcionesActividad = async (anio, sede, actividad, pgenerico) => {
+
     try {
         const rows = await axios.get(`${uri}/comparativaActividad/${anio}/${sede}/${actividad}/${pgenerico}`)
         //console.log(rows.data)
@@ -256,7 +258,7 @@ export const traerEvaluacionActividad = async (sede, anio, actividad) => {
     } catch (error) {
 
         console.log(error)
-    }   
+    }
 }
 
 
@@ -269,7 +271,7 @@ export const traerEvaluacionDocentes = async (iddocent) => {
     } catch (error) {
 
         console.log(error)
-    }   
+    }
 }
 
 //inscripciones a cursadas por sede propuesta plan version
@@ -277,21 +279,21 @@ export const traerEvaluacionDocentes = async (iddocent) => {
 //traer comisiones de cursadas año actual
 
 export const traerComisionesCursadasAnio = async (periodo) => {
-        
-        try {
-            const rows = await axios.get(`${uri}/comisionesperiodo/${periodo}`)
-            //console.log(rows)
-            return rows.data
-    
-        } catch (error) {
-    
-            console.log(error)
-        }       
+
+    try {
+        const rows = await axios.get(`${uri}/comisionesperiodo/${periodo}`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }
 }
 
 
 //inscripciones
-export const traerInscripcionesCursadasSedepropuesta = async (anio) => {    
+export const traerInscripcionesCursadasSedepropuesta = async (anio) => {
     try {
         const rows = await axios.get(`${uri}/traerinscriptostotsede/${anio}`)
         //console.log(rows)
@@ -306,7 +308,7 @@ export const traerInscripcionesCursadasSedepropuesta = async (anio) => {
 
 
 //alumnos
-export const traerInscritosCursadaSedepropuesta = async (anio) => {   
+export const traerInscritosCursadaSedepropuesta = async (anio) => {
     try {
         const rows = await axios.get(`${uri}/alumnosinscriptos/${anio}`)
         //console.log(rows)
@@ -315,6 +317,6 @@ export const traerInscritosCursadaSedepropuesta = async (anio) => {
     } catch (error) {
 
         console.log(error)
-    }   
+    }
 
 }

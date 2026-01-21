@@ -15,13 +15,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { traeResultadosMesasPeriodo, traerPeriodosExamen, traerResultadoTurno } from '../../services/servicesExamenes';
 
 import ReporteResultadoExamen from '../../components/reportes/ReporteResultadoExamen';
 import { AccessTime, CalendarToday, LocationOn } from '@mui/icons-material';
+import ErrorAlertDialog from '../common/ErrorAlertDialog';
+
 
 // Opciones de año (puedes obtenerlas de otra fuente o pasarlas como prop)
 const years = [2019,2020,2021,2022, 2023, 2024,2025,2026,2027,2028,2029,2030,2031];
@@ -45,19 +48,48 @@ const TurnosMesasComponent = () => {
   const [llamados, setLlamados]=useState('')
   const [resultados, setResultados]=useState(0)
   const [datosmesa, setDatosmesa]=useState(null)
+  const [errorDialog, setErrorDialog] = useState({
+    open: false,
+    message: '',
+});
+
+
+// Función para cerrar el diálogo de error
+const handleErrorDialogClose = () => {
+    setErrorDialog({ open: false, message: '' });
+};
+
 
   // Cuando cambia el año, se llama a getTurnosMesaAni
   useEffect(() => {
     const fetchTurnos = async () => {
       try {
-       
+       setErrorDialog({ open: false, message: '' });
         const response = await  traerPeriodosExamen(selectedYear) 
-        //console.log(response)
+      if (!Array.isArray(response)) {
+            const errorMessage = (typeof response === 'object' && response !== null && response.message) 
+                               ? response.message 
+                               : `El servicio devolvió un formato de datos inesperado. Respuesta recibida: ${JSON.stringify(response)}`;
+            
+            // Mostrar la ventana de error
+            setErrorDialog({ 
+                open: true, 
+                message: errorMessage 
+            });
+
+            // Si falla, los turnos se quedan vacíos
+            setTurnos([]);
+      }else{
         setTurnos(response);
+      }
         setSelectedTurnoPeriodo(''); // reiniciar turno
         setMesas([]); // reiniciar mesas
       } catch (error) {
         console.error('Error al obtener turnos:', error);
+        setErrorDialog({
+            open: true,
+            message: `Ocurrió un error de conexión o servidor: ${error.message || 'Error desconocido'}`,
+        });
       }
     };
     if (selectedYear) {
@@ -200,15 +232,20 @@ const TurnosMesasComponent = () => {
                 </Box>
               }
             >
-              <MenuItem value="">
-                <em>Seleccione un turno</em>
-              </MenuItem>
-              {turnos.map((item, index) => (
-                <MenuItem key={index} value={item.turno_examen_periodo}>
-                  {item.turno_examen_nombre}
+             <MenuItem value="">
+                  <em>Seleccione un turno</em>
                 </MenuItem>
-              ))}
-            </Select>
+                
+                {/* 🚨 Lógica Modificada para el manejo de turnos */}
+                {turnos && turnos.length > 1 ? (
+                  // Opción 1: Si hay turnos, se mapean los items
+                  turnos.map((item, index) => (
+                    <MenuItem key={index} value={item.turno_examen_periodo}>
+                      {item.turno_examen_nombre}
+                    </MenuItem>
+                  ))
+                ) : null}
+              </Select>
             {!turnosAvailable && (
               <Box component="span" sx={{ fontSize: '0.75rem', color: 'error.main', mt: 0.5 }}>
                 Seleccione un año primero para cargar los turnos.
@@ -289,9 +326,20 @@ const TurnosMesasComponent = () => {
       </Paper>:null}
 
       <br />
-      {datosmesa ? <ReporteResultadoExamen datosmesa={datosmesa}  />:null
+      {datosmesa && datosmesa.length > 0 ? <ReporteResultadoExamen datosmesa={datosmesa}  />
+      :<Box>
+        <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 4 }}>
+          No hay datos para mostrar. Por favor, seleccione los filtros correspondientes.
+        </Typography>
+      </Box>
       }
-      
+      <ErrorAlertDialog
+        open={errorDialog.open}
+        message={errorDialog.message}
+        handleClose={handleErrorDialogClose}
+        // Opcional: puedes cambiar el título si es necesario:
+        // title="Fallo en la carga de turnos" 
+      />
       
     </Container>
   );

@@ -10,7 +10,7 @@ import AprobadasAñoIngresantes from "../../pages/reportes/AprobadasAñoIngresan
 import AprobadasHistoricosprimer from "../../pages/historicosAp/AprobadasHistoricosprimer";
 import ComisionesCursadasAnioResultado from "../../pages/cursadas/ComisionesCursadasAnioResultado";
 import ComisionesInscripcionesActividad from "../../pages/cursadas/ComisionesInscripcionesActividad";
-import ComisionesResultadosHistoricos from "../../pages/historicosAp/ComisionesResultadosHistoricos";
+//import ComisionesResultadosHistoricos from "../../pages/historicosAp/ComisionesResultadosHistoricos";
 import CompararaAspiIngresoLapso from "../../pages/inscriptos/CompararaAspiIngresoLapso";
 import ComparativaTurnosExamen from "../../pages/examenes/ComparativaTurnosExamen";
 import ComparativasInscripcionesActividad from "../../pages/cursadas/ComparativaInscripcionesActividad";
@@ -36,112 +36,113 @@ import ReporteComisionesContacto from "../../pages/reportes/ReporteComisionesCon
 import ReporteExamenEpocas from "../../pages/reportes/ReporteExamenEpocas";
 import ReporteGeneral from "../../pages/reportes/ReporteGeneral";
 import TurnosMesasComponent from "../../pages/examenes/TurnosMesasComponent";
+import DashboardActividades from "../../pages/rendimiento/DashboardActividades";
 
 //cursadas
 
 //rendimiento
 
-const AppRoutes = ({onLogout, user}) => {
+const AppRoutes = ({ onLogout, user }) => {
 
   const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
   return (
     <BrowserRouter>
-     
-      
-      <NavigationBar onLogout={onLogout} user={user}  />
+
+
+      <NavigationBar onLogout={onLogout} user={user} />
 
       <Routes>
 
         <Route exact path="/" element={<HomePage />} />
-        
-        {esAdmin && <> 
-        <Route exact path="/ingresantes" element={<IngresantesAspirantes />} /> {/** aspirantes ingresantes */}
-        <Route
-          exact
-         // path="/ingresantesanios"
-          element={<IngresantesPageEntreAnios />}
-        />
 
-        <Route exact path="/inscriptos" element={<InscriptosPage />} />
-        <Route
-          exact
-         // path="/inscriptosanios"
-          element={<InscriptosPageEntreAnios />}
-        />
-        <Route
-          exact
-         // path="/compaaspingre"
-          element={<CompararaAspiIngresoLapso />}
-        />
+        {esAdmin && <>
+          <Route exact path="/ingresantes" element={<IngresantesAspirantes />} /> {/** aspirantes ingresantes */}
+          <Route
+            exact
+            // path="/ingresantesanios"
+            element={<IngresantesPageEntreAnios />}
+          />
 
-        <Route exact path="/info-ciclo-lectivo" element={<ActividadAcademicaPage />}/>{/**actividad academica año lectivo */}
+          <Route exact path="/inscriptos" element={<InscriptosPage />} />
+          <Route
+            exact
+            // path="/inscriptosanios"
+            element={<InscriptosPageEntreAnios />}
+          />
+          <Route
+            exact
+            // path="/compaaspingre"
+            element={<CompararaAspiIngresoLapso />}
+          />
 
-        <Route
-          exact
-          path="/egreaniocarrera"
-          element={<EgresadosAnioListado />}
-        />
-        <Route exact path="/egreanios" element={<EgresadosEntreAnios />} />
-        <Route
-          exact
-          path="/egreanioscar"
-          element={<EgresadosEntreAniosCarrera />}
-        />
+          <Route exact path="/info-ciclo-lectivo" element={<ActividadAcademicaPage />} />{/**actividad academica año lectivo */}
 
-        <Route exact path="/estudiantes-activos" element={<AlumnosPage />} />
+          <Route
+            exact
+            path="/egreaniocarrera"
+            element={<EgresadosAnioListado />}
+          />
+          <Route exact path="/egreanios" element={<EgresadosEntreAnios />} />
+          <Route
+            exact
+            path="/egreanioscar"
+            element={<EgresadosEntreAniosCarrera />}
+          />
 
-        <Route
-          exact
-          path="/cohorte-evolucion"
-          element={<AlumnosCohorteDesgrana />}
-        />
+          <Route exact path="/estudiantes-activos" element={<AlumnosPage />} />
+
+          <Route
+            exact
+            path="/cohorte-evolucion"
+            element={<AlumnosCohorteDesgrana />}
+          />
 
 
 
-       
 
-        <Route
-          exact
-          path="/comisiones-cursadas-anio"
-          element={<ComisionesCursadasAnioResultado />}
-        />
-      
-      <Route
-          exact
-          path="/consuopenai"
-          element={<ConsuOpenAI />}
-        />  
-      
-      
-      
-      
-        <Route
-          exact
-          path="/comparativaInsc"
-          element={<ComparativasInscripcionesActividad />}
-        />
+
+          <Route
+            exact
+            path="/comisiones-cursadas-anio"
+            element={<ComisionesCursadasAnioResultado />}
+          />
+
+          <Route
+            exact
+            path="/consuopenai"
+            element={<ConsuOpenAI />}
+          />
+
+
+
+
+          <Route
+            exact
+            path="/comparativaInsc"
+            element={<ComparativasInscripcionesActividad />}
+          />
 
           <Route
             exact
             path="/aprobadas-carrera-1er-anio"
             element={<AprobadasAnioResultado />}
-          
+
           />
 
-          <Route  
+          <Route
             exact
             path='/aprobadas-primer-anio-reporte'
             element={<AprobadasAñoIngresantes />}
           />
 
-          <Route 
+          <Route
             exact
-            path='/listadoaluinfo'
+            path='/listado-alumnos-info-rendimiento'
             element={<ListadoAluInfoCompleto />}
 
           />
-           
-           <Route  
+
+          <Route
             exact
             path='/datosactividadreport'
             element={<DatosActividadesIngresantes />}
@@ -152,45 +153,45 @@ const AppRoutes = ({onLogout, user}) => {
             exact
             path="/historicosAprobadas"
             element={<AprobadasHistoricosprimer />}
-            />
+          />
 
 
           <Route
-          exact
-          path="/historicoresuActividad"
-          element={< ComisionesResultadosHistoricos />}
-          //path="/infocursadasanio"
-          //element={<InfoCursadasAnio />}
-        />
-        
-        <Route
-          exact
-          path="/inscripcionesComi"
-          element={<ComisionesInscripcionesActividad />}
-        />
-
-        <Route
-          exact
-          path="/indicetotperiodo"
-          element={<IndicesTotalPeriodo />}
+            exact
+            path="/historicoresuActividad"
+            // element={< ComisionesResultadosHistoricos />}
+            //path="/infocursadasanio"
+            element={<DashboardActividades />} //actualizacion de la ruta de analisis de actividades
           />
 
-        <Route exact path="/alumnos-coeficiente" element={<AlumnosInfoUno />} /> {/** alumnos coeficiente de tiempo*/}
+          <Route
+            exact
+            path="/inscripcionesComi"
+            element={<ComisionesInscripcionesActividad />}
+          />
 
-        <Route exact path="/meshoras" element={<PersonalMesHoras />} />
+          <Route
+            exact
+            path="/indicetotperiodo"
+            element={<IndicesTotalPeriodo />}
+          />
 
-       
-        <Route exact path= '/reporteexamenescp' element = {< ComparativaTurnosExamen />} />
-        
-        <Route exact path= '/reporteexamenes' element = {<TurnosMesasComponent />} />
+          <Route exact path="/alumnos-coeficiente" element={<AlumnosInfoUno />} /> {/** alumnos coeficiente de tiempo*/}
 
-        <Route exact path= '/reportecomicontacto' element = {<ReporteComisionesContacto />} />
+          <Route exact path="/meshoras" element={<PersonalMesHoras />} />
 
-        <Route exact path='/reporteepocasexamen' element ={<  ReporteExamenEpocas/>} />
 
-        <Route exact path= '/dashboard' element = {<Dashboard />} />
+          <Route exact path='/reporteexamenescp' element={< ComparativaTurnosExamen />} />
 
-        <Route exact path= '/reportegeneral' element = {<ReporteGeneral />} />
+          <Route exact path='/reporteexamenes' element={<TurnosMesasComponent />} />
+
+          <Route exact path='/reportecomicontacto' element={<ReporteComisionesContacto />} />
+
+          <Route exact path='/reporteepocasexamen' element={<  ReporteExamenEpocas />} />
+
+          <Route exact path='/dashboard' element={<Dashboard />} />
+
+          <Route exact path='/reportegeneral' element={<ReporteGeneral />} />
 
 
         </>}
@@ -198,7 +199,7 @@ const AppRoutes = ({onLogout, user}) => {
         <Route
           exact
           path="/infocursadalistado"
-         element={<InfoCursadasAnio />}
+          element={<InfoCursadasAnio />}
         />
 
         <Route path="*" element={<PageNotFound />} />

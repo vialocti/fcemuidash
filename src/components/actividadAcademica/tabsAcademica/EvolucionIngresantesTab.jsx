@@ -163,7 +163,9 @@ const EvolucionIngresantesTab = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Evolución de Ingresantes
       </Typography>
-
+      <Typography variant="subtitle1" gutterBottom>
+       (Numero  de Estudiantes por  cantidad de Actividades Aprobadas en el año de Ingreso)
+      </Typography>
       <hr/>
 
       {/* --- RESUMEN GENERAL (sin cambios) --- */}
