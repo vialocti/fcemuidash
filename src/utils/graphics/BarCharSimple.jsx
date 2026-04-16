@@ -1,127 +1,52 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Box, useTheme } from '@mui/material';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useTheme } from '@mui/material';
 
-// Es crucial registrar todos los elementos de Chart.js y el plugin Datalabels
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartDataLabels // ⬅️ Plugin para mostrar los números en la barra
-);
+const BarChartSimple = ({ data, color }) => {
+    const theme = useTheme();
 
-/**
- * Componente de gráfico de barras simple usando react-chartjs-2.
- * Muestra el valor numérico en color negro sobre cada barra.
- * * @param {object} props
- * @param {object} props.data - Objeto con las sedes y sus valores (ej: {mza: 100, sr: 50, ...})
- * @param {string} props.title - Título del gráfico (ej: "Total: 1234").
- * @param {string} props.color - Color principal de la paleta MUI para las barras (ej: 'success').
- */
-const BarChartSimple = ({ data, title, color = 'primary' }) => {
-  const theme = useTheme();
+    // Convertimos el objeto de datos {mza: 10, sr: 5...} al formato que Recharts entiende
+    const chartData = Object.entries(data || {}).map(([key, value]) => ({
+        name: key.toUpperCase(),
+        value: value
+    }));
 
-  // 1. Preparación de datos
-  const labels = ['Mza', 'S.R.F.', 'G.A.', 'Este'];
-  const values = [data.mza || 0, data.sr || 0, data.ga || 0, data.es || 0];
-  
-  // Obtener colores del tema MUI
-  const mainColor = theme.palette[color].main;
-  const hoverColor = theme.palette[color].dark;
-  const secondaryTextColor = theme.palette.text.secondary;
+    // Lógica de color segura: 
+    // Si 'color' es un hex (#...), lo usamos. 
+    // Si no, intentamos buscarlo en el tema. 
+    // Si falla, usamos el primario por defecto.
+    const getBarColor = () => {
+        if (color?.startsWith('#')) return color;
+        return theme.palette[color]?.main || theme.palette.primary.main;
+    };
 
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        label: 'Cantidad',
-        data: values,
-        backgroundColor: mainColor,
-        hoverBackgroundColor: hoverColor,
-        borderRadius: 4,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false, // Ocultar la leyenda
-      },
-      title: {
-        display: true,
-        text: title,
-        color: secondaryTextColor,
-        font: {
-          size: 14,
-          weight: 'bold',
-        },
-      },
-      // === CONFIGURACIÓN CLAVE PARA EL COLOR DEL NÚMERO ===
-      datalabels: { 
-          // 💡 Color del texto que aparece sobre la barra
-          color: '#000000', // Establecido a color NEGRO para alto contraste
-          anchor: 'end',    // Posiciona el número al final de la barra
-          align: 'end',     // Alineación
-          offset: 4,        // Separación de la barra
-          font: {
-            weight: 'bold',
-            size: 12
-          },
-          // Función para mostrar el valor (oculta los ceros)
-          formatter: (value) => value > 0 ? value : null 
-      },
-      // ====================================================
-      tooltip: {
-        callbacks: {
-          title: (tooltipItem) => tooltipItem[0].label,
-          label: (tooltipItem) => `Cantidad: ${tooltipItem.formattedValue}`,
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          color: secondaryTextColor,
-          precision: 0,
-        },
-        grid: {
-          display: false, // Ocultar líneas horizontales para un look más limpio
-        }
-      },
-      x: {
-        ticks: {
-          color: secondaryTextColor,
-        },
-        grid: {
-          display: false,
-        }
-      }
-    },
-  };
-
-  return (
-    <Box sx={{ height: 300, p: 2 }}>
-      {/* El componente Bar renderiza el gráfico */}
-      <Bar data={chartData} options={options} />
-    </Box>
-  );
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    style={{ fontSize: '12px', fontWeight: 600 }}
+                />
+                <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    style={{ fontSize: '12px' }}
+                />
+                <Tooltip 
+                    cursor={{ fill: '#f5f5f5' }}
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0px 4px 12px rgba(0,0,0,0.1)' }}
+                />
+                <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={40}>
+                    {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getBarColor()} />
+                    ))}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
 };
 
 export default BarChartSimple;

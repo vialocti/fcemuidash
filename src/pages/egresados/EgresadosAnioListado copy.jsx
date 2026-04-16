@@ -454,7 +454,7 @@ const EgresadosAnioListado = () => {
                 )}
                 <Box sx={{ mt: 2, pt: 1, borderTop: "1px dashed #ddd" }}>
                   <Typography variant="caption" display="block">
-                    Promedio: {h.prom}
+                    Nota: {h.prom}
                   </Typography>
                   <Typography variant="caption" display="block">
                     Duración: {h.dur}a
@@ -680,7 +680,7 @@ const EgresadosAnioListado = () => {
                           mb: 1,
                         }}
                       >
-                        <Typography variant="body2">Promedio:</Typography>
+                        <Typography variant="body2">Nota Promedio:</Typography>
                         <Typography
                           variant="body2"
                           color="secondary"
@@ -732,7 +732,21 @@ const EgresadosAnioListado = () => {
               titulo={`Evolución histórica — Ciclo ${getNombreLapso(lapso)} (años completos)`}
               subtitulo={`Comparativo de los últimos 5 años considerando el total del período ${getNombreLapso(lapso).toLowerCase()} completo. El año ${anio} incluye todos los egresos registrados.`}
             />
-            
+            <Box
+              sx={{
+                p: 2,
+                mb: 2,
+                bgcolor: "#e8f5e9",
+                borderRadius: 2,
+                border: "1px solid #a5d6a7",
+              }}
+            >
+              <Typography variant="body2">
+                <b>Nota:</b> Totales completos del ciclo {getNombreLapso(lapso)}{" "}
+                para cada año. El año {anio} incluye todos los egresos del
+                período completo.
+              </Typography>
+            </Box>
           </Grid>
           <Grid item xs={12}>
             <CardsEvolucion
@@ -762,7 +776,19 @@ const EgresadosAnioListado = () => {
             </Tabs>
           </Grid>
           <Grid item xs={12}>
-        
+            <Box
+              sx={{
+                p: 2,
+                mb: 2,
+                bgcolor: "#fffde7",
+                borderRadius: 2,
+                border: "1px solid #ffe082",
+              }}
+            >
+              <Typography variant="body2">
+                <b>Promedio:</b> {notaEvolucion}
+              </Typography>
+            </Box>  
           </Grid>
           <Grid item xs={12}>
             <CardsEvolucion

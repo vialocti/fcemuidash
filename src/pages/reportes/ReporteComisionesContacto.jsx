@@ -8,13 +8,6 @@ import {
   Button,
   FormControl,
   InputLabel,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Box,
   Alert,
   Grid,
@@ -55,10 +48,10 @@ const ReporteComisionesContacto = () => {
             <FormControl fullWidth margin="normal">
                 <InputLabel>Sede</InputLabel>
                 <Select value={sede} onChange={(e) => setSede(e.target.value)}>
-                <MenuItem value="1">Mendoza</MenuItem>
-                <MenuItem value="2">San Rafael</MenuItem>
-                <MenuItem value="3">Gral Alvear</MenuItem>
-                <MenuItem value="4">Este</MenuItem>
+                 <MenuItem value="0">FCE</MenuItem>
+                 <MenuItem value="1">Mendoza</MenuItem>
+                 <MenuItem value="2">San Rafael</MenuItem>
+                 <MenuItem value="4">Este</MenuItem>
                 </Select>
             </FormControl>
 

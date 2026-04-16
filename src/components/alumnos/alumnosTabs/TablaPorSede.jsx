@@ -32,23 +32,23 @@ const TablaPorSede = ({ alumnosSede }) => (
                     
                   <TableRow>
                       <TableCell>MENDOZA</TableCell>
-                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPmza}</TableCell>
-                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLA19 + alumnosSede.cantiLA98}</TableCell>
-                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLE19 + alumnosSede.cantiLE98}</TableCell>
+                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPmza + alumnosSede.cantiCP26mza}</TableCell>
+                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLA19 + alumnosSede.cantiLA98 + alumnosSede.cantiLA26}</TableCell>
+                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLE19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE26}</TableCell>
                       <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiLLOmza + alumnosSede.cantiLLO2mza}</TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell>
                       <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPNmza}</TableCell> 
-                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiCPmza + alumnosSede.cantiCPNmza + alumnosSede.cantiLA19 + alumnosSede.cantiLA98 + alumnosSede.cantiLE19 + alumnosSede.cantiLE98 + alumnosSede.cantiLLOmza + alumnosSede.cantiLLO2mza}</strong></TableCell>
+                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiCP26mza + alumnosSede.cantiLA26  + alumnosSede.cantiLE26 + alumnosSede.cantiCPmza + alumnosSede.cantiCPNmza + alumnosSede.cantiLA19 + alumnosSede.cantiLA98 + alumnosSede.cantiLE19 + alumnosSede.cantiLE98 + alumnosSede.cantiLLOmza + alumnosSede.cantiLLO2mza}</strong></TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>SAN RAFAEL</TableCell>
-                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPsr}</TableCell>
+                      <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPsr + alumnosSede.cantiCP26sr}</TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell>
                       <TableCell style={{ textAlign: 'right' }}></TableCell>
                       <TableCell style={{ textAlign: 'right' }}>{alumnosSede.cantiCPNsr}</TableCell> 
-                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiCPsr + alumnosSede.cantiCPNsr}</strong></TableCell>
+                      <TableCell style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiCPsr  + alumnosSede.cantiCP26sr + alumnosSede.cantiCPNsr}</strong></TableCell>
                     </TableRow>
                    
                     <TableRow>
@@ -77,13 +77,13 @@ const TablaPorSede = ({ alumnosSede }) => (
                       </TableRow>
                     <TableRow>
                       <TableCell>TOTAL</TableCell>
-                      <TableCell  style={{ textAlign: 'right' }} ><strong>{alumnosSede.cantiCPmza + alumnosSede.cantiCPsr}</strong></TableCell>
-                      <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLA19 + alumnosSede.cantiLA98}</strong></TableCell>
-                      <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLE19 + alumnosSede.cantiLE98}</strong></TableCell>
+                      <TableCell  style={{ textAlign: 'right' }} ><strong>{alumnosSede.cantiCPmza + alumnosSede.cantiCPsr + alumnosSede.cantiCP26mza + alumnosSede.cantiCP26sr}</strong></TableCell>
+                      <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLA19 + alumnosSede.cantiLA98 + alumnosSede.cantiLA26}</strong></TableCell>
+                      <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLE19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE26}</strong></TableCell>
                       <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLLOmza + alumnosSede.cantiLLO2mza + alumnosSede.cantiLLOeste + alumnosSede.cantiLLO2este}</strong></TableCell>
                       <TableCell  style={{ textAlign: 'right' }}><strong>{parseInt(alumnosSede.cantiLNRGgval) + parseInt(alumnosSede.cantiLNRGeste)}</strong></TableCell>
                       <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiCPNmza + alumnosSede.cantiCPNsr}</strong></TableCell>
-                      <TableCell  style={{ textAlign: 'right' }}><strong>{alumnosSede.cantiLA98 + alumnosSede.cantiLA19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE19 + alumnosSede.cantiCP + alumnosSede.cantiLLO + alumnosSede.cantiLLO2 + alumnosSede.cantiLNRG + alumnosSede.cantiCPN}</strong></TableCell>
+                      <TableCell  style={{ textAlign: 'right' }}><strong>{ alumnosSede.cantiCP26mza + alumnosSede.cantiCP26sr + alumnosSede.cantiLA26 + alumnosSede.cantiLE26 +  alumnosSede.cantiLA98 + alumnosSede.cantiLA19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE19 + alumnosSede.cantiCP + alumnosSede.cantiLLO + alumnosSede.cantiLLO2 + alumnosSede.cantiLNRG + alumnosSede.cantiCPN}</strong></TableCell>
    
                     </TableRow>
    

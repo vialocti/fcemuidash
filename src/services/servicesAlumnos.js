@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { URI_ALU } from '../utils/constantes.js'
+import { URI_ALU, URI_ALUI } from '../utils/constantes.js'
 
 const uri = URI_ALU
+const uri_alui= URI_ALUI
 //const uri = 'http://200.12.136.75:5000/alutivos'
 /*
 
@@ -11,6 +12,7 @@ router.get('/alumsactpro', getAlumnosPorPropuesta)
 router.get('/alumsactubipro', getAlumnosPorUbiPropuesta)
 router.get('/reinscriptos/:anio', getReinscriptosUbiProp)
 /cohorteevol/:anioI/:sede/:carrera/:anioFC/:tipoI
+/alumnossinmatricular/:anioac
 */
 
 export const traerAlumosUbiPro = async () => {
@@ -25,6 +27,23 @@ export const traerAlumosUbiPro = async () => {
         console.log(error)
     }
 }
+
+
+//
+export const traerAlumosSinMatricular= async (anioac) => {
+    //console.log(`${uri}/inscrTotalIngreso/${anio}`)
+    try {
+        const rows = await axios.get(`${uri}/alumnossinmatricular/${anioac}`)
+        //console.log(rows)
+        return rows.data
+
+    } catch (error) {
+
+        console.log(error)
+    }
+}
+
+
 //alumnos sin legajos
 export const traerAlumosProvisoriosUP = async () => {
     //console.log(`${uri}/inscrTotalIngreso/${anio}`)
@@ -81,3 +100,15 @@ export const traerDesmebraCohorte = async (anioI, sede, carrera, anioFC, tipoI) 
 }
 
 
+
+export const traerReinscriptosAnioALU = async (anio) => {
+
+    //console.warn(`${uri}/cohorteevol/${anioI}/${sede}/${carrera}/${anioFC}/${tipoI}`)
+    try {
+        const {data} = await axios.get(`${uri_alui}/traerReinscriptos/${anio}`)
+        //console.log(rows.data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -1,260 +1,287 @@
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
   Container,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   Typography,
-} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { traerComisionesPerLect, traerComparativaInscripcionesActividad, traerListadoAlumnosComision, traerListadoComisiones } from '../../services/servicesCursadas.js'
+  Paper,
+  Box,
+  Divider,
+  Fade,
+  Stack,
+  Grid
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-import PestañasComisiones from '../../components/cursadas/infocursadas/PestañasComisiones.jsx'
-import TablaComparativaInscripciones from '../../components/cursadas/TablaComparativaInscripciones.jsx'
+// --- SERVICIOS ---
+import { 
+  traerComisionesPerLect, 
+  traerComparativaInscripcionesActividad, 
+  traerListadoAlumnosComision, 
+  traerListadoComisiones 
+} from '../../services/servicesCursadas.js';
+
+// --- COMPONENTES ---
+import PestañasComisiones from '../../components/cursadas/infocursadas/PestañasComisiones.jsx';
+import TablaComparativaInscripciones from '../../components/cursadas/TablaComparativaInscripciones.jsx';
 
 const InfoCursadasAnio = () => {
-  const [comisionesAnio, setComisionesAnio] = useState(null)
- const [comisionesAnioSel, setComisionesAnioSel] = useState(null)
-  const [sedeComisionesPLM, setSedeComisionesPLM] = useState(null)
-  const [comisiones, setComisiones] = useState(null)
-  const [comisionNombre, setComisionNombre] = useState('')
-  const [pgenerico, setPgenerico] = useState('')
-  const [periodo, setPeriodo] = useState('')
-  const [comision, setComision] = useState('')
-  const [anio, setAnio] = useState(0)
-
-  const [sedeSel, setSedeSel] = useState('')
-  const [periodosPorSede, setPeriodosPorSede] = useState([])
-  const [actividad, setActividad] = useState('')
-  const [actividadesUnicas, setActividades] = useState([])
-  const [datos, setDatos] = useState(null)
-  const [procesado, setProcesado]=useState(false)
-  const [habilitado, sethabilitado]=useState(false)
-
-  useEffect(() => {
-    let fecha = new Date().toISOString()
-    let fechacompa = fecha.substring(0, 4) + '-04-01'
-    setAnio(Number(fecha.substring(0, 4)) - (fecha < fechacompa ? 1 : 0))
-  }, [])
-
-  useEffect(() => {
-    const cargar = async () => {
-      setComisionesAnio(await traerListadoComisiones(anio))
-      setSedeComisionesPLM(await traerComisionesPerLect(anio))
-    }
-    cargar()
-  }, [anio])
-
-
+  // --- ESTADOS DE DATOS ---
+  const [comisionesAnio, setComisionesAnio] = useState(null);
+  const [sedeComisionesPLM, setSedeComisionesPLM] = useState(null);
+  const [comisiones, setComisiones] = useState(null);
+  const [datos, setDatos] = useState(null);
   
+  // --- ESTADOS DE SELECCIÓN ---
+  const [anio, setAnio] = useState(new Date().getFullYear());
+  const [sedeSel, setSedeSel] = useState('');
+  const [periodo, setPeriodo] = useState('');
+  const [pgenerico, setPgenerico] = useState('');
+  const [actividad, setActividad] = useState('');
   
-  const traerubicacion = sede => ({ MZA: 1, SRF: 2, ESTE: 4 }[sede] || null)
+  // --- ESTADOS DE UI ---
+  const [periodosPorSede, setPeriodosPorSede] = useState([]);
+  const [actividadesUnicas, setActividadesUnicas] = useState([]);
+  const [procesado, setProcesado] = useState(false);
 
+  // --- CARGA INICIAL (LISTADO COMPLETO DEL AÑO) ---
+  useEffect(() => {
+    const cargarDatosBase = async () => {
+      try {
+        const [listado, porSede] = await Promise.all([
+          traerListadoComisiones(anio),
+          traerComisionesPerLect(anio)
+        ]);
+ //       console.log(listado)
+ //     console.log(porSede)
+        setComisionesAnio(listado);
+        setSedeComisionesPLM(porSede);
+      } catch (error) {
+        console.error("Error al cargar datos iniciales:", error);
+      }
+    };
+    cargarDatosBase();
+  }, [anio]);
+
+  // --- HELPERS DE MAPEOS ---
+  const traerubicacion = sede => ({ MZA: 1, SRF: 2, ESTE: 4 }[sede] || null);
+  
   const traerPgenerico = nombre => ({
     'Anual': 1, '1er Cuatrimestre': 2, '2do Cuatrimestre': 3,
     '1er Bimestre': 10, '2do Bimestre': 11,
     '3er Bimestre': 12, '4to Bimestre': 13
-  }[nombre] || null)
+  }[nombre] || null);
 
-  const obtenerPeriodosPorSede = (sede) => {
-    const periodos = sedeComisionesPLM
+  // --- MANEJADORES DE CAMBIO ---
+  const manejarSede = (sede) => {
+    setSedeSel(sede);
+    setPeriodo('');
+    setActividad('');
+    setActividadesUnicas([]);
+    setComisiones(null);
+    setDatos(null);
+    const filtrados = sedeComisionesPLM
       ?.filter(item => item.sede === sede)
-      .map(item => item.nombre)
-    const periodosUnicos = [...new Set(periodos)]
-    setPeriodosPorSede(periodosUnicos)
-  }
-//
-  const mostrarActividades = (sede, nombre) => {
-    let ubi = traerubicacion(sede)
-    let pgen = traerPgenerico(nombre)
-    setPgenerico(pgen)
-    setPeriodo(nombre)
-  
-    const comisionesFiltro = comisionesAnio
-      ?.filter(item => item.ubicacion === ubi && item.periodo_generico === pgen)
-   // console.log(comisionesFiltro)
-    const actividadesUnicas = [...new Set(comisionesFiltro?.map(item => item.mater))]
-     .sort((a, b) => a.localeCompare(b)) // ← Orden alfabético
-   
-     // const actividadesUnicas = [
-     //   ...new Set(comisionesFiltro?.map(item => `${item.mater} (${item.codigo.slice(0, 2)})`))
-     // ].sort((a, b) => a.localeCompare(b));  
+      .map(item => item.nombre);
+    setPeriodosPorSede([...new Set(filtrados)]);
+  };
+
+  const manejarPeriodo = (nombrePeriodo) => {
+    setPeriodo(nombrePeriodo);
+    const ubi = traerubicacion(sedeSel);
+    const pgen = traerPgenerico(nombrePeriodo);
+    setPgenerico(pgen);
+
+    const filtradas = comisionesAnio?.filter(
+      item => item.ubicacion === ubi && item.periodo_generico === pgen
+    );
+    //const unicas = [...new Set(materias.map(item => item.mater))].sort();
+   // const unicas = [...new Set(filtradas?.map(item => item.mater))].sort();
+   const unicas = [...new Set(filtradas?.map(item => {
+    return item.mater
+      .trim()                            // Quita espacios al inicio y final
+      .normalize("NFD")                  // Descompone caracteres con tilde (e.g., "Í" -> "I" + "´")
+      .replace(/[\u0300-\u036f]/g, "")   // Elimina los acentos/diacríticos
+      .toUpperCase();                    // Lo pasa todo a mayúsculas para comparar igual
+  }))].sort();
+
+    //console.log(unicas)
+    setActividadesUnicas(unicas);
+    setActividad('');
+    setComisiones(null);
+  };
+
+  // --- LÓGICA DE BÚSQUEDA ---
+  const ejecutarBusqueda = async () => {
+    if (!actividad) return;
+    
+    setProcesado(true);
+    setComisiones(null);
+    setDatos(null);
+
+    try {
+      // Limpiamos el código de actividad (quitamos el nombre largo)
+      const codAct = actividad.split(':')[0].trim();
       
+      // Ejecución paralela de servicios para rapidez
+      const [comparativa, filtradasRaw] = await Promise.all([
+        traerComparativaInscripcionesActividad(anio, sedeSel, codAct, pgenerico),
+        comisionesAnio?.filter(item => 
+          item.mater === codAct && 
+          item.ubicacion === traerubicacion(sedeSel) && 
+          item.periodo_generico === pgenerico
+        )
+      ]);
 
-   //   const actividadesUnicas =[...new Map(comisionesFiltro.map(item => [item.mater, item])).values()]
-   //   .sort((a, b) => a.mater.localeCompare(b.mater))
+      setDatos(comparativa);
 
-    setActividades(actividadesUnicas)
-    setComision('')
-  }
-  
-  const filtrarComisionesPorActividad = async (actividadNombre, sede, periodoNombre) => {
-    const ubicacion = traerubicacion(sede)
-    const periodoGenerico = traerPgenerico(periodoNombre)
-  
-    const comisionesFiltradas = comisionesAnio
-      ?.filter(item =>
-        item.mater === actividadNombre &&
-        item.ubicacion === ubicacion &&
-        item.periodo_generico === periodoGenerico
-      )
-  
-    const resultados = await Promise.all(
-      comisionesFiltradas.map(async (item) => {
-        const listado = await traerListadoAlumnosComision(item.comision, anio, sedeSel, actividadNombre)
-        const cantidad = Array.isArray(listado) ? listado.length : 0;
-
-        return {
-          comision: item.comision,
-          nombre: item.nmat,
-          alumnos:listado || [],
-          total: cantidad
-        }
-      })
-    )
-  
-   // console.log(resultados)
-    return resultados
-  }
-  useEffect(()=>{
-    if(comisiones){
-    setProcesado(false)
+      // Mapeo detallado de cada comisión con sus alumnos
+      const resultadosComisiones = await Promise.all(
+        filtradasRaw.map(async (item) => {
+          const listadoAlumnos = await traerListadoAlumnosComision(item.comision, anio, sedeSel, codAct);
+          return {
+            comision: item.comision,
+            nombre: item.nmat,
+            alumnos: listadoAlumnos || [],
+            total: Array.isArray(listadoAlumnos) ? listadoAlumnos.length : 0
+          };
+        })
+      );
+      setComisiones(resultadosComisiones);
+    } catch (err) {
+      console.error("Fallo al obtener el reporte:", err);
+    } finally {
+      setProcesado(false);
     }
-  }, [comisiones])
-  
-  const onHandleMostrar = async () => {
-    console.log(actividad)
-    setComisiones(null)
-    setDatos(null)
-    if(!procesado){
-    setProcesado(true)
-    const resultadoI = await traerComparativaInscripcionesActividad(anio, sedeSel, actividad,pgenerico)
-    setDatos(resultadoI)
-    const resultadoC = await filtrarComisionesPorActividad(actividad, sedeSel, periodo)
-    setComisiones(resultadoC)
-    }
-    //console.log(datos)
-  }
-  
-  
+  };
 
   return (
-    <Container>
-      <Grid container spacing={2} sx={{ my: 2 }}>
-        <Grid item xs={12}>
-          <Typography variant="h5" textAlign="center" color="white" backgroundColor="#444444" sx={{ borderRadius: 1 }}>
-            Informe de Inscriptos por Actividad
-          </Typography>
-        </Grid>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* SECCIÓN DE CABECERA */}
+      <Box sx={{ mb: 4 }}>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <AnalyticsIcon sx={{ fontSize: 48, color: '#1e3a8a' }} />
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 900, color: '#111827', letterSpacing: '-0.02em' }}>
+              Inscripciones a Cursar
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Monitoreo de comisiones • Ciclo Lectivo {anio}
+            </Typography>
+          </Box>
+        </Stack>
+      </Box>
 
-        <Grid item xs={12} md={2}>
-          <FormControl fullWidth>
-            <InputLabel id="select-sede-label">Sede</InputLabel>
-            <Select
-              labelId="select-sede-label"
-              value={sedeSel}
-              label="Sede"
-              onChange={(e) => {
-                setSedeSel(e.target.value)
-                setPeriodo('')
-                obtenerPeriodosPorSede(e.target.value)
-                setComisionesAnioSel(null)
-                setComisionNombre(null)
-              }}
-            >
-              {[...new Set(sedeComisionesPLM?.map(item => item.sede))]
-                .filter(sede => sede !== 'GALV')
-                .map((sede, index) => (
-                  <MenuItem key={index} value={sede}>{sede}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} md={3}>
-          <FormControl fullWidth disabled={!sedeSel}>
-            <InputLabel id="select-periodo-label">Periodo Lectivo</InputLabel>
-            <Select
-              labelId="select-periodo-label"
-              value={periodo}
-              label="Periodo Lectivo"
-              onChange={(e) => {
-                const nombre = e.target.value
-                setPeriodo(nombre)
-                mostrarActividades(sedeSel, nombre)
-                setComisiones(null)
-              }}
-            >
-              {periodosPorSede?.map((nombre, index) => (
-                <MenuItem key={index} value={nombre}>
-                  {sedeSel} - {nombre}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} md={5}>
-            <FormControl fullWidth disabled={!actividadesUnicas}>
-                <InputLabel id="select-actividad-label">Actividad</InputLabel>
-                <Select
-                  labelId="select-actividad-label"
-                  value={actividad}
-                  label="Actividad"
-                  onChange={async (e) => {
-                  
-                    const act = e.target.value
-                   
-                    setComisionNombre(null)
-                    setProcesado(false)
-                    setActividad(act)
-                    setComisiones(null)
-                    
-                   
-                  
-                  
-                  }}
-                >
-                  {actividadesUnicas?.map((nombre, index) => (
-                    <MenuItem key={index} value={nombre}>
-                      {nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
+      {/* PANEL DE FILTROS (Paper Grisáceo) */}
+      <Paper elevation={0} sx={{ p: 3, mb: 4, borderRadius: 4, border: '1px solid #f3f4f6', bgcolor: '#f9fafb' }}>
+        <Grid container spacing={3} alignItems="flex-end">
+          <Grid item xs={12} md={2}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Sede</InputLabel>
+              <Select value={sedeSel} label="Sede" onChange={(e) => manejarSede(e.target.value)}>
+                {[...new Set(sedeComisionesPLM?.map(i => i.sede))]
+                  .filter(s => s !== 'GALV')
+                  .map((s, idx) => <MenuItem key={idx} value={s}>{s}</MenuItem>)}
+              </Select>
             </FormControl>
+          </Grid>
 
+          <Grid item xs={12} md={3}>
+            <FormControl fullWidth size="small" disabled={!sedeSel}>
+              <InputLabel>Periodo</InputLabel>
+              <Select value={periodo} label="Periodo" onChange={(e) => manejarPeriodo(e.target.value)}>
+                {periodosPorSede?.map((p, idx) => <MenuItem key={idx} value={p}>{p}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} md={5}>
+            <FormControl fullWidth size="small" disabled={!actividadesUnicas.length}>
+              <InputLabel>Actividad / Materia</InputLabel>
+              <Select value={actividad} label="Actividad / Materia" onChange={(e) => setActividad(e.target.value)}>
+                {actividadesUnicas?.map((a, idx) => <MenuItem key={idx} value={a}>{a}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} md={2}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={ejecutarBusqueda}
+              disabled={!actividad || procesado}
+              startIcon={!procesado && <SearchIcon />}
+              sx={{ 
+                height: 40, 
+                borderRadius: 2, 
+                textTransform: 'none', 
+                fontWeight: '800',
+                bgcolor: '#1e3a8a',
+                '&:hover': { bgcolor: '#1e40af' }
+              }}
+            >
+              {procesado ? <CircularProgress size={20} color="inherit" /> : "Ver Informe"}
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={2}>
-            <Button onClick={onHandleMostrar}>Mostrar</Button>
-        </Grid>          
-      </Grid>
+      </Paper>
 
-      <Grid container spacing={2} alignItems="center">
-       {datos && comisiones ?<>
-       
-        {datos  &&(
-          
-          
-          <TablaComparativaInscripciones datos={datos} />
-        
-      )}
-  
-      {comisiones && comisiones.length > 0 && (
-            
-            <PestañasComisiones comisiones={comisiones} />
-            
-      )}
-      </>
-      :procesado?<>   <CircularProgress size={24} sx={{ mt:4,ml: 2 }} /><Typography variant='h5' sx={{ mt:4,ml: 2 }} >Procesando Datos...</Typography></>:null} 
-      </Grid>
-      
-       
-        
+      {/* ÁREA DE RESULTADOS DINÁMICA */}
+      <Box>
+        {datos && comisiones ? (
+          <Fade in={true} timeout={600}>
+            <Grid container spacing={4}>
+              {/* Tabla Comparativa */}
+              <Grid item xs={12}>
+                <Paper elevation={0} sx={{ p: 3, borderRadius: 4, border: '1px solid #e5e7eb' }}>
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 3 }}>
+                    <InfoOutlinedIcon color="primary" />
+                    <Typography variant="h6" fontWeight="700">Comparativa con Años Anteriores</Typography>
+                  </Stack>
+                  <TablaComparativaInscripciones datos={datos} />
+                </Paper>
+              </Grid>
+
+              {/* Tabs de Comisiones */}
+              <Grid item xs={12}>
+                <Paper elevation={0} sx={{ p: 3, borderRadius: 4, border: '1px solid #e5e7eb' }}>
+                  <Typography variant="h6" fontWeight="700" sx={{ mb: 3 }}>Detalle de Alumnos por Comisión</Typography>
+                  <Divider sx={{ mb: 4 }} />
+                  <PestañasComisiones comisiones={comisiones} />
+                </Paper>
+              </Grid>
+            </Grid>
+          </Fade>
+        ) : procesado ? (
+          /* Estado de Carga */
+          <Stack alignItems="center" justifyContent="center" sx={{ py: 12 }}>
+            <CircularProgress thickness={4} size={60} sx={{ mb: 2, color: '#1e3a8a' }} />
+            <Typography variant="h6" color="text.secondary" fontWeight="600">
+              Generando reporte consolidado...
+            </Typography>
+            <Typography variant="body2" color="text.disabled">
+              Consultando bases de datos de Guaraní
+            </Typography>
+          </Stack>
+        ) : (
+          /* Estado Vacío / Inicial */
+          <Box sx={{ py: 12, textAlign: 'center', border: '2px dashed #e5e7eb', borderRadius: 4, bgcolor: '#fcfcfc' }}>
+            <HelpOutlineIcon sx={{ fontSize: 48, color: '#d1d5db', mb: 2 }} />
+            <Typography variant="body1" color="text.secondary" fontWeight="500">
+              Por favor, seleccione una Sede, Periodo y Actividad para visualizar el informe.
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Container>
-  )
-}
+  );
+};
 
-export default InfoCursadasAnio
+export default InfoCursadasAnio;

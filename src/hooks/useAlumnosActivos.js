@@ -60,6 +60,7 @@ export const useAlumnosActivos = () => {
 
         try {
             const rows = await axios.get(`${uri}/alumsactubipro`)
+            //console.log(rows.data)
             setAlumnosUbiSede(rows.data)
         } catch (err) {
             setError(err)

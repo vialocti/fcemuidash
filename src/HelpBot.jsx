@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,72 +10,91 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
   TextField,
 } from "@mui/material";
-// 🚨 Importar useEffect y useRef para el scroll automático
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { helpmeDash } from "./services/servicesChatGpt"; // Manteniendo la importación original
+import { helpmeDash } from "./services/servicesChatGpt";
+
+const quickActions = [
+  { label: "Estudiantes activos", route: "/estudiantes-activos" },
+  { label: "Ingresantes", route: "/ingresantes" },
+  { label: "Egresados", route: "/egreaniocarrera" },
+  { label: "Exámenes", route: "/reporteexamenes" },
+  { label: "Cursadas", route: "/listado-cursada-actividad" },
+  { label: "Dashboard", route: "/dashboard" },
+  { label: "Reinscriptos", route: "/alumnos-reinscriptos" },
+  { label: "Reportes", route: "/reportegeneral" },
+];
 
 const HelpBot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { from: "bot", text: "👋 ¡Hola! Soy tu asistente de ayuda del DashBoard." },
+    {
+      from: "bot",
+      text: "👋 ¡Hola! Soy tu asistente del DashBoard. Podés preguntarme algo o ir directo a una sección:",
+    },
   ]);
   const [input, setInput] = useState("");
-
-  // 1. 🚨 Crear la referencia para el final de los mensajes
+  const navigate = useNavigate();
   const messagesEndRef = useRef(null);
 
-  // Función auxiliar para realizar el scroll
   const scrollToBottom = () => {
-    // Usamos 'optional chaining' (?) y 'scrollIntoView' con comportamiento suave
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 2. 🚨 Ejecutar el scroll cada vez que la lista de mensajes cambie
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const goTo = (route, label) => {
+    setMessages((prev) => [
+      ...prev,
+      { from: "user", text: `Ir a ${label}` },
+      { from: "bot", text: `Navegando a ${label}...` },
+    ]);
+    setTimeout(() => {
+      setOpen(false);
+      navigate(route);
+    }, 600);
+  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage = input;
-
-    // Mostrar mensaje del usuario
     setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
-
-    // Respuesta por defecto (mientras carga)
-    // Usamos un identificador único para el mensaje de carga
     setMessages((prev) => [
       ...prev,
       { from: "bot", text: "⏳ Pensando...", id: "loading" },
     ]);
-
-    // Limpiar input inmediatamente
     setInput("");
 
-    // Llamar a tu servicio conectado al asistente (simulación)
     const reply = await helpmeDash(userMessage);
-    //const reply = await new Promise(resolve => setTimeout(() => resolve({ respuesta: "Esta es la respuesta del asistente." }), 1000));
 
-    // Reemplazar el mensaje "Pensando..." por la respuesta real
     setMessages((prev) => {
       const copy = [...prev];
-      // Buscamos el mensaje con el id 'loading' y lo reemplazamos
       const loadingIndex = copy.findIndex((msg) => msg.id === "loading");
       if (loadingIndex !== -1) {
         copy[loadingIndex] = { from: "bot", text: reply.respuesta };
       }
       return copy;
     });
+
+    // Si el backend indica navegar, hacerlo automáticamente
+    if (reply.action === "navigate" && reply.route) {
+      setTimeout(() => {
+        setOpen(false);
+        navigate(reply.route);
+      }, 1200);
+    }
   };
 
   return (
     <>
-      {/* Botón flotante original */}
       <Fab
         color="primary"
         aria-label="help"
@@ -93,7 +113,6 @@ const HelpBot = () => {
         <HelpOutlineIcon fontSize="large" />
       </Fab>
 
-      {/* Ventana de chat original */}
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -106,8 +125,8 @@ const HelpBot = () => {
             bottom: 100,
             right: 20,
             m: 0,
-            height: "60vh",
-            maxHeight: "70vh",
+            height: "65vh",
+            maxHeight: "75vh",
           },
         }}
       >
@@ -119,16 +138,16 @@ const HelpBot = () => {
             fontWeight: "bold",
           }}
         >
-          🤖 Asistente de Ayuda
+          🤖 Asistente del DashBoard
         </DialogTitle>
+
         <DialogContent
           dividers
           sx={{
             bgcolor: "#f9f9f9",
-            // 🚨 Es crucial establecer un alto y overflow para que el scroll funcione
             height: "100%",
             overflowY: "auto",
-            p: 0, // Ajuste de padding para un mejor uso del espacio
+            p: 0,
           }}
         >
           <List sx={{ pt: 1, pb: 1 }}>
@@ -136,8 +155,7 @@ const HelpBot = () => {
               <ListItem
                 key={i}
                 sx={{
-                  justifyContent:
-                    msg.from === "user" ? "flex-end" : "flex-start",
+                  justifyContent: msg.from === "user" ? "flex-end" : "flex-start",
                 }}
               >
                 <Box
@@ -147,7 +165,7 @@ const HelpBot = () => {
                     px: 2,
                     py: 1,
                     borderRadius: 3,
-                    maxWidth: "70%",
+                    maxWidth: "75%",
                     boxShadow: 1,
                   }}
                 >
@@ -155,10 +173,27 @@ const HelpBot = () => {
                 </Box>
               </ListItem>
             ))}
-            {/* 3. 🚨 El elemento al que apuntará la referencia para el scroll */}
             <div ref={messagesEndRef} />
           </List>
+
+          {/* Quick action chips */}
+          <Box sx={{ px: 2, pb: 2 }}>
+            <Stack direction="row" flexWrap="wrap" gap={1}>
+              {quickActions.map((action) => (
+                <Chip
+                  key={action.route}
+                  label={action.label}
+                  onClick={() => goTo(action.route, action.label)}
+                  color="primary"
+                  variant="outlined"
+                  size="small"
+                  clickable
+                />
+              ))}
+            </Stack>
+          </Box>
         </DialogContent>
+
         <DialogActions
           sx={{
             display: "flex",
@@ -171,7 +206,7 @@ const HelpBot = () => {
             variant="outlined"
             size="small"
             fullWidth
-            placeholder="Escribe tu duda..."
+            placeholder="Preguntame algo o pedime que te lleve a una sección..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}

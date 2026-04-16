@@ -13,7 +13,7 @@ import TablaResumenGeneral from './TablaResumenGeneral';
 
 const PestanasComisiones = ({ comisiones }) => {
   const [indice, setIndice] = useState(0);
-
+  console.log(comisiones)
   const handleChange = (event, newValue) => {
     setIndice(newValue);
   };

@@ -68,7 +68,7 @@ const ReporteComisiones = ({datosSimulados}) => {
               <React.Fragment key={index}>
                 <TableRow>
                   <TableCell>{row.codmat}</TableCell>
-                  <TableCell>{row.actividad}</TableCell>
+                  <TableCell>{row.actividad_nombre}</TableCell>
                   <TableCell>{row.total}</TableCell>
                   <TableCell>{row.regulares}</TableCell>
                   <TableCell>{row.reprobados}</TableCell>

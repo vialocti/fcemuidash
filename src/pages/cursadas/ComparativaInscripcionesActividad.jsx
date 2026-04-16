@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,123 +9,177 @@ import {
   Select,
   TextField,
   Typography,
+  Paper,
+  Stack,
+  CircularProgress,
+  Fade,
+  FormControl
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { traerComparativaInscripcionesAnio} from "../../services/servicesCursadas";
-//import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
-//import InfoMuestraInscriptosSede from "../../components/cursadas/infoMuestraInscriptosSede";
-//import { CSVLink } from "react-csv";
+
+// Iconos
+import HistoryIcon from '@mui/icons-material/History';
+import SearchIcon from '@mui/icons-material/Search';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import EventIcon from '@mui/icons-material/Event';
+import TimelineIcon from '@mui/icons-material/Timeline';
+
+// Servicios y Componentes
+import { traerComparativaInscripcionesAnio } from "../../services/servicesCursadas";
 import InfoMuestraInscriptosAniosSede from "../../components/cursadas/infoMuestraInscriptosAniosSede";
 import HelpPanelInscriptos from "../../components/ayudas/HelpPanelInscriptos";
 
-
-//comparativa de Inscripciones 5 años
 const ComparativaInscripcionesActividad = () => {
   const [anioI, setAnioI] = useState(2024);
-  const [sede, setSede] = useState(1);
-  //const [comisiones, setComisiones] = useState([]);
+  const [sede, setSede] = useState("1");
   const [materias, setMaterias] = useState(null);
-
-  useEffect(() => {
-  
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const onHandleChange = (event) => {
-    setMaterias(null)
+    setMaterias(null);
     if (event.target.name === "anioI") {
       setAnioI(event.target.value);
     }
   };
 
-  const onHandleChangeM = async (event) => {
-    //console.log(event.target.value);
-    //const resu = await traerComisionesMateriaAnio(anioI, event.target.value);
-    setMaterias(null)
+  const onHandleChangeSede = (event) => {
+    setMaterias(null);
     setSede(event.target.value);
   };
 
-  const onHandleInfo = (event) => {
-    const getMatComisiones = async () => {
+  const onHandleInfo = async () => {
+    setLoading(true);
+    try {
       const resu = await traerComparativaInscripcionesAnio(anioI, sede);
-      
       setMaterias(resu);
-    };
-
-    getMatComisiones();
+    } catch (error) {
+      console.error("Error al obtener comparativa:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
- // console.log(materias)
-  
   return (
-    <Container maxWidth='false' sx={{width:'90%',paddingInline:10}}>
-      <Grid container>
-       
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* HEADER DEL COMPONENTE */}
+      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <TimelineIcon sx={{ fontSize: 40, color: '#1e3a8a' }} />
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 900, color: '#111827', letterSpacing: '-0.02em' }}>
+            Análisis Comparativo Histórico
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Evolución de inscripciones en actividades (Últimos 5 años)
+          </Typography>
+        </Box>
+      </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            border: 1,
-            borderRadius: 2,
-            backgroundColor: "beige",
-            width: "97%",
-            p: 2,
-            flexWrap: "wrap",
-          }}
-        >
-
-        <Grid item xs={12} md={12} bgcolor={"blue"} color={"white"} sx={{borderRadius:2,width:'97%',p:1,marginBottom:2}}>
-                  <Typography variant="h5" textAlign={"center"}>
-                    Comparativa de Inscripciones Actividades - Año y Sede 
-                  </Typography>
-                </Grid>
-
-          <Grid item xs={12} md={2} sx={{ mr: 1 }}>
-            <InputLabel id="anioI">Año.Lectivo</InputLabel>
-
-            <TextField
-              variant="standard"
-              type="text"
-              id="anioI"
-              name="anioI"
-              onChange={onHandleChange}
-              value={anioI}
-            />
+      {/* PANEL DE CONTROL (FILTROS) */}
+      <Paper 
+        elevation={0} 
+        sx={{ 
+          p: 3, 
+          mb: 4, 
+          borderRadius: 4, 
+          border: '1px solid #e5e7eb',
+          bgcolor: '#f9fafb'
+        }}
+      >
+        <Grid container spacing={3} alignItems="flex-end">
+          
+          <Grid item xs={12} md={2}>
+            <Stack spacing={1}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <EventIcon fontSize="small" sx={{ color: '#6b7280' }} />
+                <Typography variant="caption" sx={{ fontWeight: 700, color: '#4b5563' }}>AÑO BASE</Typography>
+              </Box>
+              <TextField
+                fullWidth
+                size="small"
+                name="anioI"
+                type="number"
+                variant="outlined"
+                value={anioI}
+                onChange={onHandleChange}
+                sx={{ bgcolor: 'white' }}
+              />
+            </Stack>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <InputLabel id="sede">Sede</InputLabel>
-            <Select
-              variant="standard"
-              name="sede"
-              id="sede"
-              onChange={onHandleChangeM}
+          <Grid item xs={12} md={4}>
+            <Stack spacing={1}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <LocationCityIcon fontSize="small" sx={{ color: '#6b7280' }} />
+                <Typography variant="caption" sx={{ fontWeight: 700, color: '#4b5563' }}>SEDE DE ANÁLISIS</Typography>
+              </Box>
+              <FormControl fullWidth size="small">
+                <Select
+                  value={sede}
+                  onChange={onHandleChangeSede}
+                  sx={{ bgcolor: 'white' }}
+                >
+                  <MenuItem value={'1'}>Mendoza</MenuItem>
+                  <MenuItem value={'2'}>San Rafael</MenuItem>
+                  <MenuItem value={'4'}>Este</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={2}>
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SearchIcon />}
+              onClick={onHandleInfo}
+              disabled={loading}
+              sx={{ 
+                height: 40, 
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: 'bold',
+                bgcolor: '#1e3a8a',
+                '&:hover': { bgcolor: '#1e40af' }
+              }}
             >
-                <MenuItem value={'1'}>Mendoza</MenuItem>
-                <MenuItem value={'2'}>San Rafael</MenuItem>
-                {/*<MenuItem value={'3'}>Gral.Alvear</MenuItem>*/}
-                <MenuItem value={'4'}>Este</MenuItem>
-              
-            </Select>
-          </Grid>
-
-          <Grid item xs={12} md={1} sx={{ mt: 2 }}>
-            <Button variant="outlined" onClick={onHandleInfo}>
-              Aceptar
+              {loading ? "Calculando..." : "Comparar"}
             </Button>
           </Grid>
-          
+        </Grid>
+      </Paper>
 
-        </Box>
-      </Grid>
-
-      {materias ? (
-        
-        <InfoMuestraInscriptosAniosSede sede={sede} materias={materias} anio={anioI} />
-      ) : <HelpPanelInscriptos />}
+      {/* ÁREA DE RESULTADOS */}
+      <Box sx={{ minHeight: 400 }}>
+        {loading ? (
+          <Stack alignItems="center" justifyContent="center" sx={{ py: 12 }}>
+            <CircularProgress thickness={5} size={60} sx={{ mb: 2, color: '#1e3a8a' }} />
+            <Typography variant="h6" color="text.secondary" fontWeight="600">
+              Procesando series históricas...
+            </Typography>
+            <Typography variant="body2" color="text.disabled">
+              Esto implica cruzar datos de los últimos 5 ciclos lectivos
+            </Typography>
+          </Stack>
+        ) : materias ? (
+          <Fade in={true} timeout={800}>
+            <Box>
+              <Paper elevation={0} sx={{ p: 3, borderRadius: 4, border: '1px solid #e5e7eb' }}>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 3 }}>
+                  <HistoryIcon color="primary" />
+                  <Typography variant="h6" fontWeight="700">Resultados de la Comparativa</Typography>
+                </Stack>
+                <InfoMuestraInscriptosAniosSede sede={sede} materias={materias} anio={anioI} />
+              </Paper>
+            </Box>
+          </Fade>
+        ) : (
+          <Box sx={{ opacity: 0.7 }}>
+            <HelpPanelInscriptos />
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 };
 
 export default ComparativaInscripcionesActividad;
-
-

@@ -34,7 +34,7 @@ export const traerListadoComisiones = async (anio) => {
 
 
 export const traerListadoAlumnosComision = async (comision, anio, sede, actividad) => {
-    //console.log(comision,anio,sede,actividad)
+    console.log(comision,anio,sede,actividad)
     try {
         const rows = await axios.get(`${uri}/listadoalumnoscomision/${comision}/${anio}/${sede}/${actividad}`)
         //console.log(rows)
@@ -183,7 +183,7 @@ export const traerInscriptosPropuestaSede = async (anio, sede, versionact) => {
 export const traerInscriptosactividadSede = async (anio, sede) => {
 
     try {
-        const rows = await axios.get(`${uri}/cantiInscActividadComi/${anio}/${sede}`)
+        const rows = await axios.get(`${uri}/cantiInscActividadComi/${anio}`)
         //console.log(rows)
         return rows.data
 

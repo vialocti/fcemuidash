@@ -1,21 +1,15 @@
 import {
   Box, Button, Container, Grid, InputLabel, MenuItem, Select, TextField, 
-  Typography, CircularProgress, Paper, Table, TableBody, 
-  TableCell, TableContainer, TableHead, TableRow, Modal, IconButton, 
-  Divider, Alert, Skeleton
+  Typography, CircularProgress, Backdrop, Paper, Table, TableBody, 
+  TableCell, TableContainer, TableHead, TableRow, Modal, IconButton, Divider, Alert
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { 
-  traerDetalleComisiones, 
-  traerEvaluacionActividad, 
-  traerMateriasComiAnio 
-} from "../../services/servicesCursadas";
+import { traerDetalleComisiones, traerEvaluacionActividad, traerMateriasComiAnio } from "../../services/servicesCursadas";
 
 // Componentes internos
 import InfoMuestraComisiones from "../../components/cursadas/InfoMuestraComisiones";
 import HelpBusquedaResultadoA from "../../components/ayudas/HelpBusquedaResultadoA";
 
-// Iconos
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,20 +17,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import BarChartIcon from '@mui/icons-material/BarChart';
 
 const ComisionesCursadasAnioResultado = () => {
-  // Estados de Filtros
   const [anioI, setAnioI] = useState(2025);
   const [sede, setSede] = useState(1);
   const [materias, setMaterias] = useState([]);
   const [materia, setMateria] = useState("");
   const [recursado, setRecursado] = useState('N');
   
-  // Estados de Control y Carga
   const [loading, setLoading] = useState(false);
   const [habilitado, setHabilitado] = useState(false);
-  const [errorActual, setErrorActual] = useState(false);
-  const [avisoAnterior, setAvisoAnterior] = useState(false);
-
-  // Estados de Datos
   const [datoscomianio, setDatoscomianio] = useState([]);
   const [datoscomianioA, setDatoscomianioA] = useState([]);
   const [resumenMateriaAnio, setResumenMateriaAnio] = useState(null);
@@ -44,9 +32,12 @@ const ComisionesCursadasAnioResultado = () => {
   const [datosEvaluacion, setDatosEvaluacion] = useState(null);
   const [datosEvaluacionA, setDatosEvaluacionA] = useState(null);
 
+  // Estados para alertas de datos faltantes
+  const [errorActual, setErrorActual] = useState(false);
+  const [avisoAnterior, setAvisoAnterior] = useState(false);
+
   const [openDetalle, setOpenDetalle] = useState({ open: false, datos: [], anio: null, resumen: null, docentes: null });
 
-  // Cargar materias al cambiar año o sede
   useEffect(() => {
     const cargarMaterias = async () => {
       setLoading(true);
@@ -57,11 +48,7 @@ const ComisionesCursadasAnioResultado = () => {
         setHabilitado(false);
         setErrorActual(false);
         setAvisoAnterior(false);
-      } catch (error) { 
-        console.error("Error cargando materias:", error); 
-      } finally { 
-        setLoading(false); 
-      }
+      } catch (error) { console.error(error); } finally { setLoading(false); }
     };
     if (anioI > 2018) cargarMaterias();
   }, [anioI, sede]);
@@ -79,10 +66,10 @@ const ComisionesCursadasAnioResultado = () => {
     return {
       totalInsc, totalRegulares: reg, totalPromocionados: pro,
       totalAprobadosE1: e1, totalAprobadosE2: e2, totalAusentes: aus, totalReprobados: rep,
-      porcReg: totalInsc ? ((reg / totalInsc) * 100).toFixed(1) : 0,
-      porcPro: totalInsc ? ((pro / totalInsc) * 100).toFixed(1) : 0,
-      porcE1: totalInsc ? ((e1 / totalInsc) * 100).toFixed(1) : 0,
-      porcE2: totalInsc ? ((e2 / totalInsc) * 100).toFixed(1) : 0,
+      porcReg: totalInsc ? ((reg / totalInsc) * 100).toFixed(0) : 0,
+      porcPro: totalInsc ? ((pro / totalInsc) * 100).toFixed(0) : 0,
+      porcE1: totalInsc ? ((e1 / totalInsc) * 100).toFixed(0) : 0,
+      porcE2: totalInsc ? ((e2 / totalInsc) * 100).toFixed(0) : 0,
       indiceT: totalInsc ? (0.7 * (reg / totalInsc) + 0.3 * (pro / totalInsc)).toFixed(2) : "0.00",
       indiceTE1: totalInsc ? (0.7 * (reg / totalInsc) + 0.3 * ((pro + e1) / totalInsc)).toFixed(2) : "0.00",
       indiceTE2: totalInsc ? (0.7 * (reg / totalInsc) + 0.3 * ((pro + e2) / totalInsc)).toFixed(2) : "0.00",
@@ -105,16 +92,19 @@ const ComisionesCursadasAnioResultado = () => {
         traerEvaluacionActividad(sedeCod, anioI - 1, materia),
       ]);
 
+      // Control 1: No hay datos en el año actual
       if (!det || det.length === 0) {
         setErrorActual(true);
+        setLoading(false);
         return;
       }
 
+      // Control 2: No hay datos en el año anterior
       if (!detAnt || detAnt.length === 0) {
         setAvisoAnterior(true);
       }
 
-      setDatoscomianio(det);
+      setDatoscomianio(det || []);
       setDatoscomianioA(detAnt || []);
       setDatosEvaluacion(evalAct);
       setDatosEvaluacionA(evalAnt);
@@ -122,16 +112,18 @@ const ComisionesCursadasAnioResultado = () => {
       setResumenMateriaAnioA(calcularResumenTotal(detAnt));
       setHabilitado(true);
     } catch (error) { 
-      console.error("Error en análisis:", error); 
+        console.error(error); 
     } finally { 
-      setLoading(false); 
+        setLoading(false); 
     }
   };
 
   const RenderVariacion = ({ act, ant }) => {
     const vAct = parseFloat(act) || 0;
     const vAnt = parseFloat(ant) || 0;
+    // Si no hay año anterior, no calculamos variación
     if (!vAnt || vAnt === 0) return "-";
+    
     const diff = (((vAct - vAnt) / vAnt) * 100).toFixed(1);
     const color = diff > 0 ? 'success.main' : diff < 0 ? 'error.main' : 'text.secondary';
     return (
@@ -142,81 +134,43 @@ const ComisionesCursadasAnioResultado = () => {
     );
   };
 
-  const LoadingSkeleton = () => (
-    <Box sx={{ mt: 4 }}>
-      <Skeleton variant="rectangular" width="100%" height={120} sx={{ mb: 4, borderRadius: 2 }} />
-      <Skeleton variant="rectangular" width="100%" height={200} sx={{ borderRadius: 2 }} />
-    </Box>
-  );
-
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
-      {/* PANEL DE FILTROS */}
-      <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2, borderTop: '4px solid #1a237e' }}>
+      <Backdrop sx={{ color: '#fff', zIndex: 1301 }} open={loading}><CircularProgress color="inherit" /></Backdrop>
+
+      {/* FILTROS */}
+      <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
         <Grid container spacing={2} alignItems="flex-end">
-          <Grid item xs={12} md={2}>
-            <InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Ciclo Lectivo</InputLabel>
-            <TextField fullWidth size="small" type="number" value={anioI} onChange={(e) => setAnioI(e.target.value)} />
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Sede</InputLabel>
-            <Select fullWidth size="small" value={sede} onChange={(e) => setSede(e.target.value)}>
-              <MenuItem value={1}>Mendoza</MenuItem>
-              <MenuItem value={2}>San Rafael</MenuItem>
-              <MenuItem value={4}>Este</MenuItem>
-            </Select>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Actividad Académica</InputLabel>
-            <Select fullWidth size="small" value={materia} onChange={(e) => setMateria(e.target.value)} displayEmpty>
-              <MenuItem value="" disabled>Seleccione una materia...</MenuItem>
-              {materias.map((m, i) => <MenuItem key={i} value={m.nombre}>{m.nombre}</MenuItem>)}
-            </Select>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Button 
-              fullWidth 
-              variant="contained" 
-              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SearchIcon />} 
-              onClick={onHandleInfo} 
-              disabled={!materia || loading}
-              sx={{ height: '40px', fontWeight: 'bold' }}
-            >
-              {loading ? 'Cargando...' : 'Analizar'}
-            </Button>
-          </Grid>
+          <Grid item xs={12} md={2}><InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Año</InputLabel><TextField fullWidth size="small" type="number" value={anioI} onChange={(e) => setAnioI(e.target.value)} /></Grid>
+          <Grid item xs={12} md={2}><InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Sede</InputLabel><Select fullWidth size="small" value={sede} onChange={(e) => setSede(e.target.value)}><MenuItem value={1}>Mendoza</MenuItem><MenuItem value={2}>San Rafael</MenuItem><MenuItem value={4}>Este</MenuItem></Select></Grid>
+          <Grid item xs={12} md={6}><InputLabel sx={{ fontWeight: 'bold', mb: 1 }}>Materia</InputLabel><Select fullWidth size="small" value={materia} onChange={(e) => setMateria(e.target.value)} displayEmpty><MenuItem value="" disabled>Seleccione una materia...</MenuItem>{materias.map((m, i) => <MenuItem key={i} value={m.nombre}>{m.nombre}</MenuItem>)}</Select></Grid>
+          <Grid item xs={12} md={2}><Button fullWidth variant="contained" startIcon={<SearchIcon />} onClick={onHandleInfo} disabled={!materia || loading}>Analizar</Button></Grid>
         </Grid>
       </Paper>
 
-      {/* ESTADOS DE CARGA Y ERROR */}
-      {loading && <LoadingSkeleton />}
-      
-      {!loading && errorActual && (
-        <Alert severity="error" variant="filled" sx={{ mb: 2, borderRadius: 2 }}>
-          No existen datos para <strong>{materia}</strong> en el ciclo <strong>{anioI}</strong>.
+      {/* ALERTAS DE CONTROL */}
+      {errorActual && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          No existen datos de cursada para la actividad <strong>{materia}</strong> en el año <strong>{anioI}</strong>.
         </Alert>
       )}
 
-      {/* DASHBOARD DE RESULTADOS */}
-      {!loading && habilitado && resumenMateriaAnio && (
-        <Box sx={{ animation: 'fadeIn 0.5s' }}>
-          {avisoAnterior && (
-            <Alert severity="warning" variant="outlined" sx={{ mb: 3, bgcolor: '#fffde7' }}>
-              No se hallaron registros para el ciclo anterior ({anioI - 1}). Se omite la comparación.
-            </Alert>
-          )}
+      {avisoAnterior && habilitado && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Atención: No se encontraron registros de la actividad para el ciclo lectivo anterior (<strong>{anioI - 1}</strong>). La comparación interanual no estará disponible.
+        </Alert>
+      )}
 
-          <Typography variant="h5" sx={{ mb: 3, fontWeight: '800', color: '#1a237e' }}>
-            Reporte Interanual: {materia}
-          </Typography>
+      {habilitado && resumenMateriaAnio && (
+        <Box>
+          <Typography variant="h5" sx={{ mb: 3, fontWeight: '800', color: '#1a237e' }}>Análisis Interanual: {materia}</Typography>
 
-          {/* TABLA 1: VOLUMEN Y RESULTADOS EXÁMENES */}
-          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#455a64' }}>
-            <BarChartIcon sx={{ mr: 1 }} /> RESUMEN DE CURSADA Y RENDIMIENTO
+          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
+            <BarChartIcon sx={{ mr: 1, color: '#1976d2' }} /> Resumen Consolidado de Alumnos
           </Typography>
-          <TableContainer component={Paper} sx={{ mb: 4, borderRadius: 2, boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+          <TableContainer component={Paper} sx={{ mb: 4, borderRadius: 2, border: '1px solid #e0e0e0' }}>
             <Table size="small">
-              <TableHead sx={{ bgcolor: '#1a237e' }}>
+              <TableHead sx={{ bgcolor: '#1976d2' }}>
                 <TableRow>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>CICLO</TableCell>
                   <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold' }}>INSC.</TableCell>
@@ -229,42 +183,44 @@ const ComisionesCursadasAnioResultado = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {/* Solo renderizamos el año anterior si existe resumenMateriaAnioA */}
                 {resumenMateriaAnioA && (
-                  <TableRow hover>
-                    <TableCell sx={{ fontWeight: 'bold', bgcolor: '#fafafa' }}>{anioI - 1}</TableCell>
-                    <TableCell align="center">{resumenMateriaAnioA.totalInsc}</TableCell>
-                    <TableCell align="center">{resumenMateriaAnioA.totalRegulares} <small>({resumenMateriaAnioA.porcReg}%)</small></TableCell>
+                  <TableRow sx={{ bgcolor: 'inherit' }}>
+                    <TableCell sx={{ fontWeight: 'bold' }}>{anioI - 1}</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 'bold' }}>{resumenMateriaAnioA.totalInsc}</TableCell>
+                    <TableCell align="center">{resumenMateriaAnioA.totalRegulares} <Typography variant="caption" color="text.secondary">({resumenMateriaAnioA.porcReg}%)</Typography></TableCell>
                     <TableCell align="center">{resumenMateriaAnioA.totalReprobados}</TableCell>
                     <TableCell align="center">{resumenMateriaAnioA.totalAusentes}</TableCell>
-                    <TableCell align="center">{resumenMateriaAnioA.totalPromocionados} <small>({resumenMateriaAnioA.porcPro}%)</small></TableCell>
-                    <TableCell align="center">{resumenMateriaAnioA.totalAprobadosE1} <small>({resumenMateriaAnioA.porcE1}%)</small></TableCell>
-                    <TableCell align="center">{resumenMateriaAnioA.totalAprobadosE2} <small>({resumenMateriaAnioA.porcE2}%)</small></TableCell>
+                    <TableCell align="center">{resumenMateriaAnioA.totalPromocionados} <Typography variant="caption" color="text.secondary">({resumenMateriaAnioA.porcPro}%)</Typography></TableCell>
+                    <TableCell align="center">{resumenMateriaAnioA.totalAprobadosE1} <Typography variant="caption">({resumenMateriaAnioA.porcE1}%)</Typography></TableCell>
+                    <TableCell align="center">{resumenMateriaAnioA.totalAprobadosE2} <Typography variant="caption">({resumenMateriaAnioA.porcE2}%)</Typography></TableCell>
                   </TableRow>
                 )}
+                
+                {/* Año Actual */}
                 <TableRow sx={{ bgcolor: '#e3f2fd' }}>
                     <TableCell sx={{ fontWeight: 'bold' }}>{anioI}</TableCell>
                     <TableCell align="center" sx={{ fontWeight: 'bold' }}>{resumenMateriaAnio.totalInsc}</TableCell>
-                    <TableCell align="center">{resumenMateriaAnio.totalRegulares} <strong>({resumenMateriaAnio.porcReg}%)</strong></TableCell>
+                    <TableCell align="center">{resumenMateriaAnio.totalRegulares} <Typography variant="caption" color="text.secondary">({resumenMateriaAnio.porcReg}%)</Typography></TableCell>
                     <TableCell align="center">{resumenMateriaAnio.totalReprobados}</TableCell>
                     <TableCell align="center">{resumenMateriaAnio.totalAusentes}</TableCell>
-                    <TableCell align="center">{resumenMateriaAnio.totalPromocionados} <strong>({resumenMateriaAnio.porcPro}%)</strong></TableCell>
-                    <TableCell align="center" sx={{ color: '#2e7d32', fontWeight: 'bold' }}>{resumenMateriaAnio.totalAprobadosE1} <small>({resumenMateriaAnio.porcE1}%)</small></TableCell>
-                    <TableCell align="center" sx={{ color: '#1565c0', fontWeight: 'bold' }}>{resumenMateriaAnio.totalAprobadosE2} <small>({resumenMateriaAnio.porcE2}%)</small></TableCell>
+                    <TableCell align="center">{resumenMateriaAnio.totalPromocionados} <Typography variant="caption" color="text.secondary">({resumenMateriaAnio.porcPro}%)</Typography></TableCell>
+                    <TableCell align="center" sx={{ color: '#2e7d32', fontWeight: 500 }}>{resumenMateriaAnio.totalAprobadosE1} <Typography variant="caption">({resumenMateriaAnio.porcE1}%)</Typography></TableCell>
+                    <TableCell align="center" sx={{ color: '#1565c0', fontWeight: 500 }}>{resumenMateriaAnio.totalAprobadosE2} <Typography variant="caption">({resumenMateriaAnio.porcE2}%)</Typography></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
 
-          {/* TABLA 2: ÍNDICES DE GESTIÓN */}
-          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', color: '#455a64' }}>COMPARATIVA DE ÍNDICES Y VARIACIÓN</Typography>
-          <TableContainer component={Paper} sx={{ mb: 4, borderRadius: 2 }}>
+          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>Variación de Desempeño e Índices de Gestión</Typography>
+          <TableContainer component={Paper} sx={{ mb: 4, borderRadius: 2, border: '1px solid #e0e0e0' }}>
             <Table size="small">
               <TableHead sx={{ bgcolor: '#455a64' }}>
                 <TableRow>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>INDICADOR</TableCell>
                   <TableCell align="center" sx={{ color: 'white' }}>{anioI - 1}</TableCell>
                   <TableCell align="center" sx={{ color: 'white' }}>{anioI}</TableCell>
-                  <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold' }}>VARIACIÓN</TableCell>
+                  <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold' }}>VARIACIÓN %</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -285,50 +241,21 @@ const ComisionesCursadasAnioResultado = () => {
             </Table>
           </TableContainer>
 
-          {/* ACCIONES FINALES */}
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={3} justifyContent="center">
             {resumenMateriaAnioA && (
-              <Grid item>
-                <Button 
-                  variant="outlined" color="secondary" sx={{ borderRadius: 2, px: 4 }}
-                  onClick={() => setOpenDetalle({ open: true, datos: datoscomianioA, anio: anioI - 1, resumen: resumenMateriaAnioA, docentes: datosEvaluacionA })}
-                >
-                  Detalle Comisiones {anioI - 1}
-                </Button>
-              </Grid>
+              <Grid item><Button variant="outlined" color="secondary" onClick={() => setOpenDetalle({ open: true, datos: datoscomianioA, anio: anioI - 1, resumen: resumenMateriaAnioA, docentes: datosEvaluacionA })} sx={{ borderRadius: 2, px: 4 }}>Detalle Comisiones {anioI - 1}</Button></Grid>
             )}
-            <Grid item>
-              <Button 
-                variant="contained" color="primary" sx={{ borderRadius: 2, px: 4 }}
-                onClick={() => setOpenDetalle({ open: true, datos: datoscomianio, anio: anioI, resumen: resumenMateriaAnio, docentes: datosEvaluacion })}
-              >
-                Detalle Comisiones {anioI}
-              </Button>
-            </Grid>
+            <Grid item><Button variant="contained" color="primary" onClick={() => setOpenDetalle({ open: true, datos: datoscomianio, anio: anioI, resumen: resumenMateriaAnio, docentes: datosEvaluacion })} sx={{ borderRadius: 2, px: 4 }}>Detalle Comisiones {anioI}</Button></Grid>
           </Grid>
         </Box>
       )}
-
       {!habilitado && !loading && !errorActual && <HelpBusquedaResultadoA />}
 
-      {/* MODAL DE DETALLE COMISIONES */}
-      <Modal 
-        open={openDetalle.open} 
-        onClose={() => setOpenDetalle({ ...openDetalle, open: false })}
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <Box sx={{ bgcolor: 'white', p: 2, borderRadius: 2, width: '98vw', maxHeight: '98vh', overflowY: 'auto', outline: 'none' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
-            <IconButton onClick={() => setOpenDetalle({ ...openDetalle, open: false })} color="error"><CloseIcon /></IconButton>
-          </Box>
-          <InfoMuestraComisiones 
-            resumenM={openDetalle.resumen} 
-            datosComi={openDetalle.datos} 
-            materia={materia} 
-            anio={openDetalle.anio} 
-            docentes={openDetalle.docentes} 
-          />
+      <Modal open={openDetalle.open} onClose={() => setOpenDetalle({ ...openDetalle, open: false })}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'white', p: 2, borderRadius: 2, width: '98vw', maxHeight: '98vh', overflowY: 'auto' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}><IconButton onClick={() => setOpenDetalle({ ...openDetalle, open: false })} color="error"><CloseIcon /></IconButton></Box>
+          <InfoMuestraComisiones resumenM={openDetalle.resumen} datosComi={openDetalle.datos} materia={materia} anio={openDetalle.anio} docentes={openDetalle.docentes} />
         </Box>
       </Modal>
     </Container>

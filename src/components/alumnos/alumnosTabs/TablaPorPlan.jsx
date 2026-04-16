@@ -20,6 +20,19 @@ const TablaPorPlan = ({ alumnosSede }) => {
             </TableRow>
           </TableHead>
           <TableBody>
+          <TableRow>
+              <TableCell>PLAN26</TableCell>
+              <TableCell align="right">{alumnosSede.cantiCP26mza + alumnosSede.cantiCP26sr}</TableCell>
+              <TableCell align="right">{alumnosSede.cantiLA26}</TableCell>
+              <TableCell align="right">{alumnosSede.cantiLE26}</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell />
+              <TableCell align="right">
+                <strong>{alumnosSede.cantiCP26mza + alumnosSede.cantiCP26sr + alumnosSede.cantiLA26 + alumnosSede.cantiLE26}</strong>
+              </TableCell>
+            </TableRow>
+            
             <TableRow>
               <TableCell>PLAN19/2</TableCell>
               <TableCell align="right">{alumnosSede.cantiCP}</TableCell>
@@ -46,15 +59,15 @@ const TablaPorPlan = ({ alumnosSede }) => {
             </TableRow>
             <TableRow>
               <TableCell>TOTAL</TableCell>
-              <TableCell align="right"><strong>{alumnosSede.cantiCP}</strong></TableCell>
-              <TableCell align="right"><strong>{alumnosSede.cantiLA98 + alumnosSede.cantiLA19}</strong></TableCell>
-              <TableCell align="right"><strong>{alumnosSede.cantiLE98 + alumnosSede.cantiLE19}</strong></TableCell>
+              <TableCell align="right"><strong>{alumnosSede.cantiCP + alumnosSede.cantiCP26mza + alumnosSede.cantiCP26sr}</strong></TableCell>
+              <TableCell align="right"><strong>{alumnosSede.cantiLA98 + alumnosSede.cantiLA19 + alumnosSede.cantiLA26}</strong></TableCell>
+              <TableCell align="right"><strong>{alumnosSede.cantiLE98 + alumnosSede.cantiLE19 + alumnosSede.cantiLA26}</strong></TableCell>
               <TableCell align="right"><strong>{alumnosSede.cantiLLO + alumnosSede.cantiLLO2}</strong></TableCell>
               <TableCell align="right"><strong>{alumnosSede.cantiLNRG}</strong></TableCell>
               <TableCell align="right"><strong>{alumnosSede.cantiCPN}</strong></TableCell>
               <TableCell align="right">
                 <strong>{
-                  alumnosSede.cantiLA98 + alumnosSede.cantiLA19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE19 + alumnosSede.cantiCP + alumnosSede.cantiLLO + alumnosSede.cantiLLO2 + alumnosSede.cantiLNRG + alumnosSede.cantiCPN
+                 alumnosSede.cantiCP26sr + alumnosSede.cantiLA26 + alumnosSede.cantiLE26 + alumnosSede.cantiCP26mza + alumnosSede.cantiLA98 + alumnosSede.cantiLA19 + alumnosSede.cantiLE98 + alumnosSede.cantiLE19 + alumnosSede.cantiCP + alumnosSede.cantiLLO + alumnosSede.cantiLLO2 + alumnosSede.cantiLNRG + alumnosSede.cantiCPN
                 }</strong>
               </TableCell>
             </TableRow>

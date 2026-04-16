@@ -52,12 +52,14 @@ const AlumnosSedePropuesta = ({ alumnosSede, alumnoscursada, datoscoeft }) => {
     if (alumnoscursada) {
       const datos = [
         tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='CP' && element.planl==='19'), 'MZA','CP', '19'),
+        tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='CP' && element.planl==='26'), 'MZA','CP', '26'),
       
          tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='CPN' && element.planl==='98'), 'MZA','CPN', '98'),
         
         tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LA' && element.planl==='19'), 'MZA','LA', '19'),
-        
         tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LE' && element.planl==='19'), 'MZA','LE', '19'),
+        tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LA' && element.planl==='26'), 'MZA','LA', '26'),
+        tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LE' && element.planl==='26'), 'MZA','LE', '26'),
         
           tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LA' && element.planl==='98'), 'MZA','LA', '98'),
           tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===1 && element.carerra==='LE' && element.planl==='98'), 'MZA','LE', '98'),
@@ -68,6 +70,8 @@ const AlumnosSedePropuesta = ({ alumnosSede, alumnoscursada, datoscoeft }) => {
         
         
      tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===2 && element.carerra==='CP' && element.planl==='19'), 'SRF','CP', '19'),
+     tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===2 && element.carerra==='CP' && element.planl==='26'), 'SRF','CP', '26'),
+
      
      tratamientoDatos(alumnoscursada.filter(element=>element.ubicacion===2 && element.carerra==='CPN' && element.planl==='98'), 'SRF','CPN', '98'),
      

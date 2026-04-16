@@ -106,6 +106,7 @@ const NavigationBar = ({ onLogout, user }) => {
             </ListItem>
             <Collapse in={openSubMenu === "estudiantes"} timeout="auto">
               <List disablePadding>
+              <MenuLink to="alumnos-reinscriptos" primary="Reinscripciones" mobile />
                 <MenuLink to="/estudiantes-activos" primary="Estudiantes Activos" mobile />
                 <MenuLink to="/cohorte-evolucion" primary="Desgranamiento Cohorte" mobile />
                 <MenuLink to="/alumnos-coeficiente" primary="Coef. Tiempo Estudiantes" mobile />
@@ -123,8 +124,8 @@ const NavigationBar = ({ onLogout, user }) => {
           <List disablePadding>
             <MenuLink to="/inscripcionesComi" primary="Inscripciones Sede" mobile />
             <MenuLink to="/comparativaInsc" primary="Comparativa Actividad" mobile />
-            <MenuLink to="/infocursadalistado" primary="Listado Inscriptos" mobile />
-            <MenuLink to="/comisiones-cursadas-anio" primary="Resultado Actividad" mobile />
+            <MenuLink to="/listado-cursada-actividad" primary="Listado Inscriptos" mobile />
+            <MenuLink to="/comisiones-cursadas-anio-resultado" primary="Resultado Actividad" mobile />
             <MenuLink to="/aprobadas-carrera-1er-anio" primary="Aprobadas (1er Año)" mobile />
           </List>
         </Collapse>
@@ -139,8 +140,8 @@ const NavigationBar = ({ onLogout, user }) => {
             <Collapse in={openSubMenu === "examenes"} timeout="auto">
               <List disablePadding>
                 <MenuLink to="/reporteexamenes" primary="Exámenes Mesa" mobile />
-                <MenuLink to="/reporteexamenescp" primary="Comparativa Turnos" mobile />
-                <MenuLink to="/reporteepocasexamen" primary="Resultados Período" mobile />
+               {/* <MenuLink to="/reporteexamenescp" primary="Comparativa Turnos" mobile /> */}
+                <MenuLink to="/epocas-examen-analisis-comparativo" primary="Resultados Período" mobile />
               </List>
             </Collapse>
 
@@ -180,7 +181,7 @@ const NavigationBar = ({ onLogout, user }) => {
                 <MenuLink to="/aprobadas-primer-anio-reporte" primary="Comp. Aprobadas Ing." mobile />
                 <MenuLink to="/datosactividadreport" primary="Datos Actividad Ing." mobile />
                 <MenuLink to="/listado-alumnos-info-rendimiento" primary="Alumnos Rendimiento" mobile />
-                <MenuLink to="/reportecomicontacto" primary="Índices Comisiones" mobile />
+                <MenuLink to="/reporte-comisiones-contacto" primary="Índices Comisiones" mobile />
               </List>
             </Collapse>
           </>
@@ -226,6 +227,7 @@ const NavigationBar = ({ onLogout, user }) => {
                 {/* Estudiantes */}
                 <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'estudiantes')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Estudiantes</Button>
                 <Menu anchorEl={anchorEl.estudiantes} open={Boolean(anchorEl.estudiantes)} onClose={handleCloseMenu}>
+                 <MenuItem onClick={handleCloseMenu} component={NavLink} to="/alumnos-reinscriptos">Reinscripciones</MenuItem>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/estudiantes-activos">Estudiantes Activos</MenuItem>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/cohorte-evolucion">Desgranamiento Cohorte</MenuItem>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/alumnos-coeficiente">Coef. Tiempo Estudiantes</MenuItem>
@@ -238,8 +240,8 @@ const NavigationBar = ({ onLogout, user }) => {
             <Menu anchorEl={anchorEl.cursadas} open={Boolean(anchorEl.cursadas)} onClose={handleCloseMenu}>
               <MenuItem onClick={handleCloseMenu} component={NavLink} to="/inscripcionesComi">Inscripciones Sede</MenuItem>
               <MenuItem onClick={handleCloseMenu} component={NavLink} to="/comparativaInsc">Comparativa Actividad</MenuItem>
-              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/infocursadalistado">Listado Inscriptos</MenuItem>
-              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/comisiones-cursadas-anio">Resultado Actividad</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/listado-cursada-actividad">Listado Inscriptos</MenuItem>
+              <MenuItem onClick={handleCloseMenu} component={NavLink} to="/comisiones-cursadas-anio-resultado">Resultado Actividad</MenuItem>
               <MenuItem onClick={handleCloseMenu} component={NavLink} to="/aprobadas-carrera-1er-anio">Aprobadas Carrera(1er Año)</MenuItem>
             </Menu>
 
@@ -249,8 +251,8 @@ const NavigationBar = ({ onLogout, user }) => {
                 <Button color="inherit" endIcon={<KeyboardArrowDown />} onClick={(e) => handleOpenMenu(e, 'examenes')} sx={{ fontSize: '0.8rem', textTransform: 'none' }}>Exámenes</Button>
                 <Menu anchorEl={anchorEl.examenes} open={Boolean(anchorEl.examenes)} onClose={handleCloseMenu}>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteexamenes">Exámenes Mesa</MenuItem>
-                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteexamenescp">Comparativa Turnos</MenuItem>
-                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteepocasexamen">Resultados Período</MenuItem>
+                 {/* <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporteexamenescp">Comparativa Turnos</MenuItem> */}
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/epocas-examen-analisis-comparativo">Comparativa Exámenes Período</MenuItem>
                 </Menu>
 
                 {/* Egresados */}
@@ -275,7 +277,7 @@ const NavigationBar = ({ onLogout, user }) => {
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/aprobadas-primer-anio-reporte">Comp. Aprobadas Ingresantes</MenuItem>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/datosactividadreport">Datos Actividad Ingresantes</MenuItem>
                   <MenuItem onClick={handleCloseMenu} component={NavLink} to="/listado-alumnos-info-rendimiento">Alumnos - Rendimiento</MenuItem>
-                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reportecomicontacto">Índices Comisiones-Contacto</MenuItem>
+                  <MenuItem onClick={handleCloseMenu} component={NavLink} to="/reporte-comisiones-contacto">Índices Comisiones-Contacto</MenuItem>
                 </Menu>
               </>
             )}

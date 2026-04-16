@@ -7,6 +7,7 @@ import IngresoPorSede from './tabsIngresantes/IngresoPorSede';
 //import TablaDetallada from './tabsIngresantes/Tabladetallada';
 import TablaDinamica from './tabsIngresantes/TablaDinamica';
 
+
 const sedes = ['MZA', 'SRF', 'GALV', 'ESTE'];
 const carreras = ['CP', 'LA', 'LE', 'LLO', 'LNRG'];
 
@@ -81,6 +82,7 @@ const IngresantesTabs = ({ cantidadSede }) => {
     setTotalCarreraC(totalCarreraC);
     setTotalSedeC(totalSedeC);
     setTotalGeneralC(Object.values(totalCarreraC).reduce((a, b) => a + b, 0));
+   
   }, [cantidadSede]);
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -133,6 +135,7 @@ const IngresantesTabs = ({ cantidadSede }) => {
         <Tab label="Grafica Por Genero" />
         <Tab label="Grafica Por Propuesta" />
         <Tab label="Grafica Por Sede" />
+
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -170,6 +173,7 @@ const IngresantesTabs = ({ cantidadSede }) => {
       
         <IngresoPorSede cantidadSede={cantidadSede} />
       </TabPanel>
+    
     </Container>
   );
 };

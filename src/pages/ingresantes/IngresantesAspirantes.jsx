@@ -19,6 +19,9 @@ import IngresantesTabs from '../../components/ingresantes/IngresantesTabs';
 import InscriptosPageEnTableRoweAnios from '../inscriptos/InscritosPageEntreAnios';
 import { traerCantidadIncriptosUbicacionTSx } from '../../services/servicesInscriptos';
 import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresantes';
+import { traerAlumosSinMatricular } from '../../services/servicesAlumnos';
+import IngresantesNoMatriculados from './IngresantesNoMatriculados';
+
 
 // Año inicial inteligente
   const getAnioInicial = () => {
@@ -37,6 +40,9 @@ import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresa
     const [totalAspirantesN, setTotalAspirantesN] = useState(0);
     const [totalIngresantesC, setTotalIngresantesC] = useState(0);
     const [totalAspirantesC, setTotalAspirantesC] = useState(0);
+    const [alumnosNoMatriculados, setAlumnosNoMatriculados]= useState([])
+
+
   
     const [cantidadTSx, setCantidadTSx] = useState(null);
     const [cantidadTSxAspi, setCantidadTSxAspi] = useState(null);
@@ -73,14 +79,18 @@ import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresa
         setCargando(true);
   
         try {
+          
           const anioConsulta = anio > 2017 ? anio : 1;
-  
+       
+          const resultNM = await traerAlumosSinMatricular(anio)
           const datosIngresantes = await traerCantidadIngresoUbicacionTSx(anioConsulta, 1);
           const datosAspirantes = await traerCantidadIncriptosUbicacionTSx(anioConsulta);
   
           setCantidadTSx(datosIngresantes);
           setCantidadTSxAspi(datosAspirantes);
+          setAlumnosNoMatriculados(resultNM)
           setSeleccion('ingresantes')
+          //console.log(resultNM)
         } catch (error) {
           console.error('Error al cargar datos:', error);
         } finally {
@@ -198,20 +208,32 @@ import { traerCantidadIngresoUbicacionTSx } from '../../services/servicesIngresa
                   variant="contained"
                   fullWidth
                   color="secondary"
+                  sx={{ mb: 1 }}
                   onClick={() => setSeleccion('comparativa')}
                 >
                   Aspirantes/Ingresantes
+                </Button>
+               
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="warning"
+                  onClick={() => setSeleccion('nomatriculados')}
+                >
+                  Ingr.No Matriculados
                 </Button>
               </Paper>
             </Grid>
   
             {/* Columna derecha */}
             <Grid item xs={12} md={10}>
-              {seleccion === 'ingresantes' &&    <IngresantesTabs cantidadSede={cantidadTSx}  />}
+              {seleccion === 'ingresantes' &&    <IngresantesTabs cantidadSede={cantidadTSx}/>}
               {seleccion === 'aspirantes' &&  <AspirantesTabs cantidadSede={cantidadTSxAspi}  />}
               {seleccion === 'aspirantesC' &&  <InscriptosPageEnTableRoweAnios anioFinal={anio}  />}
               {seleccion === 'ingresantesC' &&  <IngresantesPageEntreAnios anioFinal={anio} />}
               {seleccion === 'comparativa' && <CompararaAspiIngresoLapso anioFinal={anio} />}
+              {seleccion === 'nomatriculados' && <IngresantesNoMatriculados data={alumnosNoMatriculados} />}
+
             </Grid>
           </Grid>
         )}

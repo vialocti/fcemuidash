@@ -14,7 +14,7 @@ export const getEgresadosAnioSedePropuestaProm = async (anio, lapso) => {
     try {
 
         const rows = await axios.get(`${uri}/egreanio/${anio}/${lapso}`)
-
+            
 
         return rows.data
     } catch (error) {
@@ -25,10 +25,11 @@ export const getEgresadosAnioSedePropuestaProm = async (anio, lapso) => {
 
 //listado por sede carrera
 export const getListadoEgreAnioSedePropuesta = async (anio, lapso, sede, car) => {
-
+  
     try {
 
         const rows = await axios.get(`${uri}/egreaniolista/${anio}/${lapso}/${sede}/${car}`)
+      
         return rows.data
     } catch (error) {
         console.log(error)
@@ -44,6 +45,7 @@ export const getListadoEgreAnioPropuesta = async (anio, car, lapso, ficola, ffco
     try {
 
         const rows = await axios.get(`${uri}/egrepromcaranio/${anio}/${car}/${lapso}/${ficola}/${ffcola}`)
+        
         return rows.data
     } catch (error) {
         console.log(error)
@@ -56,6 +58,7 @@ export const getCantiEgreAnioSede = async (anio, lapso, sede) => {
     try {
 
         const rows = await axios.get(`${uri}/egresadosaniosede/${anio}/${lapso}/${sede}`)
+        
         return rows.data
 
     } catch (error) {

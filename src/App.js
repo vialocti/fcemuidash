@@ -17,6 +17,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 
+import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./components/routes/AppRoutes";
 import HelpBot from "./HelpBot";
 import Login from "./pages/common/Login";
@@ -109,10 +110,10 @@ const App = () => {
   }
 
   return user ? (
-    <>
-    <AppRoutes onLogout={handleLogout} user={user} />
-    <HelpBot />
-    </>
+    <BrowserRouter>
+      <AppRoutes onLogout={handleLogout} user={user} />
+      <HelpBot />
+    </BrowserRouter>
   ) : (
     <Container
       sx={{

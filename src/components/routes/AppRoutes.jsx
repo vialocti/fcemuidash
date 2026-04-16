@@ -1,5 +1,5 @@
 //import React,{useEffect, useState} from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import ActividadAcademicaPage from "../../pages/actividadAcademica/ActividadAcademicaPage";
 import AlumnosCohorteDesgrana from "../../pages/alumnos/AlumnosCohorteDesgrana";
@@ -37,6 +37,7 @@ import ReporteExamenEpocas from "../../pages/reportes/ReporteExamenEpocas";
 import ReporteGeneral from "../../pages/reportes/ReporteGeneral";
 import TurnosMesasComponent from "../../pages/examenes/TurnosMesasComponent";
 import DashboardActividades from "../../pages/rendimiento/DashboardActividades";
+import ReinscriptosAño from "../../pages/alumnos/ReinscriptosAnio";
 
 //cursadas
 
@@ -46,9 +47,7 @@ const AppRoutes = ({ onLogout, user }) => {
 
   const esAdmin = user?.email === "staff_dash@fce.uncu.edu.ar"
   return (
-    <BrowserRouter>
-
-
+    <>
       <NavigationBar onLogout={onLogout} user={user} />
 
       <Routes>
@@ -103,7 +102,7 @@ const AppRoutes = ({ onLogout, user }) => {
 
           <Route
             exact
-            path="/comisiones-cursadas-anio"
+            path="/comisiones-cursadas-anio-resultado"
             element={<ComisionesCursadasAnioResultado />}
           />
 
@@ -177,6 +176,7 @@ const AppRoutes = ({ onLogout, user }) => {
           />
 
           <Route exact path="/alumnos-coeficiente" element={<AlumnosInfoUno />} /> {/** alumnos coeficiente de tiempo*/}
+          <Route exact path="/alumnos-reinscriptos" element={ <ReinscriptosAño />} /> {/** reinscripciones anio */}
 
           <Route exact path="/meshoras" element={<PersonalMesHoras />} />
 
@@ -185,9 +185,9 @@ const AppRoutes = ({ onLogout, user }) => {
 
           <Route exact path='/reporteexamenes' element={<TurnosMesasComponent />} />
 
-          <Route exact path='/reportecomicontacto' element={<ReporteComisionesContacto />} />
+          <Route exact path='/reporte-comisiones-contacto' element={<ReporteComisionesContacto />} />
 
-          <Route exact path='/reporteepocasexamen' element={<  ReporteExamenEpocas />} />
+          <Route exact path='/epocas-examen-analisis-comparativo' element={<  ReporteExamenEpocas />} />
 
           <Route exact path='/dashboard' element={<Dashboard />} />
 
@@ -198,13 +198,13 @@ const AppRoutes = ({ onLogout, user }) => {
 
         <Route
           exact
-          path="/infocursadalistado"
+          path="/listado-cursada-actividad"
           element={<InfoCursadasAnio />}
         />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 
