@@ -198,7 +198,7 @@ const NavigationBar = ({ onLogout, user }) => {
 
   return (
     <>
-      <AppBar position="static" color="primary" sx={{ height: 50 }}>
+      <AppBar position="sticky" color="primary" sx={{ height: 50, top: 0, zIndex: 1100 }}>
         <Toolbar sx={{ minHeight: '50px !important', px: 2 }}>
 
           {/* BOTÓN HAMBURGUESA - Solo visible en móvil */}

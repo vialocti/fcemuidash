@@ -60,9 +60,13 @@ const getFechasCorte = (anioIter, lapso) => {
       const inicio = fmt(new Date(y, 3, 1));
       return { fi: inicio, ff: inicio };
     }
+    // días transcurridos desde el 1/4 del año lectivo actual → mismo corte para todos los años
+    const diasDesdeInicio = Math.round((HOY - inicioLActual) / 86_400_000);
+    const inicioAnio = new Date(y, 3, 1);
+    const ffDate = new Date(inicioAnio.getTime() + diasDesdeInicio * 86_400_000);
     return {
-      fi: fmt(new Date(y, 3, 1)),
-      ff: fmt(new Date(y + 1, MES_HOY, DIA_HOY)),
+      fi: fmt(inicioAnio),
+      ff: fmt(ffDate),
     };
   }
   if (lapso === "E") {
@@ -362,6 +366,11 @@ const EgresadosAnioListado = () => {
     const fetchEvolucion = async () => {
       const resultados = await Promise.all(
         AÑOS_EVOLUCION.map((a) => {
+          // Para el año actual usamos sin filtro de fecha (igual que Tab 0) para evitar
+          // discrepancias en lapsos que cruzan el año anterior (ej: Colación empieza Oct y-1)
+          if (a === ANIO_REAL) {
+            return getListadoEgreAnioPropuesta(a, "T", lapsoEvol, 0, 0);
+          }
           const { fi, ff } = getFechasCorte(a, lapsoEvol);
           return getListadoEgreAnioPropuesta(a, "T", lapsoEvol, fi, ff);
         }),
